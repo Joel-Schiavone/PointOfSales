@@ -1,0 +1,252 @@
+/*
+font-family: 'Anton', sans-serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Shrikhand', cursive;
+font-family: 'Archivo Black', sans-serif;
+font-family: 'Francois One', sans-serif;
+*/
+/* -------------------------------------- GENERALES------------------------------------------ */
+
+.material-icons
+{
+	vertical-align: middle;
+}
+
+.col-md-6
+{
+	text-align: center;
+}
+
+#cabeceraTabla
+{
+	
+	background-color: #333;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+
+}
+
+#bloqueTabla
+{
+	text-align: center;
+	padding: 1%;
+}
+
+#contenidoTabla
+{
+	text-align: center;
+}
+
+/* -------------------------------------- VALIDACION 1------------------------------------------ */
+
+#menu1
+{
+	background-color: #fefefe;
+	color: #fff;
+}
+
+
+/* -------------------------------------- INDEX ------------------------------------------ */
+
+#login
+{
+	background-color: #333;
+	border: 2px solid #000;
+	border-radius: 20px 20px 20px 20px;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	margin-top: 10%;
+	text-align: center;
+}
+
+#camposLogin
+{
+	margin-top: 2%;
+	margin-bottom: 2%;
+	text-align: center;
+}
+
+
+#camposLoginTitulo
+{
+	margin-top: 4%;
+	margin-bottom: 4%;
+	text-align: left;
+	font-size: 150%;
+}
+
+#botonAcceder
+{
+	margin-top: 4%;
+	margin-bottom: 4%;
+	width: 90%;
+}
+
+#logoLogin
+{
+	margin-left:-27px;
+	margin-right:-20px;
+	width: 118%;
+	border-radius: 20px 20px 0px 0px;
+}
+
+
+
+/* -------------------------------------- INDEX ------------------------------------------ */
+
+
+
+#descripcionSucursal
+{
+	font-family: 'Poppins', sans-serif;
+	font-size: 20px;
+	color: #333;
+	background-color: #fff;
+ 	border-radius: 46px 46px 46px 46px;
+    -moz-border-radius: 46px 46px 46px 46px;
+    -webkit-border-radius: 46px 46px 46px 46px;
+    border: 0px solid #000000;
+    
+}
+#linkSucursales
+{
+	opacity: 0.8; 
+   -webkit-transition: opacity 1s;
+   -webkit-transition: width 1s;
+}
+#linkSucursales:hover
+{
+   opacity: 1;
+   width: 30%;
+   height: auto;
+}
+
+
+#recuadros
+{
+	border: 3px solid #333;
+	margin-bottom: 2%;
+	padding: 2%;
+	text-align: center;
+}
+
+#recuadrosB
+{
+	border: 1px solid #333;
+	margin-bottom: 2%;
+	padding: 2%;
+	text-align: center;
+	font-size:100%;
+	font-family: 'Archivo Black', sans-serif;
+}
+
+#recuadrosB:hover
+{
+	border: 3px solid #333;
+	color: #090;
+}
+
+#recuadrosC
+{
+	border: 2px solid #333;
+	margin-bottom: 2%;
+	padding: 2%;
+	font-family: 'Archivo Black', sans-serif;
+	font-size: 160%;
+}
+
+#ContenidoAA
+{
+	text-align: left;
+	margin: 5%;
+}
+
+#tituloA
+{
+	margin-bottom: 2%;
+	text-align: center;
+	font-size: 80%;
+	font-family: 'Archivo Black', sans-serif;
+}
+
+#tituloA1
+{
+	margin-bottom: 2%;
+	text-align: center;
+	font-size: 100%;
+	font-family: 'Archivo Black', sans-serif;
+}
+
+#finalizarVentaEfectivo
+{
+	margin: 5%;
+	width: 90%;
+  height: 60px;
+}
+
+#suggestionsA1
+{
+	text-align: center;
+	font-size: 50%;
+}
+
+/* -------------------------------------- ON - OFF------------------------------------------ */
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

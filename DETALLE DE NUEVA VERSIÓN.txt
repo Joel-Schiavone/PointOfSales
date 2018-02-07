@@ -1,0 +1,121 @@
+////////////////////////////////////////////////////////////////////
+/////////////////////// ALTER TABLE V 1.3 /////////////////////////
+//////////////////////////////////////////////////////////////////
+
+COMPROBANTES
+ARTICULOS
+CLASES EXCLUSIVAS
+
+////////////////////////////////////////////////////////////////////
+/////////////////////// ALTER TABLE V 1.2 /////////////////////////
+//////////////////////////////////////////////////////////////////
+
+cajaSuc.php.php
+	- Se cambio cantidad por descripcion de posicion
+
+buscadorDeCaja.php
+cajaHistorial.php
+	- Se incorporo el filtro para la busqueda por caja abierta y cerrada y se optimizo el codigo de buqueda 
+	- Se agrego footer para que aparezca el numero de vercion 
+
+articulos.php
+	- Se agrego al formulario de ingreso de categorias nuevas desde articulos el campo obligatorio de una primer subcategoria porque obviamente 
+	- si no cargan una subcategoria no se va a ver la categoria nueva que ingresaron 
+	- Se acomodo alfaveticamente la consulta que trae categorias y subcategorias
+	- Se utilizo la funcion mysql_real_escape_string()  para permitir que el usuario inserte cualquier caracter en la descrpcion del articulo
+	- Se reparo el insert de subcategorias 
+
+autocompletadoUniversalArticulos.php
+autocompletadoUniversalArticulosTabla.php
+autocompletadoUniversalArticulosStock.php
+	- se modifico el codigo para que busque por cualquier orden en la cadena
+		
+	
+clasesExclusivas.php
+	- Se agrego a la funcion de busqueda que a partir del primer espacio cambie la forma de busqueda por LIKE a MATCH de manera que busca 
+		los terminos de buqueda en cualquier orden dentro del campo articulos descripcion
+
+clases.php
+	- Al modificar la base de datos se modifico el archivo de clases.php
+
+accionesExclusivas.php
+	- Se traslado la funcion de insert subcateria desde acciones.php a accionesExclusivas.php	
+	- se reparo la funcion que agrega y modifica usuarios para que incluya todos los permisos a los nuevos modulos para los tipo de usuarios administrador
+	- se agregaron nuevas funciones
+
+footer.php
+	- Se incorporo el numero de vercion
+
+stock.php
+accionesStock.php
+	- se incorporo la busqueda por categorias de stock
+
+acciones.php
+	- Se reparo un error en el codigo
+
+totalesDeCaja.php
+	-se cambio en requerido por el requerido sin carga para que no muestre el loading cada 6 segundos
+
+notificaciones.php
+visiorMensaje.php
+cargaStock.php
+
+	- Se armo el sistema de mensajeria del sistema, por el momento solo entran mensajes de categoria 1 que se refieren a los carteles de precio
+		que el sistema crea automaticamente cuando detecta un cambio de precio , tanto en el alta de stock como en la tabla de articulos cuando 
+		se modifica el porcentaje , el costo o el precio de venta
+	
+validacion.php
+	- Se modifico el menu para que aparezcan las notificaciones pendientes. OJO AL REEMPLAZAR ESTA PAGINA QUE PUEDE EMPEZAR A ESCUPIR USUARIOS
+	
+header.php
+headerSinCarga.php
+	- se incorporaron las bibliotecas de datatables (RECUERDE INCOPORAR LA CARPETA DATATABLE A SU RAIZ)
+
+cargaStock.php
+	- Tenia un error que si no se seleccionaba una sucursal se reemplazaba el stock en vez de sumarse, se establecio una sucursal como predeterminadaç
+	a esta pagina le falta desarrollo, tiene que agregar la posibilidad de buscar articulo con lector laser y la posibilidad de hacerlo por descripcion 
+	ademas tiene que corregir el tema de las facturas cuando el modulo de comprobantes este terminado.
+
+PAGINAS NUEVAS 
+
+infodeempresa.php
+accionesParametros.php
+	- se creo el formulario de parametros con la posibilidad de realizar modificaciones en el mismo, 
+		contiene un id predeterminado, cada cliente deveria tener un id distinto para poder centralizarlo
+		en una sola tabla
+
+listarArticulos.php
+	- Se creo con el objetivo de tener otra opcion de busqueda rapida de precios y stock de articulos. no cuenta con la posibilidad de configurar campo, por lo que cualquier usuario pude acceder a ella para responder consultas
+
+gestionCuentas.php
+	- dentro del modulo masterdata ejecuta el abm de cuentas y de descuentos por acciones 
+
+cuentas.php
+	- ABM de los movimientos de las cuentas
+
+operacionesDeCuentas.php
+	- formulario de la operacion de transferencia disponible
+
+tiposdecomprobantes.php
+	- abm compelto
+
+puntosDeVentas
+	- abm completo 
+
+puestos.php
+	-abm completo
+
+AperturaCaja.php
+	-se reemplazo por aperturaCajasuc1 y aperturacajasuc2, se deb eliminar estos archivos
+
+sucursales.php
+	-ABM completo
+
+tarjetas.php
+	-ABM completo
+
+tarjetasPlanes.php
+	-ABM completo
+
+
+SE REPARO EL MENU QUE SE TRAVABA EN LAS PAGINAS QUE SE EJECUTABAN CON AJAX. LA SOLUCION ES NO PASARLE EL HEADER A LAS PAGINAS QUE SE EJECUTAN EN OTRA INSTANCIA. 
