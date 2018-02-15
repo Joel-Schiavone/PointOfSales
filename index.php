@@ -10,7 +10,7 @@
 <div class="container">
 
 <form method="POST" action="register.php">
-    	<div class="col-md-12">
+    	<div class="col-md-12" >
 
           <div class="col-md-4">
 
