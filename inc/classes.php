@@ -1,6 +1,6 @@
 <?php
 
-    //17 01 2018 19:01:28 El Archivo classes.php se ha modificado correctamente
+    //16 02 2018 16:02:53 El Archivo classes.php se ha modificado correctamente
 
     class adjuntos
     {
@@ -241,9 +241,9 @@
           //Inicio Funciones para Insertar datos
 
 
-                        function insert_bancos($ban_dir, $ban_cuit, $ban_suc, $ban_cbu)
+                        function insert_bancos($ban_desc, $ban_logo, $ban_habilitado)
                         {
-                              $sql_bancos = 'INSERT INTO bancos (ban_dir, ban_cuit, ban_suc, ban_cbu) VALUES ("'.$ban_dir.'", "'.$ban_cuit.'", "'.$ban_suc.'", "'.$ban_cbu.'")'; 
+                              $sql_bancos = 'INSERT INTO bancos (ban_desc, ban_logo, ban_habilitado) VALUES ("'.$ban_desc.'", "'.$ban_logo.'", "'.$ban_habilitado.'")'; 
                               $result_bancos =mysql_query($sql_bancos );
                               return $result_bancos;
                         }
@@ -252,10 +252,10 @@
           //Inicio Funciones para Modificar datos
 
           //Inicio Funcion Modifica todos los datos por ID
-                        function update_bancosById($ID_ban, $ban_dir, $ban_cuit, $ban_suc, $ban_cbu)
+                        function update_bancosById($ID_ban, $ban_desc, $ban_logo, $ban_habilitado)
 
                         {
-                              $sql_bancos = 'UPDATE bancos  SET ban_dir = "'.$ban_dir.'" , ban_cuit = "'.$ban_cuit.'" , ban_suc = "'.$ban_suc.'" , ban_cbu = "'.$ban_cbu.'"  WHERE ID_ban='.$ID_ban.' ';
+                              $sql_bancos = 'UPDATE bancos  SET ban_desc = "'.$ban_desc.'" , ban_logo = "'.$ban_logo.'" , ban_habilitado = "'.$ban_habilitado.'"  WHERE ID_ban='.$ID_ban.' ';
                               $result_bancos =mysql_query($sql_bancos );
                               return $result_bancos;
                         }
@@ -521,9 +521,9 @@
           //Inicio Funciones para Insertar datos
 
 
-                        function insert_cheques($che_num, $ID_ban, $che_importe)
+                        function insert_cheques($che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario)
                         {
-                              $sql_cheques = 'INSERT INTO cheques (che_num, ID_ban, che_importe) VALUES ("'.$che_num.'", "'.$ID_ban.'", "'.$che_importe.'")'; 
+                              $sql_cheques = 'INSERT INTO cheques (che_num, ID_ban, che_importe, che_librador, che_tipo, che_fecha, che_beneficiario) VALUES ("'.$che_num.'", "'.$ID_ban.'", "'.$che_importe.'", "'.$che_librador.'", "'.$che_tipo.'", "'.$che_fecha.'", "'.$che_beneficiario.'")'; 
                               $result_cheques =mysql_query($sql_cheques );
                               return $result_cheques;
                         }
@@ -532,10 +532,10 @@
           //Inicio Funciones para Modificar datos
 
           //Inicio Funcion Modifica todos los datos por ID
-                        function update_chequesById($ID_che, $che_num, $ID_ban, $che_importe)
+                        function update_chequesById($ID_che, $che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario)
 
                         {
-                              $sql_cheques = 'UPDATE cheques  SET che_num = "'.$che_num.'" , ID_ban = "'.$ID_ban.'" , che_importe = "'.$che_importe.'"  WHERE ID_che='.$ID_che.' ';
+                              $sql_cheques = 'UPDATE cheques  SET che_num = "'.$che_num.'" , ID_ban = "'.$ID_ban.'" , che_importe = "'.$che_importe.'" , che_librador = "'.$che_librador.'" , che_tipo = "'.$che_tipo.'" , che_fecha = "'.$che_fecha.'" , che_beneficiario = "'.$che_beneficiario.'"  WHERE ID_che='.$ID_che.' ';
                               $result_cheques =mysql_query($sql_cheques );
                               return $result_cheques;
                         }

@@ -30,7 +30,7 @@ $comprobantesE         = new comprobantesE;
 $comprobantes_datos    = new comprobantes_datos;
 $comprobantes_datosE   = new comprobantes_datosE;
 $detalle_comprobantesE = new detalle_comprobantesE;
-
+$bancos                = new bancos;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,8 +148,6 @@ $detalle_comprobantesE = new detalle_comprobantesE;
 
         //TRAE SUCURSAL, PARA ELLO TOMA EL ID DEL TIPO DE COMPROBANTE Y BUSCA TODOS LOS PUNTOS DE VENTAS QUE CONTENGAN ESE TIPO DE COMPROBANTE, LUEGO BUSCA TODOS LOS PUESTOS QUE CONTENGAN ESE PUNTO DE VENTA Y ESA CUENTA.
 
-
-        
     $descuentoPorUnidad=json_decode($_POST['descuentoPorUnidad']);
     $countC = count($descuentoPorUnidad);
 /*
@@ -274,8 +272,19 @@ $detalle_comprobantesE = new detalle_comprobantesE;
                  
                  echo '<div class="container-fluid" id="contenedorDeAlerta">';
                              echo '<div class="alert alert-success">';
-                              echo "<h4><i class='material-icons'>thumb_up</i> COMPROBANTE  ".$assoc_get_tipo_comprobantesById['tce_desc']." - ".$numeracionDeComprobante." ".$CREADOMODIFICADO." CORRECTAMENTE </h4><hr>";
+                              echo "<h4><i class='material-icons'>thumb_up</i> COMPROBANTE ".$assoc_get_tipo_comprobantesById['tce_desc']." - ".$numeracionDeComprobante." ".$CREADOMODIFICADO." CORRECTAMENTE </h4><hr>";
                                 echo "<ul>".@$MensajeDeAlertaCuenta.@$MensajeDeAlertaStock."</ul>";
+                                    
+
+                                    $get_cuentasById=$cuentasE->get_cuentasById($ID_caja);
+                                    $assoc_get_cuentasById=mysql_fetch_assoc($get_cuentasById);
+                                    if($assoc_get_cuentasById['ID_ctp']==4)
+                                    {
+                                       echo "<hr><ul><a href='cheques.php'><button class='btn btn-success'>CARGAR CHEQUES</button></a></ul><br>";
+
+                                       echo "<ul><a href='comprobantes.php'><button class='btn btn-success'>CONTINUAR CARGANDO COMPROBANTES</button></a></ul>";
+                                    }    
+
                               echo '</div>';
                              echo '</div>';
             
