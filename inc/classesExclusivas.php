@@ -9,7 +9,53 @@
 		} 
 
 	}
-	 //FIN GENERADOR DE FUNCIONES PHP DESARROLLADO POR SCHIAVONE JOEL LEANDRO
+
+    class chequesE
+    {
+
+          //Inicio Funciones para Mostrar Datos
+
+                        //Inicio: Llama a todas las columnas de la tabla
+                        function get_chequesE()
+                        {
+                              $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban';
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
+
+                          //Inicio: Llama a todas las columnas de la tabla
+                        function get_chequesELibrador()
+                        {
+                              $sql_cheques = 'SELECT DISTINCT che_librador FROM cheques';
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
+
+                         //Inicio: Llama a todas las columnas de la tabla filtradas
+                        function get_chequesFiltrosE($fecDesde, $fecHasta, $ID_ban, $che_librador, $che_tipo, $ID_che)
+                        {	
+                        	if ($ID_che!='0') 
+                        	{
+                        		 $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban '.$ID_che.'';
+                        	}
+                        	else
+                        	{
+                        		 $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban AND che_fecha BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" '.$ID_ban.' '.$che_librador.' '.$che_tipo.' ORDER BY che_fecha DESC';
+                        	}	
+                              
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla filtradas
+
+                     
+                       
+          		
+                        
+	}
+
 	  class comprobante_numeracionE
     {
     	 function get_comprobante_numeracionById($ID_tce)

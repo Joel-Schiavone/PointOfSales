@@ -5,6 +5,7 @@
   $_SESSION['actionsBack'] = $_SERVER['REQUEST_URI'];
   // $cabecera_comprobantesE=new cabecera_comprobantesE;
   $bancos     = new bancos;
+  $chequesE   = new chequesE;
   $FechayHora = date("Y-m-d H:i:s");
   if (@$_GET['nuevo']=='si') 
   {
@@ -38,8 +39,8 @@
   		</div> 
 </div>
 
-
 <?php 
+
 
  /* Inicio Modal nuevo cheque */                          
     echo '<div class="modal fade" id="NuevoCheque" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
@@ -79,7 +80,6 @@
                             <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
                             <input type="text" class="form-control" id="che_num " name="che_num" placeholder="" required>
                           </div>
-
 
                           <div class="form-group">
                             <label for="librador"><i class="material-icons">account_circle</i> LIBRADOR</label>
@@ -142,14 +142,281 @@
   });
 </script>
 
+
+
+
       <!--////////////////////////////////////// I N I C I O  N U E V O   C O M P R O B A N T E ///////////////////////////////////-->
-     
+    <div class="container-fluid"> 
+
+
+              <div class='col-md-12' style='text-align: right;'>  
+                <button class='btn btn-success' id='nuevoCheque'  data-toggle='modal' title='Agregar Articulo' data-placement='top' data-target='#NuevoCheque'><i class='material-icons'>add</i> NUEVO CHEQUE</button>
+              </div> 
+
           <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
-              <button class='btn btn-success' id='nuevoCheque'  data-toggle='modal' title='Agregar Articulo' data-placement='top' data-target='#NuevoCheque'><i class='material-icons'>add</i> NUEVO CHEQUE</button>
+
+            
+            <div class='col-md-3' style='text-align: left;'>  
+                <fieldset>
+                  <legend><i class="material-icons">filter_list</i> Filtar por Tipo</legend>
+                  <div class="form-group">
+                    <select class="form-control" id="che_tipoB">
+                       <option disabled>Seleccionar un tipo de Cheque</option>
+                        <option value='0'>Todos los Tipos</option>
+                         <option value="CRUZADOS">CRUZADOS</option>
+                         <option value="CERTIFICADO">CERTIFICADO</option>
+                         <option value="AL BENEFICIARIO">AL BENEFICIARIO</option>
+                         <option value="DE CAJA">DE CAJA</option>
+                         <option value="DE VENTANILLA">DE VENTANILLA</option>
+                         <option value="DE VIAJERO">DE VIAJERO</option>
+                         <option value="A LA ORDEN">A LA ORDEN</option>
+                    </select>
+                  </div>
+                </fieldset>  
+            </div>
+            <div class='col-md-3' style='text-align: left;'>  
+                <fieldset>
+                  <legend><i class="material-icons">filter_list</i> Filtar por Banco</legend>
+                  <div class="form-group">
+                    <select class="form-control" id="ID_banB">
+                       <option disabled>Seleccionar Banco</option>
+                        <option value='0'>Todos los Bancos</option>
+                          <?php 
+                                $get_bancosC=$bancos->get_bancos();
+                                $num_get_bancosC=mysql_num_rows($get_bancosC);
+                                for ($countBancosC=0; $countBancosC < $num_get_bancosC; $countBancosC++) 
+                                { 
+                                  $assoc_get_bancosC=mysql_fetch_assoc($get_bancosC);
+                                  echo "<option value='".$assoc_get_bancosC['ID_ban']."'>".$assoc_get_bancosC['ban_desc']."</option>";
+                                }
+                          ?>
+                    </select>
+                  </div>
+                </fieldset>  
+            </div>
+           <div class='col-md-3' style='text-align: left;'>  
+                <fieldset>
+                  <legend><i class="material-icons">filter_list</i> Filtar por Librador</legend>
+                  <div class="form-group">
+                    <select class="form-control" id="che_libradorB">
+                       <option disabled>Seleccionar Librador</option>
+                        <option value='0'>Todos los libredores</option>
+                          <?php
+                          $get_chequesEC=$chequesE->get_chequesELibrador();
+                          $num_get_chequesEC=mysql_num_rows($get_chequesEC);
+                          for ($countChequesC=0; $countChequesC < $num_get_chequesEC; $countChequesC++) 
+                          { 
+                            $assoc_get_chequesEC=mysql_fetch_assoc($get_chequesEC);
+                            echo "<option>".$assoc_get_chequesEC['che_librador']."</option>";
+                          }
+                        ?>
+                    </select>
+                  </div>
+                </fieldset>  
+            </div>
+            <div class='col-md-3' style='text-align: left;'>  
+                <fieldset>
+                  <legend><i class="material-icons">filter_list</i> Filtar por Fechas</legend>
+                  <div class="form-group">
+
+                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                            <span></span> <b class="caret"></b>
+                    </div>
+                  </div>  
+                </fieldset>  
+             
+            </div>
+
           </div> 
+
+   <div class='col-md-12' style="text-align: center;" id="suggestionsTable">
+   </div> 
+            
+ </div> 
+<script type="text/javascript">
+$(function() {
+
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Ultimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+           'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+           'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+           'Ultimo Mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+    
+});
+
+$ ('#reportrange').on('apply.daterangepicker', function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+
+
+$("#che_tipoB").change(function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+$("#ID_banB").change(function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+$("#che_libradorB").change(function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+</script>
+
+
+    
+
 
 <!--Inicio: Footer -->
 <?php
+
+
+
+
+if (@$_GET['ID_che']) 
+{
+  echo "<a href='cheques.php'><button class='btn btn-info'><i class='material-icons'>refresh</i></button></a>";
+    $ID_che=$_GET['ID_che'];
+    echo "<script>$(document).ready(function (){
+      var ID_che = '".$ID_che."';
+      var fecha = '0';
+      var che_tipoB = '0';
+      var ID_banB = '0';
+      var che_libradorB = '0';
+      var che_libradorB = '0';
+
+      var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+   
+      $.ajax(
+                                                  {
+                                                      type: 'POST',
+                                                      url: 'visorCheques.php',
+                                                      data: dataString,
+                                                      success: function(data)
+                                                       {
+                                                          $('#suggestionsTable').fadeIn(1000).html(data);
+                                                       }
+
+                                                   });
+    });</script>";
+
+}
+else
+{
+  echo "<script>$(document).ready(function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});</script>";
+}
+
+
 	include("modulos/footer.php"); 
 ?>
 
