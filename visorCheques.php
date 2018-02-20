@@ -232,7 +232,21 @@
                                             
                                            </div> 
                                            <div class="col-md-6">
-                                              <button class="btn btn-danger"><i class="material-icons">delete_forever</i></button>      
+                                              <button id="borrado'.$assoc_get_chequesE['ID_che'].'" class="btn btn-danger"><i class="material-icons">delete_forever</i></button>   
+
+                                              <div class="alert alert-dismissible alert-warning" id="alertaBorrado'.$assoc_get_chequesE['ID_che'].'" style="display:none">
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                              <h4 class="alert-heading">Cuidado!</h4>
+                                              <p class="mb-0">¿Estas seguro que deseas eliminar este registro?</p>
+                                              <button class="btn btn-success" id="borradoSi'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">done_all</i> Si</button>
+                                              <button class="btn btn-danger" id="borradoNo'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">cancel</i> No</button>
+                                            </div>   
+
+                                             <div class="alert alert-dismissible alert-warning" id="borradoCartel'.$assoc_get_chequesE['ID_che'].'" style="display:none">
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                              <h4 class="alert-heading">Registro eliminado correctamente</h4>
+                                            </div>  
+
                                            </div> 
                                         </div>
                                     </div>
@@ -251,7 +265,43 @@
                          
                       echo"</tr>";
 
-                      echo '<script>$("#editar'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                      echo '<script>
+
+                          $("#borrado'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                          });
+
+                           $("#borradoNo'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                          });
+
+
+                            $ ("#borradoSi'.$assoc_get_chequesE['ID_che'].'").click(function (){
+                                
+                                    var ID_che             =$("#Input_ID_che'.$assoc_get_chequesE['ID_che'].'").val();
+                                    var action             ="borrarCheque" ;
+                                
+                                var dataString = "&ID_che="+ID_che 
+                                + "&action="+action;
+
+                                $.ajax(
+                                              {
+                                                  type: "POST",
+                                                  url: "accionesCheques.php",
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $("#borradoCartel'.$assoc_get_chequesE['ID_che'].'").fadeIn(1000).html(data);
+
+                                                      
+                                                   }
+
+                                               }) });
+
+                    
+                      $("#editar'.$assoc_get_chequesE['ID_che'].'").click(function(){
                         $("#Edit_ID_ban'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#ID_ban'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         $("#che_fecha'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);

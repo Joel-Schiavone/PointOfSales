@@ -64,6 +64,8 @@
                               $result_comprobante_numeracion =mysql_query($sql_comprobante_numeracion);
                               return $result_comprobante_numeracion;
                         }
+
+
     }
     class cuentas_movimientosE
     {	
@@ -1257,6 +1259,42 @@ class tarjetasE
                               return $result_cabecera_comprobantes;
                         }
           //Fin Funciones para Mostrar Datos por ID
+
+                        function get_cabecera_comprobantes_listado_ventas($fecDesde, $fecHasta)
+                        {
+                        	$sql_cabecera_comprobantes = 'SELECT *  FROM cabecera_comprobantes, tipo_comprobantes WHERE cabecera_comprobantes.ID_tce=tipo_comprobantes.ID_tce AND ID_fce=2 and (tce_movcaja=1 OR tipo_comprobantes.ID_tce=12) AND cte_fec BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" ORDER BY cte_fec DESC';
+                        	  $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
+                              return $result_cabecera_comprobantes;
+                        }
+
+                        function get_cabecera_comprobantes_listado_ventas_totales($fecDesde, $fecHasta)
+                         {
+                        	$sql_cabecera_comprobantes = 'SELECT tce_detalleArticulos, ID_cte, cte_monto, cte_neto, cte_retencion, cte_metrica_descuento FROM cabecera_comprobantes, tipo_comprobantes WHERE cabecera_comprobantes.ID_tce=tipo_comprobantes.ID_tce AND ID_fce=2 and (tce_movcaja=1 OR tipo_comprobantes.ID_tce=12) AND cte_fec  BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" AND cte_metrica_descuento ORDER BY cte_fec DESC';
+                        	  $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
+                              return $result_cabecera_comprobantes;
+                        }
+
+
+                        function get_cabecera_comprobantes_listado_ventas_ID_tceB($ID_tceB, $fecDesde, $fecHasta)
+                        {
+                        	$sql_cabecera_comprobantes = 'SELECT *  FROM cabecera_comprobantes, tipo_comprobantes WHERE cabecera_comprobantes.ID_tce=tipo_comprobantes.ID_tce AND ID_fce=2 and (tce_movcaja=1 OR tipo_comprobantes.ID_tce=12) AND cte_fec BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" AND ID_tceB="'.$ID_tceB.'" ORDER BY cte_fec DESC';
+                        	  $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
+                              return $result_cabecera_comprobantes;
+                        }
+
+                        function get_cabecera_comprobantes_listado_ventas_ID_tceB_totales($ID_tceB, $fecDesde, $fecHasta)
+                        {
+                        	$sql_cabecera_comprobantes = 'SELECT tce_detalleArticulos, ID_cte, cte_monto, cte_neto, cte_retencion, cte_metrica_descuento FROM cabecera_comprobantes, tipo_comprobantes WHERE cabecera_comprobantes.ID_tce=tipo_comprobantes.ID_tce AND ID_fce=2 and (tce_movcaja=1 OR tipo_comprobantes.ID_tce=12) AND cte_fec BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" AND ID_tceB="'.$ID_tceB.'" ORDER BY cte_fec DESC';
+                        	  $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
+                              return $result_cabecera_comprobantes;
+                        }
+
+                        function get_cabecera_comprobantes_listado_ventas_select()
+                        {
+                        	$sql_cabecera_comprobantes = 'SELECT *  FROM tipo_comprobantes WHERE ID_fce=2 and (tce_movcaja=1 OR tipo_comprobantes.ID_tce=12)';
+                        	  $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
+                              return $result_cabecera_comprobantes;
+                        }
 
 	}
 

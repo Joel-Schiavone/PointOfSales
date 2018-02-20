@@ -17,6 +17,19 @@ $cheques            = new cheques;
 ?>
 
 <?php
+
+  if($action=="borrarCheque")
+  {
+    
+    $ID_che               = $_POST['ID_che'];
+   
+    $drop_chequesById=$cheques->drop_chequesById($ID_che);
+    //REDIRECCIONA
+                                echo '<script type="text/javascript">
+                                window.location.assign("cheques.php?M=8");
+                                </script>';
+  }
+  
   if($action=="nuevoCheque")
   {
     $che_num              = $_POST['che_num']; 
