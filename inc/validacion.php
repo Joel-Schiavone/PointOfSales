@@ -43,7 +43,14 @@ include_once('inc/classesExclusivas.php');
  ?>
  <!-- Inicio: Estilos Generales-->
   <link href="css/generales.css" rel="stylesheet">
-  <style type="text/css">@media (min-width: 767px) {
+  <style type="text/css">
+  li
+  {
+    font-size: 10px;
+    font-weight: bold;
+  }
+  
+  @media (min-width: 767px) {
     .navbar-nav .dropdown-menu .caret {
   transform: rotate(-90deg);
     }
