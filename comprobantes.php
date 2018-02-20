@@ -615,6 +615,8 @@
 
             </div> 
 
+
+
             <!--CUERPO COMPROBANTE-->
             <div class='col-md-12' id="AgregarDetallealComprobante" style="border-bottom: 1px solid #000; display: none;"> 
 

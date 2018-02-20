@@ -149,14 +149,12 @@
     <div class="container-fluid"> 
 
 
-              <div class='col-md-12' style='text-align: right;'>  
-                <button class='btn btn-success' id='nuevoCheque'  data-toggle='modal' title='Agregar Articulo' data-placement='top' data-target='#NuevoCheque'><i class='material-icons'>add</i> NUEVO CHEQUE</button>
-              </div> 
+             
 
           <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
 
             
-            <div class='col-md-3' style='text-align: left;'>  
+            <div class='col-md-2' style='text-align: left;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Tipo</legend>
                   <div class="form-group">
@@ -174,7 +172,23 @@
                   </div>
                 </fieldset>  
             </div>
-            <div class='col-md-3' style='text-align: left;'>  
+             <div class='col-md-2' style='text-align: left;'>  
+                <fieldset>
+                  <legend><i class="material-icons">filter_list</i> Filtar por Estado</legend>
+                  <div class="form-group">
+                    <select class="form-control" id="che_estadoB">
+                       <option disabled>Seleccionar un estado de Cheque</option>
+                        <option value='0'>Todos los Estados</option>
+                         <option value="EN CARTERA">EN CARTERA</option>
+                         <option value="COBRADO">COBRADO</option>
+                         <option value="ENTREGADO">ENTREGADO</option>
+                         <option value="DEBITADO">DEBITADO</option>
+                         <option value="EMITIDO">EMITIDO</option>
+                    </select>
+                  </div>
+                </fieldset>  
+            </div>
+            <div class='col-md-2' style='text-align: left;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Banco</legend>
                   <div class="form-group">
@@ -194,7 +208,7 @@
                   </div>
                 </fieldset>  
             </div>
-           <div class='col-md-3' style='text-align: left;'>  
+           <div class='col-md-2' style='text-align: left;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Librador</legend>
                   <div class="form-group">
@@ -214,7 +228,8 @@
                   </div>
                 </fieldset>  
             </div>
-            <div class='col-md-3' style='text-align: left;'>  
+
+            <div class='col-md-2' style='text-align: left;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Fechas</legend>
                   <div class="form-group">
@@ -227,6 +242,10 @@
                 </fieldset>  
              
             </div>
+
+             <div class='col-md-2' style='text-align: right;'>  
+                <button class='btn btn-success' id='nuevoCheque'  data-toggle='modal' title='Agregar Articulo' data-placement='top' data-target='#NuevoCheque'><i class='material-icons'>add</i> NUEVO CHEQUE</button>
+              </div> 
 
           </div> 
 
@@ -267,7 +286,8 @@ $ ('#reportrange').on('apply.daterangepicker', function (){
   var ID_banB = $('#ID_banB').val();
   var che_libradorB = $('#che_libradorB').val();
   var ID_che = '0';
-  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
 
   $.ajax(
                                               {
@@ -291,7 +311,8 @@ $("#che_tipoB").change(function (){
   var ID_banB = $('#ID_banB').val();
   var che_libradorB = $('#che_libradorB').val();
   var ID_che = '0';
-  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
   
   $.ajax(
                                               {
@@ -313,7 +334,8 @@ $("#ID_banB").change(function (){
   var ID_banB = $('#ID_banB').val();
   var che_libradorB = $('#che_libradorB').val();
   var ID_che = '0';
-  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
   
   $.ajax(
                                               {
@@ -335,7 +357,32 @@ $("#che_libradorB").change(function (){
   var ID_banB = $('#ID_banB').val();
   var che_libradorB = $('#che_libradorB').val();
   var ID_che = '0';
-  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
+  
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCheques.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestionsTable').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+
+$("#che_estadoB").change(function (){
+  var fecha = $('#reportrange').text();
+  var che_tipoB = $('#che_tipoB').val();
+  var ID_banB = $('#ID_banB').val();
+  var che_libradorB = $('#che_libradorB').val();
+  var ID_che = '0';
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
   
   $.ajax(
                                               {
@@ -374,8 +421,8 @@ if (@$_GET['ID_che'])
       var ID_banB = '0';
       var che_libradorB = '0';
       var che_libradorB = '0';
-
-      var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+      var che_estadoB = '0';
+      var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
    
       $.ajax(
                                                   {
@@ -400,7 +447,8 @@ else
   var che_libradorB = $('#che_libradorB').val();
   var che_libradorB = $('#che_libradorB').val();
   var ID_che = '0';
-  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che;
+  var che_estadoB= $('#che_estadoB').val();
+  var dataString = 'fecha='+fecha + '&che_tipoB='+che_tipoB + '&ID_banB='+ID_banB + '&che_libradorB='+che_libradorB + '&ID_che='+ID_che + '&che_estadoB='+che_estadoB;
   $.ajax(
                                               {
                                                   type: 'POST',

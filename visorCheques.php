@@ -61,6 +61,15 @@
      $che_tipo = "AND che_tipo='". $_POST['che_tipoB']."'";
   }  
 
+  if ($_POST['che_estadoB']=='0') 
+  {
+   
+    $che_estado = "";
+  }
+  else
+  {
+     $che_estado = "AND che_estado='". $_POST['che_estadoB']."'";
+  }  
   if ($_POST['ID_che']=='0') 
   {
     $ID_che = "";
@@ -74,23 +83,29 @@
             <table id="listadoCheques" class="table table-striped table-bordered" cellspacing="0" style="cursor: pointer;">
                 <thead>
                     <tr>
+                        <th>ESTADO</th>
                         <th>FECHA</th>
+                        <th>PROCEDENCIA</th>
                         <th>Nº</th>
                         <th>TIPO</th>
                         <th>BANCO</th>
                         <th>LIBRADOR</th>
                         <th>BENEFICIARIO</th>
+                        <th>CUENTA DETERMINADA</th>
                         <th>MONTO</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>ESTADO</th>
                         <th>FECHA</th>
+                        <th>PROCEDENCIA</th>
                         <th>Nº</th>
                         <th>TIPO</th>
                         <th>BANCO</th>
                         <th>LIBRADOR</th>
                         <th>BENEFICIARIO</th>
+                        <th>CUENTA DETERMINADA</th>
                         <th>MONTO</th>
                     </tr>
                 </tfoot>
@@ -99,11 +114,11 @@
 
                   if ($ID_che!='') 
                           {
-                            $sql_cheques='SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban '.$ID_che.'';
+                            $sql_cheques='SELECT * FROM cheques, bancos, cuentas WHERE cheques.ID_cue=cuentas.ID_cue AND cheques.ID_ban=bancos.ID_ban '.$ID_che.'';
                           }
                           else
                           {
-                             $sql_cheques='SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban AND che_fecha BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" '.$ID_ban.' '.$che_librador.' '.$che_tipo.' ORDER BY che_fecha DESC';
+                             $sql_cheques='SELECT * FROM cheques, bancos, cuentas WHERE cheques.ID_cue=cuentas.ID_cue AND cheques.ID_ban=bancos.ID_ban AND che_fecha BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" '.$ID_ban.' '.$che_librador.' '.$che_tipo.' '.$che_estado.' ORDER BY che_fecha DESC';
                           } 
                      $get_chequesE =mysql_query($sql_cheques);
                     //$get_chequesE=$chequesE->get_chequesFiltrosE($fecDesde, $fecHasta, $ID_ban, $che_librador, $che_tipo, $ID_che);
@@ -116,14 +131,35 @@
                       {
                           
                       }
+
+                      if ($assoc_get_chequesE['che_estado']=="EN CARTERA") 
+                      {
+                       $class="success";
+                      }
+                      if ($assoc_get_chequesE['che_estado']=="COBRADO") 
+                      {
+                       $class="info";
+                      }         
+                      if ($assoc_get_chequesE['che_estado']=="ENTREGADO") 
+                      {
+                       $class="info";
+                      }  
+                      if ($assoc_get_chequesE['che_estado']=="DEBITADO") 
+                      {
+                       $class="info";
+                      } 
+                       if ($assoc_get_chequesE['che_estado']=="EMITIDO") 
+                      {
+                       $class="warning";
+                      } 
                       /* Inicio Modal nuevo cheque */                          
                         echo '<div class="modal fade" id="VerCheque'.$assoc_get_chequesE['ID_che'].'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
                                 <div class="modal-dialog modal-lg" role="document" >
                                   <div class="modal-content">
                                      <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel"><div class="alert alert-dismissible alert-info" style="text-align: center;">
-                                          <h3><i class="material-icons">list</i> CHEQUE '.$assoc_get_chequesE['che_num'].'</h3>
+                                        <h4 class="modal-title" id="myModalLabel"><div class="alert alert-dismissible alert-'.$class.'" style="text-align: center;">
+                                          <h3><i class="material-icons">list</i> CHEQUE '.$assoc_get_chequesE['che_procedencia'].' '.$assoc_get_chequesE['che_estado'].' Nº '.$assoc_get_chequesE['che_num'].'</h3>
                                         </div> </h4>
                                       </div>
                                       <div class="modal-body" style="text-align:center;">
@@ -222,7 +258,13 @@
                                             </div>
                                           </div>
                                        </div>
-                                      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                                      <br><br><br><br><br><br><br><br>
+                                      <br><br><br><br><br><br><br><br>
+  
+                                      <div class="alert alert-dismissible alert-info" style="text-align: center;">
+                                         <i class="material-icons">account_balance_wallet</i> CUENTA PREDETERMINADA: '.$assoc_get_chequesE['cue_desc'].'
+                                        </div> 
+                                      
                                       <div class="modal-footer">
                                            <div class="col-md-12" style="text-align:center; margin-top:10px;">
                                            <div class="col-md-6">
@@ -254,13 +296,16 @@
                                 </div>';
                             /* Fin Modal nuevo cheque */
 
-                       echo"<tr data-toggle='modal' data-placement='top' data-target='#VerCheque".$assoc_get_chequesE['ID_che']."'>";
+                       echo"<tr class='".$class."' data-toggle='modal' data-placement='top' data-target='#VerCheque".$assoc_get_chequesE['ID_che']."'>";
+                          echo"<th>".$assoc_get_chequesE['che_estado']."</th>";
                           echo"<th>".$assoc_get_chequesE['che_fecha']."</th>";
+                          echo"<th>".$assoc_get_chequesE['che_procedencia']."</th>";
                           echo"<th>".$assoc_get_chequesE['che_num']."</th>";
                           echo"<th>".$assoc_get_chequesE['che_tipo']."</th>";
                           echo"<th><img src='".$assoc_get_chequesE['ban_logo']."' style='width:80px;'></th>";
                           echo"<th>".$assoc_get_chequesE['che_librador']."</th>";
                           echo"<th>".$assoc_get_chequesE['che_beneficiario']."</th>";
+                          echo"<th>".$assoc_get_chequesE['cue_desc']."</th>";
                           echo"<th>$ ".$assoc_get_chequesE['che_importe']."</th>";
                          
                       echo"</tr>";
