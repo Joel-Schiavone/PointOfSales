@@ -90,12 +90,21 @@
                               return $result_cuentas_movimientos;
                         }
 
-                          function traeSaldoPorMovimiento($ID_cue)
+                        function traeSaldoPorMovimiento($ID_cue)
                         {
                               $sql_cuentas_movimientos = 'SELECT (SUM(mcs_credito)-SUM(mcs_debito)) AS saldoActual FROM cuentas_movimientos  WHERE ID_cue='.$ID_cue.' ' ; 
                               $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
                               return $result_cuentas_movimientos;
                         }
+
+          				  //Inicio Funcion Modifica todos los datos por ID
+                        function update_cuentas_movimientosByIdE($ID_mcs, $mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc)
+                        {
+                              $sql_cuentas_movimientos = 'UPDATE cuentas_movimientos  SET mcs_movimiento = "'.$mcs_movimiento.'" , mcs_debito = "'.$mcs_debito.'" , mcs_credito = "'.$mcs_credito.'" , ID_cue = "'.$ID_cue.'" , mcd_fec = "'.$mcd_fec.'" , mcs_desc = "'.$mcs_desc.'"  WHERE ID_mcs='.$ID_mcs.' ';
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos );
+                              return $result_cuentas_movimientos;
+                        }
+          //Fin Funcion Modifica todos los datos por ID
 	}
 
 	  class puestosE

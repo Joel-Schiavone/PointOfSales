@@ -1,6 +1,6 @@
 <?php
 
-    //16 02 2018 16:02:53 El Archivo classes.php se ha modificado correctamente
+    //21 02 2018 14:02:13 El Archivo classes.php se ha modificado correctamente
 
     class adjuntos
     {
@@ -521,9 +521,9 @@
           //Inicio Funciones para Insertar datos
 
 
-                        function insert_cheques($che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario)
+                        function insert_cheques($che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado)
                         {
-                              $sql_cheques = 'INSERT INTO cheques (che_num, ID_ban, che_importe, che_librador, che_tipo, che_fecha, che_beneficiario) VALUES ("'.$che_num.'", "'.$ID_ban.'", "'.$che_importe.'", "'.$che_librador.'", "'.$che_tipo.'", "'.$che_fecha.'", "'.$che_beneficiario.'")'; 
+                              $sql_cheques = 'INSERT INTO cheques (che_num, ID_ban, che_importe, che_librador, che_tipo, che_fecha, che_beneficiario, ID_cue, che_procedencia, che_estado) VALUES ("'.$che_num.'", "'.$ID_ban.'", "'.$che_importe.'", "'.$che_librador.'", "'.$che_tipo.'", "'.$che_fecha.'", "'.$che_beneficiario.'", "'.$ID_cue.'", "'.$che_procedencia.'", "'.$che_estado.'")'; 
                               $result_cheques =mysql_query($sql_cheques );
                               return $result_cheques;
                         }
@@ -532,10 +532,10 @@
           //Inicio Funciones para Modificar datos
 
           //Inicio Funcion Modifica todos los datos por ID
-                        function update_chequesById($ID_che, $che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario)
+                        function update_chequesById($ID_che, $che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado)
 
                         {
-                              $sql_cheques = 'UPDATE cheques  SET che_num = "'.$che_num.'" , ID_ban = "'.$ID_ban.'" , che_importe = "'.$che_importe.'" , che_librador = "'.$che_librador.'" , che_tipo = "'.$che_tipo.'" , che_fecha = "'.$che_fecha.'" , che_beneficiario = "'.$che_beneficiario.'"  WHERE ID_che='.$ID_che.' ';
+                              $sql_cheques = 'UPDATE cheques  SET che_num = "'.$che_num.'" , ID_ban = "'.$ID_ban.'" , che_importe = "'.$che_importe.'" , che_librador = "'.$che_librador.'" , che_tipo = "'.$che_tipo.'" , che_fecha = "'.$che_fecha.'" , che_beneficiario = "'.$che_beneficiario.'" , ID_cue = "'.$ID_cue.'" , che_procedencia = "'.$che_procedencia.'" , che_estado = "'.$che_estado.'"  WHERE ID_che='.$ID_che.' ';
                               $result_cheques =mysql_query($sql_cheques );
                               return $result_cheques;
                         }

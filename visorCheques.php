@@ -8,6 +8,7 @@
   $_SESSION['actionsBack']= $_SERVER['REQUEST_URI'];
   $bancos     = new bancos;
   $chequesE   = new chequesE;
+  $cuentas    = new cuentas;
  
   $fecha = $_POST['fecha'];
 
@@ -140,7 +141,7 @@
                       {
                        $class="info";
                       }         
-                      if ($assoc_get_chequesE['che_estado']=="ENTREGADO") 
+                      if ($assoc_get_chequesE['che_estado']=="UTILIZADO") 
                       {
                        $class="info";
                       }  
@@ -161,7 +162,7 @@
                                         <h4 class="modal-title" id="myModalLabel"><div class="alert alert-dismissible alert-'.$class.'" style="text-align: center;">
                                           <h3><i class="material-icons">list</i> CHEQUE 
                                           '.$assoc_get_chequesE['che_procedencia'].'
-                                          <select  hidden name="che_procedencia" id="che_procedencia'.$assoc_get_chequesE['ID_che'].'">
+                                          <select name="che_procedencia" id="che_procedencia'.$assoc_get_chequesE['ID_che'].'" style="display:none">
                                             <option value="'.$assoc_get_chequesE['che_procedencia'].'" selected>'.$assoc_get_chequesE['che_procedencia'].'</option>';
                                             if($assoc_get_chequesE['che_procedencia']=="TERCERO")
                                             {
@@ -173,41 +174,29 @@
                                             }
 
                                          echo '</select>
-                                           '.$assoc_get_chequesE['che_estado'].' 
-                                           <select hidden name="che_estado" id="che_estadoC'.$assoc_get_chequesE['ID_che'].'">
+                                           '.$assoc_get_chequesE['che_estado'].'';
+                                         
+
+                                           echo '<select name="che_estadoC" id="che_estadoC'.$assoc_get_chequesE['ID_che'].'" style="display:none">
                                              <option value="'.$assoc_get_chequesE['che_estado'].'" selected>'.$assoc_get_chequesE['che_estado'].'</option>';
-                                            if($assoc_get_chequesE['che_procedencia']=="TERCERO")
-                                            {
-                                              if ($assoc_get_chequesE['che_estado']=="EN CARTERA") 
-                                              {
+                                           
+                                                echo "<option value='EN CARTERA'>EN CARTERA</option>";
                                                 echo "<option value='COBRADO'>COBRADO</option>";
-                                                echo "<option value='UTILIZADO'>UTILIZADO</option>";                                                
-                                              }
-                                              if ($assoc_get_chequesE['che_estado']=="COBRADO") 
-                                              {
-                                                echo "<option value='EN CARTERA'>EN CARTERA</option>";
-                                                echo "<option value='UTILIZADO'>UTILIZADO</option>";                                                
-                                              }
-                                              if ($assoc_get_chequesE['che_estado']=="UTILIZADO") 
-                                              {
-                                                echo "<option value='EN CARTERA'>EN CARTERA</option>";
-                                                echo "<option value='COBRADO'>COBRADO</option>";                                                
-                                              }
-                                            }
-                                            else
-                                            {
-                                              if ($assoc_get_chequesE['che_estado']=="EMITIDO") 
-                                              {
-                                                echo "<option value='DEBITADO'>DEBITADO</option>";                                     
-                                              }
-                                              else
-                                              {
+                                                echo "<option value='UTILIZADO'>UTILIZADO</option>";  
+                                           
+                                                echo '</select>';
+                                       
+                                            echo '<select  name="che_estadoD" id="che_estadoD'.$assoc_get_chequesE['ID_che'].'"  style="display:none">
+                                             <option value="'.$assoc_get_chequesE['che_estado'].'" selected>'.$assoc_get_chequesE['che_estado'].'</option>';
+                                           
                                                 echo "<option value='EMITIDO'>EMITIDO</option>";
-                                              }
-                                              
-                                            }
-                                    echo '</select>
-                                           Nº '.$assoc_get_chequesE['che_num'].'
+                                                echo "<option value='DEBITADO'>DEBITADO</option>";
+
+                                            echo '</select>';
+
+                                       
+
+                                           echo 'Nº '.$assoc_get_chequesE['che_num'].'
                                            </h3>
                                         </div> </h4>
 
@@ -313,6 +302,16 @@
   
                                       <div class="alert alert-dismissible alert-info" style="text-align: center;">
                                          <i class="material-icons">account_balance_wallet</i> CUENTA PREDETERMINADA: '.$assoc_get_chequesE['cue_desc'].'
+                                         <select hidden id="ID_cue'.$assoc_get_chequesE['ID_che'].'">
+                                         <option value="'.$assoc_get_chequesE['ID_cue'].'">'.$assoc_get_chequesE['cue_desc'].'</option>';
+                                        $get_cuentas=$cuentas->get_cuentas();
+                                        $num_get_cuentas=mysql_num_rows($get_cuentas);
+                                        for ($countCuentas=0; $countCuentas < $num_get_cuentas; $countCuentas++) 
+                                        { 
+                                          $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
+                                          echo "<option value='".$assoc_get_cuentas['ID_cue']."'>".$assoc_get_cuentas['cue_desc']."</option>";
+                                        }
+                                  echo '</select>
                                         </div> 
                                       
                                       <div class="modal-footer">
@@ -409,17 +408,44 @@
                         $("#Edit_che_tipo'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#che_librador'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         $("#Edit_che_librador'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
-                        
                         $("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
-                        
-                        $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                          
+                          var procedencia = $("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").val();
+                          if(procedencia=="TERCERO")
+                          {
+                             $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                              $("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                          } 
+                          else
+                          {
+                            $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                              $("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                          }  
 
+                       
+                        $("#ID_cue'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#editar'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         $("#ver'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#salvar'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
 
+                 
+
                       });
 
+                         $("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").change(function(){
+                          var procedencia = $("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").val();
+                          if(procedencia=="TERCERO")
+                          {
+                             $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                              $("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                          } 
+                          else
+                          {
+                            $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                              $("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                          }  
+  
+                        });
 
                       $("#ver'.$assoc_get_chequesE['ID_che'].'").click(function(){
                         $("#Edit_ID_ban'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
@@ -438,30 +464,33 @@
                         $("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         
                         $("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                        $("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                        $("#ID_cue'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
 
                         $("#editar'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#ver'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         $("#salvar'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                       });
 
-                        $("#Select_che_tipo'.$assoc_get_chequesE['ID_che'].'").change(function(){
+                        $(document).ready(function(){$("#Select_che_tipo'.$assoc_get_chequesE['ID_che'].'").change(function(){
                           var che_tipo = $("#Select_che_tipo'.$assoc_get_chequesE['ID_che'].'").val();
                             if (che_tipo=="AL BENEFICIARIO" || che_tipo=="DE CAJA" || che_tipo=="DE VENTANILLA") 
                             {
                               $("#Edit_che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                               $("#che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                             }
-                            else
-                           {
-                            $("#Edit_che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
-                            $("#che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
-                           }   
-                        });
+                            if (che_tipo=="CRUZADOS" || che_tipo=="CERTIFICADO" || che_tipo=="DE VIAJERO" || che_tipo=="A LA ORDEN")
+                             {
+                              $("#Edit_che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                              $("#che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                             }   
+                        });});
+
 
                                 $ ("#salvar'.$assoc_get_chequesE['ID_che'].'").click(function (){
                                 
                                     var ID_che             =$("#Input_ID_che'.$assoc_get_chequesE['ID_che'].'").val();
-                                    var action             ="modificarCheque" ;
+                                    var action             ="modificarCheque";
                                     var ID_ban             =$("#Input_ID_ban'.$assoc_get_chequesE['ID_che'].'").val();
                                     var che_fecha          =$("#Input_che_fecha'.$assoc_get_chequesE['ID_che'].'").val();
                                     var che_num            =$("#Input_che_num'.$assoc_get_chequesE['ID_che'].'").val();
@@ -469,7 +498,22 @@
                                     var che_importe        =$("#Input_che_importe'.$assoc_get_chequesE['ID_che'].'").val();
                                     var che_tipo           =$("#Select_che_tipo'.$assoc_get_chequesE['ID_che'].'").val();
                                     var che_librador       =$("#Input_che_librador'.$assoc_get_chequesE['ID_che'].'").val();
+                                    var che_procedencia    =$("#che_procedencia'.$assoc_get_chequesE['ID_che'].'").val();
+                                    var che_estadoC        =$("#che_estadoC'.$assoc_get_chequesE['ID_che'].'").val();
+                                    var che_estadoD        =$("#che_estadoD'.$assoc_get_chequesE['ID_che'].'").val();
+                                    var ID_cue             =$("#ID_cue'.$assoc_get_chequesE['ID_che'].'").val();
 
+                                    if(che_procedencia=="TERCERO")
+                                    {
+                                      var che_estado=che_estadoC;
+                                    }
+                                    else
+                                    {
+                                      var che_estado=che_estadoD;
+                                    }  
+
+
+    
                                 var dataString = "&ID_che="+ID_che 
                                 + "&action="+action 
                                 + "&ID_ban="+ID_ban 
@@ -478,7 +522,10 @@
                                 + "&che_beneficiario="+che_beneficiario 
                                 + "&che_importe="+che_importe 
                                 + "&che_tipo="+che_tipo 
-                                + "&che_librador="+che_librador;
+                                + "&che_librador="+che_librador
+                                + "&che_procedencia="+che_procedencia
+                                + "&che_estado="+che_estado
+                                + "&ID_cue="+ID_cue;
 
                                 $.ajax(
                                               {

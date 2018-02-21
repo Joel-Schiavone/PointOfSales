@@ -18,6 +18,8 @@
 </style>
     
 
+
+
                             <!--Inicio Modal nueva cuenta-->                          
                             <div class="modal fade" id="nuevoMovimiento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                     <div class="modal-dialog" role="document">
@@ -98,6 +100,28 @@
 				<h3><i class="material-icons">account_balance_wallet</i> Movimientos de cuentas <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
 			</div> 
 		</div> 
+
+
+<div class="container-fluid">
+  <?php 
+     $get_cuentasBB=$cuentasE->get_cuentas();
+     $num_get_cuentasBB=mysql_num_rows($get_cuentasBB);
+     for ($CountCuentasBB=0; $CountCuentasBB < $num_get_cuentasBB; $CountCuentasBB++) 
+      { 
+         $assoc_get_cuentasBB=mysql_fetch_assoc($get_cuentasBB);
+         $ID_cueBB=$assoc_get_cuentasBB['ID_cue'];
+
+         $traeSaldo=$cuentas_movimientosE->traeSaldo($ID_cueBB);
+         $assoc_traeSaldo=mysql_fetch_assoc($traeSaldo);
+          echo '<div class="col-md-2" style="text-align:center; font-size:100%;"><div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong><i class="material-icons">account_balance_wallet</i> '.$assoc_get_cuentasBB['cue_desc'].' <br> SALDO: $ '.$assoc_traeSaldo['saldo'].'</strong>
+          </div></div>';
+      }
+    
+  ?>
+</div>  
+
         <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
             <div class='col-md-5' style='text-align: left;'>  
                 <fieldset>

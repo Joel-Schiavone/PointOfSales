@@ -33,6 +33,7 @@ include_once('inc/classesExclusivas.php');
       <table id="listadoCuentas" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
+                        <th>CUENTA</th>
                         <th>FECHA</th>
                         <th>MOVIMIENTO</th>
                         <th>DÉBITO</th>
@@ -44,6 +45,7 @@ include_once('inc/classesExclusivas.php');
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>CUENTA</th>
                         <th>FECHA</th>
                         <th>MOVIMIENTO</th>
                         <th>DÉBITO</th>
@@ -197,6 +199,7 @@ include_once('inc/classesExclusivas.php');
                                 /* Fin Modal elimina cuenta */ 
 
                             echo "<tr>";
+                                echo "<th>".$assoc_get_cuentas['cue_desc']."</th>";
                                 echo "<th>".$assoc_get_cuentas['mcd_fec']."</th>";
                                 echo "<th>".$assoc_get_cuentas['mcs_movimiento']."</th>";
                                 echo "<th>$ ".$assoc_get_cuentas['mcs_debito']."</th>";

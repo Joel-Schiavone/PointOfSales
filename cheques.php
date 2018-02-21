@@ -6,6 +6,7 @@
   // $cabecera_comprobantesE=new cabecera_comprobantesE;
   $bancos     = new bancos;
   $chequesE   = new chequesE;
+  $cuentas    = new cuentas;  
   $FechayHora = date("Y-m-d H:i:s");
   if (@$_GET['nuevo']=='si') 
   {
@@ -109,6 +110,47 @@
                             <input type="date" class="form-control" id="fecha" name="che_fecha">
                           </div>
 
+                                  <label class="control-label"><i class="material-icons">folder_shared</i> PROCEDENCIA</label>
+                                    <div class="form-group">
+                                      <select class="form-control" id="che_procedencia" name="che_procedencia">
+                                      <option value="TERCERO">TERCERO</option>
+                                        <option value="PROPIO">PROPIO</option>
+                                      </select>
+                                    </div>
+
+
+                                    <div class="form-group" id="cuenta" style="display:none;">
+                                     <label class="control-label"><i class="material-icons">account_balance_wallet</i> CUENTA</label>
+                                      <select class="form-control" id="ID_cue" name="ID_cue">';
+                                       $get_cuentas=$cuentas->get_cuentas();
+                                        $num_get_cuentas=mysql_num_rows($get_cuentas);
+                                        for ($countCuentas=0; $countCuentas < $num_get_cuentas; $countCuentas++) 
+                                        { 
+                                          $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
+                                          echo "<option value='".$assoc_get_cuentas['ID_cue']."'>".$assoc_get_cuentas['cue_desc']."</option>";
+                                        }
+                                  echo '</select>
+                                    </div>          
+
+                                  
+                                    <div class="form-group" id="select_che_estado_propio" style="display:none;">
+                                    <label class="control-label"><i class="material-icons">assistant_photo</i> ESTADO</label>
+                                      <select class="form-control" id="che_estado_propio" name="che_estado_propio">
+                                        <option value="DEBITADO">DEBITADO</option>
+                                        <option value="EMITIDO">EMITIDO</option>
+                                      </select>
+                                    </div>  
+
+
+                                    <div class="form-group" id="select_che_estado_tercero">
+                                    <label class="control-label"><i class="material-icons">assistant_photo</i> ESTADO</label>
+                                      <select class="form-control" id="che_estado_tercero" name="che_estado_tercero">
+                                        <option value="EN CARTERA">EN CARTERA</option>
+                                        <option value="COBRADO">COBRADO</option>
+                                        <option value="UTILIZADO">UTILIZADO</option>
+                                      </select>
+                                    </div>  
+
                           <div class="form-group">
                             <button class="btn btn-success" type="submit"><i class="material-icons">save</i> Guardar</button>
                             </form>
@@ -135,11 +177,31 @@
             $('#beneficiario').fadeIn(500);
           }
           else
+          {
+            $('#beneficiario').fadeOut(500);
+          }   
+      })
+  });
+
+  $(document).ready(function(){
+        $('#che_procedencia').change(function(){
+
+        var che_procedencia = $('#che_procedencia').val();
+          if (che_procedencia=="PROPIO") 
+          {
+            $('#cuenta').fadeIn(500);
+            $('#select_che_estado_propio').fadeIn(500);
+            $('#select_che_estado_tercero').fadeOut(500);
+          }
+          else
          {
-          $('#beneficiario').fadeOut(500);
+           $('#cuenta').fadeOut(500);
+           $('#select_che_estado_tercero').fadeIn(500);
+           $('#select_che_estado_propio').fadeOut(500);           
          }   
       })
   });
+
 </script>
 
 
@@ -181,7 +243,7 @@
                         <option value='0'>Todos los Estados</option>
                          <option value="EN CARTERA">EN CARTERA</option>
                          <option value="COBRADO">COBRADO</option>
-                         <option value="ENTREGADO">ENTREGADO</option>
+                         <option value="UTILIZADO">UTILIZADO</option>
                          <option value="DEBITADO">DEBITADO</option>
                          <option value="EMITIDO">EMITIDO</option>
                     </select>
@@ -233,14 +295,12 @@
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Fechas</legend>
                   <div class="form-group">
-
                     <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                     </div>
                   </div>  
                 </fieldset>  
-             
             </div>
 
              <div class='col-md-2' style='text-align: right;'>  

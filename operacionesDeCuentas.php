@@ -27,6 +27,7 @@
 
     <div class='col-md-12' style="text-align: center;">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+           
           
               <div class="panel panel-primary">
                 <div class="panel-heading" role="tab" id="headingTwo">
@@ -41,19 +42,18 @@
                         <form action="accionesCuentasMovimientos.php" method="POST">
                           <fieldset>
                             <legend>Transferencias</legend>
-                            <div class="form-group">
-                              <input hidden type="text" name="action" value="OperacionTransferencia">
-                              <label for="exampleInputEmail1">Cuenta a Debitar</label>
-                              <select name="ID_cueEmisor" class="form-control"> 
+                             <div class="form-group">
+                              <label for="exampleInputEmail1">Cuenta A debitar</label>
+                              <select name="ID_cueReceptor" class="form-control"> 
                                                               <?php 
-                                                                 $get_cuentas=$cuentasE->get_cuentas();
-                                                                  $num_get_cuentas=mysql_num_rows($get_cuentas);
-                                                                  for ($CountCuentas=0; $CountCuentas < $num_get_cuentas; $CountCuentas++) 
+                                                                 $get_cuentasB=$cuentasE->get_cuentas();
+                                                                  $num_get_cuentasB=mysql_num_rows($get_cuentasB);
+                                                                  for ($CountCuentasB=0; $CountCuentasB < $num_get_cuentasB; $CountCuentasB++) 
                                                                   { 
-                                                                      $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
-                                                                      echo "<option value='".$assoc_get_cuentas['ID_cue']."'>".$assoc_get_cuentas['cue_desc']."</option>";
+                                                                      $assoc_get_cuentasB=mysql_fetch_assoc($get_cuentasB);
+                                                                      echo "<option value='".$assoc_get_cuentasB['ID_cue']."'>".$assoc_get_cuentasB['cue_desc']."</option>";
                                                                   }
-                                                              ?>
+                                                              ?>                     
                               </select>
                             </div>
                            <div class="form-group">
@@ -72,21 +72,22 @@
                               <label for="observacion">Obervación</label>
                               <textarea class="form-control" name="observacion" id="observacion" rows="3"></textarea>
                             </div>
-                           
                             <div class="form-group">
+                              <input hidden type="text" name="action" value="OperacionTransferencia">
                               <label for="exampleInputEmail1">Cuenta de Destino</label>
-                              <select name="ID_cueReceptor" class="form-control"> 
+                              <select name="ID_cueEmisor" class="form-control"> 
                                                               <?php 
-                                                                 $get_cuentasB=$cuentasE->get_cuentas();
-                                                                  $num_get_cuentasB=mysql_num_rows($get_cuentasB);
-                                                                  for ($CountCuentasB=0; $CountCuentasB < $num_get_cuentasB; $CountCuentasB++) 
+                                                                 $get_cuentas=$cuentasE->get_cuentas();
+                                                                  $num_get_cuentas=mysql_num_rows($get_cuentas);
+                                                                  for ($CountCuentas=0; $CountCuentas < $num_get_cuentas; $CountCuentas++) 
                                                                   { 
-                                                                      $assoc_get_cuentasB=mysql_fetch_assoc($get_cuentasB);
-                                                                      echo "<option value='".$assoc_get_cuentasB['ID_cue']."'>".$assoc_get_cuentasB['cue_desc']."</option>";
+                                                                      $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
+                                                                      echo "<option value='".$assoc_get_cuentas['ID_cue']."'>".$assoc_get_cuentas['cue_desc']."</option>";
                                                                   }
-                                                              ?>                     
+                                                              ?>
                               </select>
                             </div>
+                            
 
                             <button type="submit" class="btn btn-primary"><i class="material-icons">compare_arrows</i> Realizar Transferencia</button>
                           </fieldset>
