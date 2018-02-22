@@ -15,10 +15,31 @@
 
           //Inicio Funciones para Mostrar Datos
 
+
+
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_chequesE()
                         {
                               $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban';
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
+
+
+                        //Inicio: Llama a todas las columnas de la tabla
+                        function get_chequesEById($ID_che)
+                        {
+                              $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban AND ID_che='.$ID_che.'';
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
+
+                       //Inicio: Llama a todas las columnas de la tabla
+                        function get_chequesByProcedenciaTercerosEnCartera()
+                        {
+                              $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban AND che_procedencia="TERCERO" AND che_estado="EN CARTERA"';
                               $result_cheques =mysql_query($sql_cheques);
                               return $result_cheques;
                         }

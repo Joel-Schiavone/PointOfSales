@@ -500,7 +500,7 @@
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_cheques()
                         {
-                              $sql_cheques = 'SELECT * FROM cheques ';
+                              $sql_cheques = 'SELECT * FROM cheques';
                               $result_cheques =mysql_query($sql_cheques);
                               return $result_cheques;
                         }
