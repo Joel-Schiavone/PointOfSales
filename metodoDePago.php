@@ -5,7 +5,8 @@
   $_SESSION['actionsBack'] = $_SERVER['REQUEST_URI'];
   $cuentasE = new cuentasE;
   $chequesE = new chequesE;
-  $cheques = new cheques;
+  $cheques 	= new cheques;
+  $bancos 	= new bancos;
   $monto=150;
   $ID_fce=1;
 ?>  
@@ -36,13 +37,13 @@
 		    						echo '<div class="form-group" style="margin:3%">';
 										  echo '<div class="input-group">';
 										    echo '<span class="input-group-addon"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> CUENTA</span>';
-										    echo '<select class="form-control">';
+										    echo '<select class="form-control" id="cuentaSeleccionada">';
 										    		$get_cuentas=$cuentasE->get_cuentas();
 										    		$num_get_cuentas=mysql_num_rows($get_cuentas);
 										    		for ($cuentCuentas=0; $cuentCuentas < $num_get_cuentas; $cuentCuentas++) 
 										    		{ 
 										    			$assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
-										    			echo "<option value='".$assoc_get_cuentas['ID_cue']."'>".$assoc_get_cuentas['cue_desc']." / ".$assoc_get_cuentas['ctp_desc']."</option>";
+										    			echo "<option value='".$assoc_get_cuentas['cue_desc']."'>".$assoc_get_cuentas['cue_desc']." / ".$assoc_get_cuentas['ctp_desc']."</option>";
 										    		}	
 										    echo '</select>';
 										  echo '</div>';
@@ -50,7 +51,22 @@
 									echo "<hr>";
 		    					echo "<div class='col-md-6'>";
 
-			    						echo '<div class="panel panel-success">';
+		    							echo '<div class="panel panel-success" id="opcionEfectivo">';
+										  echo '<div class="panel-heading">';
+										    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> COMPLETAR EL MONTO A DEBITAR</strong></h2>';
+										  echo '</div>';
+										  echo '<div class="panel-body">';
+										  			echo '<div class="form-group">';
+													  echo '<div class="input-group">';
+													    echo '<span class="input-group-addon">$</span>';
+													    echo '<input type="text" class="form-control" id="totalEfectivo" placeholder="00.00" value="00.00">';
+													  echo '</div>';
+													echo '</div>';
+													 echo '<button class="btn btn-primary" id="botonEfectivo"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
+										  echo '</div>';
+										  echo '</div>';
+
+			    						echo '<div class="panel panel-success" id="opcionCheques" style="display:none">';
 										  echo '<div class="panel-heading">';
 										    echo '<h2 class="panel-title"><strong><i class="material-icons">style</i> SELECCIONAR CHEQUES EN CARTERA</strong></h2>';
 										  echo '</div>';
@@ -67,6 +83,7 @@
 											  echo '</div>';
 											echo '</div>';
 											echo '</div>';
+											 echo '<button class="btn btn-primary" type="submit"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
 											echo '</div>';
 
 										    	$get_chequesByProcedenciaTerceros=$chequesE->get_chequesByProcedenciaTercerosEnCartera();
@@ -119,7 +136,7 @@
 						                                              		echo '<p id="che_tipo'.$assoc_get_chequesE['ID_che'].'" >'.$assoc_get_chequesE['che_tipo'].'</p>';
 						                                            	echo '</div>
 						                                            		<div class="col-md-4">
-						                                                	<input type="text" class="form-control" id="estadoChequeSeleccion'.$assoc_get_chequesE['ID_che'].'" value="Disponible">
+						                                                	<input type="text" class="form-control" id="estadoChequeSeleccion'.$assoc_get_chequesE['ID_che'].'" value="Disponible" style="border: 0px; text-align: center; font-weight:bold;">
 						                                              	</div>
 						                                              	<div class="col-md-4">
 						                                                	<p id="che_librador'.$assoc_get_chequesE['ID_che'].'">'.$assoc_get_chequesE['che_librador'].'</p>
@@ -166,7 +183,64 @@
 										    echo '<h2 class="panel-title"><strong><i class="material-icons">add_box</i> EMITIR NUEVO CHEQUE</strong></h2>';
 										  echo '</div>';
 										  echo '<div class="panel-body">';
-										    	echo "FORMULARIO";
+										    echo '<fieldset>
+							                        <input hidden name="action" value="nuevoCheque" type="text">
+							                            <label class="control-label"><i class="material-icons">account_balance</i> BANCO</label>
+							                            <div class="form-group">
+							                              <select class="form-control" id="ID_ban" name="ID_ban" required>';
+							                                $get_bancos=$bancos->get_bancos();
+							                                $num_get_bancos=mysql_num_rows($get_bancos);
+							                                for ($countBancos=0; $countBancos < $num_get_bancos; $countBancos++) 
+							                                { 
+							                                  $assoc_get_bancos=mysql_fetch_assoc($get_bancos);
+							                                  echo "<option value='".$assoc_get_bancos['ID_ban']."'>".$assoc_get_bancos['ban_desc']."</option>";
+							                                }
+							                        echo '</select></div>
+
+							                           <div class="form-group">
+							                              <label class="control-label"><i class="material-icons">monetization_on</i> IMPORTE</label>
+							                              <div class="input-group">
+							                                <span class="input-group-addon">$</span>
+							                              <input type="text" name="che_importe" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+							                          </div>
+							                        </div>
+
+							                         <div class="form-group">
+							                            <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
+							                            <input type="text" class="form-control" id="che_num " name="che_num" placeholder="" required>
+							                          </div>
+
+							                          <div class="form-group">
+							                            <label for="librador"><i class="material-icons">account_circle</i> LIBRADOR</label>
+							                            <input type="text" class="form-control" id="librador" name="che_librador" placeholder="Librador" required>
+							                          </div>
+
+							                                  <label class="control-label"><i class="material-icons">bookmark_border</i> TIPO</label>
+							                                    <div class="form-group">
+							                                      <select class="form-control" id="che_tipo" name="che_tipo">
+							                                        <option value="CRUZADOS">CRUZADOS</option>
+							                                        <option value="CERTIFICADO">CERTIFICADO</option>
+							                                        <option value="AL BENEFICIARIO">AL BENEFICIARIO</option>
+							                                        <option value="DE CAJA">DE CAJA</option>
+							                                        <option value="DE VENTANILLA">DE VENTANILLA</option>
+							                                        <option value="DE VIAJERO">DE VIAJERO</option>
+							                                        <option value="A LA ORDEN">A LA ORDEN</option>
+							                                      </select>
+							                                    </div>  
+
+							                        <div class="form-group" style="display:none;" id="beneficiario">
+							                            <label for="librador"><i class="material-icons">face</i> BENEFICIARIO</label>
+							                            <input type="text" class="form-control" id="che_beneficiario" name="che_beneficiario">
+							                          </div>
+
+							                            <div class="form-group">
+							                            <label for="librador"><i class="material-icons">date_range</i> FECHA</label>
+							                            <input type="date" class="form-control" id="fecha" name="che_fecha">
+							                          </div>
+
+							                          <div class="form-group">
+							                            <button class="btn btn-primary" type="submit"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>
+							                            </fieldset>';
 										  echo '</div>';
 										echo '</div>';
 		    					echo "</div>";
@@ -182,7 +256,13 @@
 										    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> MONTO TOTAL A PAGAR: $ '.$monto.' </strong> </h2>';
 										  echo '</div>';
 										  echo '<div class="panel-body">';
-										    echo 'Por el momento no se genero ningun debito en sus cuentas';
+										  		echo '<div class="form-group">';
+													  echo '<div class="input-group">';
+													    echo '<span class="input-group-addon">$</span>';
+													     echo '<input class="form-control" type="text" id="montoTotal" value="00:00" placeholder="00.00">';
+													  echo '</div>';
+													echo '</div>';
+										    echo "<div id='MontoNuevo'></div>";
 										  echo '</div>';
 										echo '</div>';
 									echo "</div>";
@@ -211,4 +291,46 @@
 		    </select>
 		  </div>
 	</div>
+
 </div>
+
+<script type="text/javascript">
+	 $(document).ready(function(){
+        $('#che_tipo').change(function(){
+
+        var che_tipo = $('#che_tipo').val();
+          if (che_tipo=="AL BENEFICIARIO" || che_tipo=="DE CAJA" || che_tipo=="DE VENTANILLA") 
+          {
+            $('#beneficiario').fadeIn(500);
+          }
+          else
+          {
+            $('#beneficiario').fadeOut(500);
+          }   
+      })
+  });
+
+	 $('#cuentaSeleccionada').change(function(){
+	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+	 	if(cuentaSeleccionada=="CHEQUE EN CARTERA")
+	 	{
+	 		$('#opcionCheques').fadeIn(500);
+	 		$('#opcionEfectivo').fadeOut(500);
+	 	}
+	 	else
+	 	{
+	 		$('#opcionEfectivo').fadeIn(500);
+	 		$('#opcionCheques').fadeOut(500);
+	 	}	
+	 });
+
+	 $('#botonEfectivo').click(function(){
+	 	var totalEfectivo = $('#totalEfectivo').val();
+	 	var montoTotal = $('#montoTotal').val();
+	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
+	 	$('#montoTotal').val(sumatoria);
+	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo);
+	 });
+
+</script>
