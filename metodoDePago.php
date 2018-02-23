@@ -9,6 +9,7 @@
   $bancos 	= new bancos;
   $monto=150;
   $ID_fce=1;
+  $FechayHora             = date("Y-m-d H:i:s");
 ?>  
 
 <div class="container-fluid">
@@ -64,6 +65,8 @@
 													echo '</div>';
 													 echo '<button class="btn btn-primary" id="botonEfectivo"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
 										  echo '</div>';
+										  echo '<div id="suggestionsTableEfectivo">';
+										  echo '</div>';
 										  echo '</div>';
 
 			    						echo '<div class="panel panel-success" id="opcionCheques" style="display:none">';
@@ -73,18 +76,7 @@
 
 										  echo '<div class="panel-body">';
 
-										  echo "<div class='col-md-12' id='mostrarCheque' style='margin-top:2%;'>";
-										  echo "<div class='col-md-12' id='mostrarCheque' style='margin-top:2%;'>";
-										 	echo '<div class="form-group">';
-											  echo '<label class="control-label">Monto Total en Cheques seleccionados</label>';
-											  echo '<div class="input-group">';
-											    echo '<span class="input-group-addon">$</span>';
-											    echo '<input type="text" class="form-control" id="totalCheque" placeholder="00.00" value="00.00">';
-											  echo '</div>';
-											echo '</div>';
-											echo '</div>';
-											 echo '<button class="btn btn-primary" type="submit"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
-											echo '</div>';
+										 
 
 										    	$get_chequesByProcedenciaTerceros=$chequesE->get_chequesByProcedenciaTercerosEnCartera();
 				    							$num_get_chequesByProcedenciaTerceros=mysql_num_rows($get_chequesByProcedenciaTerceros);
@@ -142,10 +134,64 @@
 						                                                	<p id="che_librador'.$assoc_get_chequesE['ID_che'].'">'.$assoc_get_chequesE['che_librador'].'</p>
 						                                              	</div>
 						                                            </div>
+						                                            <div id="suggestionsTableCheque">
+						                                            </div>;
 						                                          </div>';
 
 
 				    								echo "</div>";
+
+				    								/*echo "<script>
+														 $('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').click(function(){
+														 		var ID_che             ='".$ID_che."';
+															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+															    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+															    var che_num            ='".$assoc_get_chequesE['che_num']."';
+															    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+															    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+															    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+															    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+															    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+															    var che_estado         ='Utilizado';
+															    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
+															    var action 			   ='modificarCheque';
+															    var metodoDePago 	   ='si';
+
+																	 	var montoTotal = $('#montoTotal').val();
+																	 	var sumatoria = parseInt(montoTotal) + parseInt(che_importe);
+																	 	$('#montoTotal').val(sumatoria);
+																	 	var cuentaSeleccionadaC = 'CHEQUE DE TERCERO -Nº '+che_num;
+																	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+																	 	$('#MontoNuevo').append( '<div class='alert alert-dismissible alert-warning'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>' + cuentaSeleccionadaC+ '</strong> $ '+che_importe+'<br> Cuenta a Debitar: ' +cuentaSeleccionada+'</div>');
+
+
+																	 	 var dataString = 'action='+action 
+																	      + '&ID_che='+ID_che 
+																	      + '&ID_ban='+ID_ban
+																	      + '&che_fecha='+che_fecha 
+																	      + '&che_num='+che_num 
+																	      + '&che_beneficiario='+che_beneficiario
+																	      + '&che_importe='+che_importe
+																	      + '&che_tipo='+che_tipo
+																	      + '&che_librador='+che_librador
+																	      + '&che_procedencia='+che_procedencia
+																	      + '&che_estado='+che_estado
+																	      + '&ID_cue='+ID_cue
+																	      + '&metodoDePago='+metodoDePago;
+																			$.ajax(
+							                                                  {
+							                                                      type: 'POST',
+							                                                      url: 'accionesCheques.php',
+							                                                      data: dataString,
+							                                                      success: function(dataB)
+							                                                       {
+							                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+							                                                       }
+
+							                                                   });
+
+														 });
+		</script>";*/
 
 				    								echo "<script>
 														$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').click(function(){
@@ -153,12 +199,62 @@
 															var estadoChequeSeleccion = $('#estadoChequeSeleccion".$assoc_get_chequesE['ID_che']."').val();
 															if(estadoChequeSeleccion=='Disponible')
 															{
+
 																var che_importe = '".$assoc_get_chequesE['che_importe']."';
-																var totalCheque = $('#totalCheque').val();
-																var suma = parseInt(totalCheque) + parseInt(che_importe);
-																$('#totalCheque').val(suma);
-																$('#estadoChequeSeleccion".$assoc_get_chequesE['ID_che']."').val('Seleccionado');
+
+															 	var montoTotal = $('#montoTotal').val();
+
+															 	var sumatoria = parseInt(montoTotal) + parseInt(che_importe);
+
+															 	$('#montoTotal').val(sumatoria);
+
+															 	$('#estadoChequeSeleccion".$assoc_get_chequesE['ID_che']."').val('Seleccionado');
+
 																$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#AAECCA');
+
+																var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+
+															 	$('#MontoNuevo').append('<div class=\'alert alert-dismissible alert-warning\'><button type=\'button\' class=\'close\' data-dismiss=\'alert\'>&times;</button><strong> CHEQUE DE TERCERO </strong> $ ".$assoc_get_chequesE['che_importe']."</div>');
+	
+																var ID_che             ='".$ID_che."';
+															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+															    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+															    var che_num            ='".$assoc_get_chequesE['che_num']."';
+															    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+															    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+															    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+															    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+															    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+															    var che_estado         ='UTILIZADO';
+															    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
+															    var action 			   ='modificarCheque';
+															    var metodoDePago 	   ='si';
+
+															    	 var dataString = 'action='+action 
+																	      + '&ID_che='+ID_che 
+																	      + '&ID_ban='+ID_ban
+																	      + '&che_fecha='+che_fecha 
+																	      + '&che_num='+che_num 
+																	      + '&che_beneficiario='+che_beneficiario
+																	      + '&che_importe='+che_importe
+																	      + '&che_tipo='+che_tipo
+																	      + '&che_librador='+che_librador
+																	      + '&che_procedencia='+che_procedencia
+																	      + '&che_estado='+che_estado
+																	      + '&ID_cue='+ID_cue
+																	      + '&metodoDePago='+metodoDePago;
+																			$.ajax(
+							                                                  {
+							                                                      type: 'POST',
+							                                                      url: 'accionesCheques.php',
+							                                                      data: dataString,
+							                                                      success: function(dataB)
+							                                                       {
+							                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+							                                                       }
+
+							                                                   });
+
 															}
 															if(estadoChequeSeleccion=='Seleccionado')
 															{
@@ -168,7 +264,48 @@
 																$('#totalCheque').val(suma);
 																$('#estadoChequeSeleccion".$assoc_get_chequesE['ID_che']."').val('Disponible');
 																$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
+
+																var ID_che             ='".$ID_che."';
+															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+															    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+															    var che_num            ='".$assoc_get_chequesE['che_num']."';
+															    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+															    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+															    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+															    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+															    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+															    var che_estado         ='EN CARTERA';
+															    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
+															    var action 			   ='modificarCheque';
+															    var metodoDePago 	   ='si';
+
+															    	 var dataString = 'action='+action 
+																	      + '&ID_che='+ID_che 
+																	      + '&ID_ban='+ID_ban
+																	      + '&che_fecha='+che_fecha 
+																	      + '&che_num='+che_num 
+																	      + '&che_beneficiario='+che_beneficiario
+																	      + '&che_importe='+che_importe
+																	      + '&che_tipo='+che_tipo
+																	      + '&che_librador='+che_librador
+																	      + '&che_procedencia='+che_procedencia
+																	      + '&che_estado='+che_estado
+																	      + '&ID_cue='+ID_cue
+																	      + '&metodoDePago='+metodoDePago;
+																			$.ajax(
+							                                                  {
+							                                                      type: 'POST',
+							                                                      url: 'accionesCheques.php',
+							                                                      data: dataString,
+							                                                      success: function(dataB)
+							                                                       {
+							                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+							                                                       }
+
+							                                                   });
 															}
+
+
 															
 														});
 				    								</script>";
@@ -201,13 +338,13 @@
 							                              <label class="control-label"><i class="material-icons">monetization_on</i> IMPORTE</label>
 							                              <div class="input-group">
 							                                <span class="input-group-addon">$</span>
-							                              <input type="text" name="che_importe" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+							                              <input type="text" name="che_importe" id="che_importe_nuevo" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
 							                          </div>
 							                        </div>
 
 							                         <div class="form-group">
 							                            <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
-							                            <input type="text" class="form-control" id="che_num " name="che_num" placeholder="" required>
+							                            <input type="text" class="form-control" id="che_num" name="che_num" placeholder="" required>
 							                          </div>
 
 							                          <div class="form-group">
@@ -239,15 +376,16 @@
 							                          </div>
 
 							                          <div class="form-group">
-							                            <button class="btn btn-primary" type="submit"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>
-							                            </fieldset>';
-										  echo '</div>';
+							                            <button class="btn btn-primary" id="botonChequeNuevo"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
+										  echo '</div></fieldset></div>';
+
+										  echo "<div id='suggestionsTable'>";
+										  echo "</div>";
 										echo '</div>';
 		    					echo "</div>";
 		    				echo "</div>";
 		    				echo '</div>';
 		    				echo '</div>';
-
 
 		    				echo "<div class='col-md-3'>";
 		    						echo "<div class='col-md-12'>";
@@ -330,7 +468,83 @@
 	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
 	 	$('#montoTotal').val(sumatoria);
 	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
-	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo);
+	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+"</div>");
+
+			var mcs_movimiento 	="PAGO DE COMPROBANTE EN EFECTIVO";
+		    var mcs_desc 		="";
+		    var mcd_fec 		="<?php echo $FechayHora;?>";
+		    var monto 			=totalEfectivo;
+		    var tipoMovimeinto 	=2;
+		    var action 			="nuevoMovimiento";
+
+		    var dataString = 'action='+action 
+		      + '&mcs_movimiento='+mcs_movimiento 
+		      + '&mcs_desc='+mcs_desc
+		      + '&mcd_fec='+mcd_fec 
+		      + '&cuentaSeleccionada='+cuentaSeleccionada 
+		      + '&monto='+monto
+		      + '&tipoMovimeinto='+tipoMovimeinto;
+
+		      $.ajax(
+		                                                  {
+		                                                      type: 'POST',
+		                                                      url: 'accionesCuentasMovimientos.php',
+		                                                      data: dataString,
+		                                                      success: function(dataC)
+		                                                       {
+		                                                          $('#suggestionsTableEfectivo').fadeIn(1000).html(dataC);
+		                                                       }
+
+		                                                   });
+
 	 });
 
+	 $('#botonChequeNuevo').click(function(){
+	 	//SUMA MONTO DEL CHEQUE NUEVO AL TOTAL
+	 	var che_importe = $('#che_importe_nuevo').val();
+	 	var montoTotal = $('#montoTotal').val();
+	 	var sumatoria = parseInt(montoTotal) + parseInt(che_importe);
+	 	$('#montoTotal').val(sumatoria);
+	 	var cuentaSeleccionadaB = "CHEQUE PROPIO -Nº"+$('#che_num').val();
+	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-warning'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionadaB + "</strong> $ "+che_importe+"<br> Cuenta a Debitar: " +cuentaSeleccionada+"</div>");
+
+	 		 // GUARDA CHEQUE EN LA TABLA DE CHEQUES COMO PROPIO DEBITADO
+	 		  var action = "nuevoCheque";
+	 		  
+		      var fecha = $('#fecha').val();
+		      var che_tipo = $('#che_tipo').val();
+		      var ID_ban = $('#ID_ban').val();
+		      var che_librador = $('#librador').val();
+		      var che_estado = "DEBITADO";
+		      var che_procedencia = "PROPIO";
+		      var che_num = $('#che_num').val()
+		      var che_beneficiario = $('#beneficiario').val()
+		      var dataString = 'action='+action 
+		      + '&cuentaSeleccionada='+cuentaSeleccionada 
+		      + '&che_importe='+che_importe
+		      + '&che_fecha='+fecha 
+		      + '&che_tipo='+che_tipo 
+		      + '&ID_ban='+ID_ban
+		      + '&che_librador='+che_librador
+		      + '&che_estado_propio='+che_estado
+		      + '&che_procedencia='+che_procedencia
+		      + '&che_num='+che_num
+		      + '&che_beneficiario='+che_beneficiario;
+		      $.ajax(
+		                                                  {
+		                                                      type: 'POST',
+		                                                      url: 'accionesCheques.php',
+		                                                      data: dataString,
+		                                                      success: function(data)
+		                                                       {
+		                                                          $('#suggestionsTable').fadeIn(1000).html(data);
+		                                                       }
+
+		                                                   });
+		    
+
+	 });
+
+	
 </script>

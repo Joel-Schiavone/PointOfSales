@@ -25,8 +25,18 @@ $cuentas_impuestos      = new cuentas_impuestos;
 <?php
   if($action=="nuevoMovimiento")
   {
-    $ID_cue       = $_POST['ID_cue'];
 
+    if($_POST['cuentaSeleccionada'])
+    {
+          $cue_desc               = $_POST['cuentaSeleccionada'];
+          $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
+          $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
+          $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
+    }
+    else
+    {
+          $ID_cue       = $_POST['ID_cue'];
+    }  
 
     //BUSCA IMPUESTOS DE LA CUENTA PARA INSERTAR MOVIMIENTOS NUEVOS
     $get_cuentas_impuestosById=$cuentas_impuestosE->get_cuentas_impuestosById($ID_cue);
@@ -81,11 +91,20 @@ $cuentas_impuestos      = new cuentas_impuestos;
     
     $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
 
-    //REDIRECCIONA
+     if($_POST['cuentaSeleccionada'])
+    {
+       
+    }
+    else
+    {
+          //REDIRECCIONA
         echo '<script type="text/javascript">
         window.location.assign("cuentas.php?M=6");
         </script>';
 
+    }  
+
+   
   }
 
   if($action=="editarMovimiento")

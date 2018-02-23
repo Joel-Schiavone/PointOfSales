@@ -190,6 +190,14 @@
                               return $result_cuentas;
                         }
            //Fin: Llama a todas las columnas de la tabla
+
+                         function get_cuentasByDesc($cue_desc)
+                        {
+                              $sql_cuentas = 'SELECT ID_cue FROM cuentas WHERE cue_desc="'.$cue_desc.'"';
+                              $result_cuentas =mysql_query($sql_cuentas);
+                              return $result_cuentas;
+                        }
+           //Fin: Llama a todas las columnas de la tabla
    }                        
     class mensajesE
     {

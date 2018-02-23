@@ -8,6 +8,7 @@ $usu_usuario            = $_SESSION['usu_usuario'];
 $usu_clave              = $_SESSION['usu_clave'];
 $usu_tipo               = $_SESSION['usu_tipo'];
 $cuentas                = new cuentas;
+$cuentasE               = new cuentasE;
 $fechaDeHoy             = date("Y-m-d");
 $HoraDeHoy              = date("H:i:s");
 $FechayHora             = date("Y-m-d H:i:s");
@@ -41,16 +42,28 @@ $cuentas_movimientos    = new cuentas_movimientos;
     $che_tipo             = $_POST['che_tipo'];
     $che_fecha            = $_POST['che_fecha'];
     $che_beneficiario     = $_POST['che_beneficiario'];
-    $che_procedencia      =$_POST['che_procedencia'];
+    $che_procedencia      = $_POST['che_procedencia'];
     if ($che_procedencia=="PROPIO") 
     {
-      $che_estado           =$_POST['che_estado_propio'];
-      $ID_cue               =$_POST['ID_cue'];
+      $che_estado         = $_POST['che_estado_propio'];
+
+        if ($_POST['cuentaSeleccionada']) 
+        {
+          $cue_desc               = $_POST['cuentaSeleccionada'];
+          $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
+          $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
+          $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
+        }            
+        else
+        {
+          $ID_cue                 = $_POST['ID_cue'];
+        }  
+      
     }
     else
     {
-      $che_estado           =$_POST['che_estado_tercero'];
-      $ID_cue               =1;
+      $che_estado                 = $_POST['che_estado_tercero'];
+      $ID_cue                     = 1;
     }  
     
 
@@ -124,10 +137,23 @@ $cuentas_movimientos    = new cuentas_movimientos;
     //SI EL ESTADO ES EMITIDO, NO HACE NADA
 
     $insert_cheques=$cheques->insert_cheques($che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado);
-    //REDIRECCIONA
+    
+    if ($_POST['cuentaSeleccionada']) 
+    {
+      echo '<div class="alert alert-dismissible alert-success">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong><i class="material-icons">done_all</i> El cheque fue emitido correctamente correctamente</strong>
+            </div>';
+    }      
+    else
+    {
+                            //REDIRECCIONA
                                 echo '<script type="text/javascript">
                                 window.location.assign("cheques.php?M=6");
                                 </script>';
+    }  
+
+                              
   }
 
   if($action=="modificarCheque")
@@ -230,11 +256,20 @@ $cuentas_movimientos    = new cuentas_movimientos;
     $update_chequesById=$cheques->update_chequesById($ID_che, $che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado);
       
     }  
-    //REDIRECCIONA
+
+        if ($_POST['metodoDePago']=='si') 
+    {
+      
+    }      
+    else
+    {
+                              //REDIRECCIONA
                                 echo '<script type="text/javascript">
                                 window.location.assign("cheques.php?M=10&ID_che='.$ID_che.'");
                                </script>';
 
+    }  
+    
 
   }
 ?>
