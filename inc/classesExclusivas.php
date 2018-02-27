@@ -16,6 +16,23 @@
           //Inicio Funciones para Mostrar Datos
 
 
+                      //Inicio Funcion Eliminar todos los datos por che_num
+                              function drop_chequesByche_num($che_num)
+                        {
+                              $sql_cheques = 'DELETE FROM cheques WHERE che_num='.$che_num.' ' ; 
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                  //Fin Funcion Eliminar todos los datos por che_num
+
+                         //Inicio: Llama a todas las columnas de la tabla
+                        function get_chequesEByche_num($che_num)
+                        {
+                              $sql_cheques = 'SELECT * FROM cheques, bancos WHERE cheques.ID_ban=bancos.ID_ban AND che_num='.$che_num.'';
+                              $result_cheques =mysql_query($sql_cheques);
+                              return $result_cheques;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
 
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_chequesE()

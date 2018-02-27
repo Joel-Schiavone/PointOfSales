@@ -432,7 +432,10 @@
 
 </div>
 
+
+
 <script type="text/javascript">
+
 	 $(document).ready(function(){
         $('#che_tipo').change(function(){
 
@@ -462,19 +465,40 @@
 	 	}	
 	 });
 
-	 $('#botonEfectivo').click(function(){
-	 	var totalEfectivo = $('#totalEfectivo').val();
-	 	var montoTotal = $('#montoTotal').val();
-	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
-	 	$('#montoTotal').val(sumatoria);
-	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
-	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+"</div>");
 
+
+	 //AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL EFECTIVO
+	 $('#botonEfectivo').click(function(){
+	 	//trae monto en efectivo puesto
+	 	var totalEfectivo = $('#totalEfectivo').val();
+	 	//trae monto total de sumatoria
+	 	var montoTotal = $('#montoTotal').val();
+	 	//suma ambos monstos
+	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
+	 	//coloca el resultado en el monto total de la sumatoria
+	 	$('#montoTotal').val(sumatoria);
+	 	//trae la cuenta seleccionada
+	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
+	 		
+	 	//ejecuta replace para quitar todos los espacios del nombre de la cuenta y asi poder utilizarlo posteriormente como identificador de los div que se agregaran con la cuenta y el monto, el identificador se construira con la operatoria y el nombre de cuenta ejemplo: efecitvoBancoGalicia	
+	 	var cuentaSeleccionadaB = cuentaSeleccionada;
+     	var cuentaSeleccionadaC = cuentaSeleccionadaB.replace(/ /g,'');
+
+     	//quita del selector de cuentas la opcion de la cuenta seleccionada
+		$("#cuentaSeleccionada option[value='"+cuentaSeleccionada+"']").each(function() {
+		    $(this).remove();
+		});
+
+		//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras
+	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-success' id='efectivo"+cuentaSeleccionadaC+"'><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+" <input hidden type='text' name='cuentaB' id='cuentaB' value='"+cuentaSeleccionada+"'><input hidden type='text' name='montoB' id='montoB' value='"+totalEfectivo+"'><input hidden type='text' name='actionB' id='actionB' value='volverAtrasMetodoDePago'><button type='button' id='eliminarEfectivo"+cuentaSeleccionadaC+"'>&times;</button></div>");
+
+
+	 		//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
 			var mcs_movimiento 	="PAGO DE COMPROBANTE EN EFECTIVO";
 		    var mcs_desc 		="";
 		    var mcd_fec 		="<?php echo $FechayHora;?>";
 		    var monto 			=totalEfectivo;
-		    var tipoMovimeinto 	=2;
+		    var tipoMovimeinto 	=2; //Debita
 		    var action 			="nuevoMovimiento";
 
 		    var dataString = 'action='+action 
@@ -497,6 +521,52 @@
 
 		                                                   });
 
+		      	
+		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
+		      	 $('#eliminarEfectivo'+cuentaSeleccionadaC).click(function(){
+		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+		      	 		var cuentaB 		= $('#cuentaB').val();
+					    var montoB 			= $('#montoB').val();
+					    var actionB 		= "nuevoMovimiento";
+					    var mcs_movimientoB = "ELIMINACIÓN DE PAGO DE COMPROBANTE EN EFECTIVO";
+					    var mcs_descB 		= "";
+		    			var mcd_fecB 		= "<?php echo $FechayHora;?>";
+		    			var tipoMovimeintoB = 1;
+
+		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+		    			var montoTotalB = $('#montoTotal').val();
+					 	var sumatoriaB = parseInt(montoTotalB) - parseInt(montoB);
+					 	$('#montoTotal').val(sumatoriaB);
+
+
+				 	 	var dataStringB = 'action='+actionB 
+		      			+ '&mcs_movimiento='+mcs_movimientoB 
+		      			+ '&mcs_desc='+mcs_descB
+		      			+ '&mcd_fec='+mcd_fecB 
+		      			+ '&cuentaSeleccionada='+cuentaB 
+		      			+ '&monto='+montoB
+		      			+ '&tipoMovimeinto='+tipoMovimeintoB;
+		
+		      			$('#efectivo'+cuentaSeleccionadaC).remove();
+				      	$.ajax(
+				                                                  {
+				                                                      type: 'POST',
+				                                                      url: 'accionesCuentasMovimientos.php',
+				                                                      data: dataStringB,
+				                                                      success: function(dataD)
+				                                                       {
+				                                                       	//vuelve a agregar a las opciones del selector de cuentas la cuenta que anteriormente habia quitado
+				                                                          $('#cuentaSeleccionada').append($('<option>', {
+																				    value: cuentaSeleccionada,
+																				    text: cuentaSeleccionada
+																				}));
+
+				                                                          
+				                                                       }
+
+				                                                   });
+				 });
+
 	 });
 
 	 $('#botonChequeNuevo').click(function(){
@@ -505,13 +575,16 @@
 	 	var montoTotal = $('#montoTotal').val();
 	 	var sumatoria = parseInt(montoTotal) + parseInt(che_importe);
 	 	$('#montoTotal').val(sumatoria);
-	 	var cuentaSeleccionadaB = "CHEQUE PROPIO -Nº"+$('#che_num').val();
-	 	var cuentaSeleccionada = $('#cuentaSeleccionada').val();
-	 	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-warning'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>" + cuentaSeleccionadaB + "</strong> $ "+che_importe+"<br> Cuenta a Debitar: " +cuentaSeleccionada+"</div>");
+	 	var cuentaSeleccionadaBX = "CHEQUE PROPIO -Nº"+$('#che_num').val();
+	 	var cuentaSeleccionadaX = $('#cuentaSeleccionada').val();
+
+	 		 	//ejecuta replace para quitar todos los espacios del nombre de la cuenta y asi poder utilizarlo posteriormente como identificador de los div que se agregaran con la cuenta y el monto, el identificador se construira con la operatoria y el nombre de cuenta ejemplo: efecitvoBancoGalicia	
+     	var cuentaSeleccionadaCX = cuentaSeleccionadaX.replace(/ /g,'');
+
+
 
 	 		 // GUARDA CHEQUE EN LA TABLA DE CHEQUES COMO PROPIO DEBITADO
 	 		  var action = "nuevoCheque";
-	 		  
 		      var fecha = $('#fecha').val();
 		      var che_tipo = $('#che_tipo').val();
 		      var ID_ban = $('#ID_ban').val();
@@ -521,7 +594,7 @@
 		      var che_num = $('#che_num').val()
 		      var che_beneficiario = $('#beneficiario').val()
 		      var dataString = 'action='+action 
-		      + '&cuentaSeleccionada='+cuentaSeleccionada 
+		      + '&cuentaSeleccionada='+cuentaSeleccionadaX 
 		      + '&che_importe='+che_importe
 		      + '&che_fecha='+fecha 
 		      + '&che_tipo='+che_tipo 
@@ -542,6 +615,48 @@
 		                                                       }
 
 		                                                   });
+
+
+
+     	$( "#MontoNuevo" ).append( "<div class='alert alert-dismissible alert-warning' id='nuevoCheque"+cuentaSeleccionadaCX+"'><strong>" + cuentaSeleccionadaBX + "</strong> $ "+che_importe+"<br> Cuenta a Debitar: " +cuentaSeleccionadaX+" <input hidden type='text' name='cuentaBXX"+che_num+"' id='cuentaBXX"+che_num+"' value='"+cuentaSeleccionadaX+"'><input hidden type='text' name='montoBXX"+che_num+"' id='montoBXX"+che_num+"' value='"+che_importe+"'><input hidden type='text' name='che_numXX"+che_num+"' id='che_numXX"+che_num+"' value='"+che_num+"'><button type='button' id='eliminarNuevoCheque"+cuentaSeleccionadaCX+"'>&times;</button></div>");
+	 	
+		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
+		      	 $('#eliminarNuevoCheque'+cuentaSeleccionadaCX).click(function(){
+		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+		      	 	      var actionXX = "borrarChequeDebitadoPorcheNumYDescontarCuenta";
+					      var che_numXX = $('#che_numXX'+che_num).val();
+					      var che_importeXX = $('#montoBXX'+che_num).val();
+					      var cuentaSeleccionadaXX = $('#cuentaBXX'+che_num).val();
+
+		
+
+
+		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+		    			var montoTotalBX = $('#montoTotal').val();
+					 	var sumatoriaB = parseInt(montoTotalBX) - parseInt(che_importeXX);
+					 	$('#montoTotal').val(sumatoriaB);
+
+				 	 	  var dataStringXX = 'action='+actionXX 
+					      + '&cuentaSeleccionada='+cuentaSeleccionadaXX 
+					      + '&che_importe='+che_importeXX
+					      + '&che_num='+che_numXX;
+
+
+				      	$.ajax(
+				                                                  {
+				                                                      type: 'POST',
+				                                                      url: 'accionesCheques.php',
+				                                                      data: dataStringXX,
+				                                                      success: function(dataD)
+				                                                       {
+				                                                      
+				                                                          alert(html(dataD));
+				                                                       }
+
+				                                                   });
+
+				      	$('#nuevoCheque'+cuentaSeleccionadaCX).remove();
+				 });
 		    
 
 	 });

@@ -23,6 +23,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
  <!-- Fin: Estilos Generales-->
 
 <?php
+
   if($action=="nuevoMovimiento")
   {
 

@@ -3,6 +3,7 @@ session_start();
 include_once('inc/conectar.php');
 include_once('inc/classes.php');
 include_once('inc/classesExclusivas.php');
+
 $ID_usu                 = $_SESSION['ID_usu'];
 $usu_usuario            = $_SESSION['usu_usuario'];
 $usu_clave              = $_SESSION['usu_clave'];
@@ -15,8 +16,11 @@ $FechayHora             = date("Y-m-d H:i:s");
 $action                 = $_POST['action'];
 @$atras                 = $_SESSION['actionsBack'];
 $cheques                = new cheques;
+$chequesE               = new chequesE;
 $cuentas_movimientosE   = new cuentas_movimientosE;
 $cuentas_movimientos    = new cuentas_movimientos;
+$cuentas_impuestosE     = new cuentas_impuestosE;
+$cuentas_impuestos      = new cuentas_impuestos;
 ?>
 
 <?php
@@ -32,6 +36,82 @@ $cuentas_movimientos    = new cuentas_movimientos;
                                 window.location.assign("cheques.php?M=8");
                                 </script>';
   }
+
+    if($action=="borrarChequeDebitadoPorcheNumYDescontarCuenta")
+  {
+    
+    $che_num               = $_POST['che_num'];
+    $che_importe           = $_POST['che_importe'];
+    $cue_desc              = $_POST['cuentaSeleccionada'];
+    $tipoMovimeinto        =1;
+                
+               
+    //A CONTINUACION COPIO LA ACCION NUEVOMOVIMIENTO DE ACCIONESCUENTASMOVIMIENTOS PORQUE NO ENCUENTRO FORMA DE ENLAZARLA
+
+          $cue_desc               = $_POST['cuentaSeleccionada'];
+          $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
+          $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
+          $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
+
+          //BUSCA IMPUESTOS DE LA CUENTA PARA INSERTAR MOVIMIENTOS NUEVOS
+    $get_cuentas_impuestosById=$cuentas_impuestosE->get_cuentas_impuestosById($ID_cue);
+    $num_get_cuentas_impuestosById=mysql_num_rows($get_cuentas_impuestosById);
+    for ($insertaImpuestos=0; $insertaImpuestos < $num_get_cuentas_impuestosById; $insertaImpuestos++) 
+    { 
+      $assoc_get_cuentas_impuestosById=mysql_fetch_assoc($get_cuentas_impuestosById);
+      //PREPARA LAS VARIABLE PARA INSERTAR EL MOVIMIENTOS TANTO LAS DE CREDITO COMO LAS DE DEBITO
+      $mcs_movimientoImpuesto=$assoc_get_cuentas_impuestosById['cti_desc'];
+      $ID_cueImpuesto=$ID_cue;
+      $mcd_fecImpuesto=$fechaDeHoy;
+      $mcs_descImpuesto="DESCUENTO AUTOMATIZADO POR EL USUARIO";
+       $mcs_creditoImpuesto=0;
+        //PARA DETERMINAR SI SE LE APLICA AL MONTO UN PORCENTAJE O SE DEBE REGISTRAR UN MONTON FIJO SE EJECUTA EL SIGUIENTE CONDICIONAL
+        if ($assoc_get_cuentas_impuestosById['cti_monto']==0) 
+        {
+          $montoTotalImpuestoA=($_POST['che_importe']*$assoc_get_cuentas_impuestosById['cti_porcentaje'])/100;
+          $mcs_debitoImpuesto=$montoTotalImpuestoA;
+        }
+        else
+        {
+          $mcs_debitoImpuesto=$assoc_get_cuentas_impuestosById['cti_monto'];
+        }  
+        
+      //PARA DEFINIR SI ES DEBITO O CREDITO EJECUTA LA SIGUIENTE FUNCION
+      if ($tipoMovimeinto==1 AND $assoc_get_cuentas_impuestosById['cti_credOdeb']==1) 
+      {
+        //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
+        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+      }
+      if ($tipoMovimeinto==2 AND $assoc_get_cuentas_impuestosById['cti_credOdeb']==0) 
+      {
+        //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
+        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+      }
+    }
+
+    if ($tipoMovimeinto==1) 
+    {
+      $mcs_credito=$che_importe;
+      $mcs_debito=0;
+    }
+    else
+    {
+      $mcs_credito=0;
+      $mcs_debito=$che_importe;
+    } 
+
+       $mcs_movimiento     = 'ELIMINACIÓN DE CHEQUE EMITIDO Y DEBITADO';
+                $mcs_desc           = '';
+                $mcd_fec            = $fechaDeHoy;
+                $tipoMovimeinto     = 2;
+
+
+    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+
+    
+    $drop_chequesByche_num=$chequesE->drop_chequesByche_num($che_num);
+                          
+  }
   
   if($action=="nuevoCheque")
   {
@@ -43,13 +123,14 @@ $cuentas_movimientos    = new cuentas_movimientos;
     $che_fecha            = $_POST['che_fecha'];
     $che_beneficiario     = $_POST['che_beneficiario'];
     $che_procedencia      = $_POST['che_procedencia'];
+    
     if ($che_procedencia=="PROPIO") 
     {
       $che_estado         = $_POST['che_estado_propio'];
 
         if ($_POST['cuentaSeleccionada']) 
         {
-          $cue_desc               = $_POST['cuentaSeleccionada'];
+          echo $cue_desc               = $_POST['cuentaSeleccionada'];
           $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
           $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
           $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
@@ -66,7 +147,6 @@ $cuentas_movimientos    = new cuentas_movimientos;
       $ID_cue                     = 1;
     }  
     
-
     //TRAE DATOS DE CUENTA MEDIANTE EL ID DE CUENTA SI ESTE EXISTE
  
       $get_cuentasById        = $cuentas->get_cuentasById($ID_cue);
