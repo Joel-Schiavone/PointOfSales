@@ -76,8 +76,6 @@
 
 										  echo '<div class="panel-body">';
 
-										 
-
 										    	$get_chequesByProcedenciaTerceros=$chequesE->get_chequesByProcedenciaTercerosEnCartera();
 				    							$num_get_chequesByProcedenciaTerceros=mysql_num_rows($get_chequesByProcedenciaTerceros);
 				    							for ($countCheques=0; $countCheques < $num_get_chequesByProcedenciaTerceros; $countCheques++) 
@@ -214,7 +212,7 @@
 
 																var cuentaSeleccionada = $('#cuentaSeleccionada').val();
 
-															 	$('#MontoNuevo').append('<div class=\'alert alert-dismissible alert-warning\'><button type=\'button\' class=\'close\' data-dismiss=\'alert\'>&times;</button><strong> CHEQUE DE TERCERO </strong> $ ".$assoc_get_chequesE['che_importe']."</div>');
+															 	$('#MontoNuevo').append('<div class=\'alert alert-dismissible alert-warning\' id=\'divCheque".$assoc_get_chequesE['ID_che']."\'><strong> CHEQUE DE TERCERO </strong> $ ".$assoc_get_chequesE['che_importe']."<input hidden type=\'text\' name=\'ID_che".$assoc_get_chequesE['ID_che']."\' id=\'ID_che".$assoc_get_chequesE['ID_che']."\' vaule=\'".$assoc_get_chequesE['ID_che']."\'> <button type=\'button\' id=\'CancelarChequeTercero".$assoc_get_chequesE['ID_che']."\'>&times;</button></div>');
 	
 																var ID_che             ='".$ID_che."';
 															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
@@ -258,53 +256,106 @@
 															}
 															if(estadoChequeSeleccion=='Seleccionado')
 															{
-																var che_importe = '".$assoc_get_chequesE['che_importe']."';
-																var totalCheque = $('#totalCheque').val();
-																var suma = parseInt(totalCheque) - parseInt(che_importe);
-																$('#totalCheque').val(suma);
-																$('#estadoChequeSeleccion".$assoc_get_chequesE['ID_che']."').val('Disponible');
-																$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
+																				var che_importe = ".$assoc_get_chequesE['che_importe'].";
+																 	var montoTotal = $('#montoTotal').val();
+																 	var sumatoria = parseInt(montoTotal) - parseInt(che_importe);
+																 	$('#montoTotal').val(sumatoria);
 
-																var ID_che             ='".$ID_che."';
-															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
-															    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
-															    var che_num            ='".$assoc_get_chequesE['che_num']."';
-															    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
-															    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
-															    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
-															    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
-															    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
-															    var che_estado         ='EN CARTERA';
-															    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
-															    var action 			   ='modificarCheque';
-															    var metodoDePago 	   ='si';
+																 	$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
 
-															    	 var dataString = 'action='+action 
-																	      + '&ID_che='+ID_che 
-																	      + '&ID_ban='+ID_ban
-																	      + '&che_fecha='+che_fecha 
-																	      + '&che_num='+che_num 
-																	      + '&che_beneficiario='+che_beneficiario
-																	      + '&che_importe='+che_importe
-																	      + '&che_tipo='+che_tipo
-																	      + '&che_librador='+che_librador
-																	      + '&che_procedencia='+che_procedencia
-																	      + '&che_estado='+che_estado
-																	      + '&ID_cue='+ID_cue
-																	      + '&metodoDePago='+metodoDePago;
-																			$.ajax(
-							                                                  {
-							                                                      type: 'POST',
-							                                                      url: 'accionesCheques.php',
-							                                                      data: dataString,
-							                                                      success: function(dataB)
-							                                                       {
-							                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
-							                                                       }
+																 	var ID_che             ='".$ID_che."';
+																    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+																    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+																    var che_num            ='".$assoc_get_chequesE['che_num']."';
+																    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+																    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+																    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+																    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+																    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+																    var che_estado         ='EN CARTERA';
+																    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
+																    var action 			   ='modificarCheque';
+																    var metodoDePago 	   ='si';
 
-							                                                   });
+																    	 var dataString = 'action='+action 
+																		      + '&ID_che='+ID_che 
+																		      + '&ID_ban='+ID_ban
+																		      + '&che_fecha='+che_fecha 
+																		      + '&che_num='+che_num 
+																		      + '&che_beneficiario='+che_beneficiario
+																		      + '&che_importe='+che_importe
+																		      + '&che_tipo='+che_tipo
+																		      + '&che_librador='+che_librador
+																		      + '&che_procedencia='+che_procedencia
+																		      + '&che_estado='+che_estado
+																		      + '&ID_cue='+ID_cue
+																		      + '&metodoDePago='+metodoDePago;
+																				$.ajax(
+								                                                  {
+								                                                      type: 'POST',
+								                                                      url: 'accionesCheques.php',
+								                                                      data: dataString,
+								                                                      success: function(dataB)
+								                                                       {
+								                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+								                                                       }
+
+								                                                   });
+
+								                                                   $('#divCheque".$assoc_get_chequesE['ID_che']."').remove();
 															}
 
+														$('#CancelarChequeTercero".$assoc_get_chequesE['ID_che']."').click(function(){
+
+																	var che_importe = ".$assoc_get_chequesE['che_importe'].";
+																 	var montoTotal = $('#montoTotal').val();
+																 	var sumatoria = parseInt(montoTotal) - parseInt(che_importe);
+																 	$('#montoTotal').val(sumatoria);
+
+																 	$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
+
+																 	var ID_che             ='".$ID_che."';
+																    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+																    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+																    var che_num            ='".$assoc_get_chequesE['che_num']."';
+																    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+																    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+																    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+																    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+																    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+																    var che_estado         ='EN CARTERA';
+																    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
+																    var action 			   ='modificarCheque';
+																    var metodoDePago 	   ='si';
+
+																    	 var dataString = 'action='+action 
+																		      + '&ID_che='+ID_che 
+																		      + '&ID_ban='+ID_ban
+																		      + '&che_fecha='+che_fecha 
+																		      + '&che_num='+che_num 
+																		      + '&che_beneficiario='+che_beneficiario
+																		      + '&che_importe='+che_importe
+																		      + '&che_tipo='+che_tipo
+																		      + '&che_librador='+che_librador
+																		      + '&che_procedencia='+che_procedencia
+																		      + '&che_estado='+che_estado
+																		      + '&ID_cue='+ID_cue
+																		      + '&metodoDePago='+metodoDePago;
+																				$.ajax(
+								                                                  {
+								                                                      type: 'POST',
+								                                                      url: 'accionesCheques.php',
+								                                                      data: dataString,
+								                                                      success: function(dataB)
+								                                                       {
+								                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+								                                                       }
+
+								                                                   });
+
+								                                                   $('#divCheque".$assoc_get_chequesE['ID_che']."').remove();
+					
+															});
 
 															
 														});
@@ -388,7 +439,7 @@
 		    				echo '</div>';
 
 		    				echo "<div class='col-md-3'>";
-		    						echo "<div class='col-md-12'>";
+		    						echo "<div class='col-md-12' style='text-align:center'>";
 		    							echo '<div class="panel panel-primary">';
 										  echo '<div class="panel-heading">';
 										    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> MONTO TOTAL A PAGAR: $ '.$monto.' </strong> </h2>';
@@ -402,7 +453,9 @@
 													echo '</div>';
 										    echo "<div id='MontoNuevo'></div>";
 										  echo '</div>';
+										  echo '<a href="comprobantes.php"><button style="margin:2%;" class="btn btn-success"><i class="material-icons">done_all</i> Finalizar Pago</button></a>';
 										echo '</div>';
+
 									echo "</div>";
 							echo "</div>";		
 		    			echo "</div>";
