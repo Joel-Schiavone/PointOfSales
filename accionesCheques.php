@@ -104,9 +104,9 @@ $cuentas_impuestos      = new cuentas_impuestos;
                 $mcs_desc           = '';
                 $mcd_fec            = $fechaDeHoy;
                 $tipoMovimeinto     = 2;
+                $mdc_fecDisponibilidad = $fechaDeHoy;
 
-
-    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
     
     $drop_chequesByche_num=$chequesE->drop_chequesByche_num($che_num);
@@ -130,8 +130,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
     $mcs_desc           = '';
     $mcd_fec            = $fechaDeHoy;
     $tipoMovimeinto     = 2;
-
-    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+    $mdc_fecDisponibilidad = $FechayHora;
+    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
     
     $drop_chequesByche_num=$chequesE->drop_chequesByche_num($che_num);
@@ -151,7 +151,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
     
     if ($che_procedencia=="PROPIO") 
     {
-      $che_estado         = $_POST['che_estado_propio'];
+      $che_estado = $_POST['che_estado_propio'];
 
         if ($_POST['cuentaSeleccionada']) 
         {
@@ -193,18 +193,16 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
       $mcs_movimiento   = "CHEQUE ".$che_librador." ".$che_procedencia." ".$che_estado." ".$che_tipo." ".$che_fecha." ";
       $mcd_fec          = $fechaDeHoy;
-
+      $mdc_fecDisponibilidad = $fechaDeHoy;
       $mcs_desc         = "";
     
      
     //SI EL ESTADO ES DEBITADO RESTA EL MONTO A LA CUENTA DE ID_CUE
     if ($che_estado=="DEBITADO") 
     {
-      
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
-
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES EN CARTERA AGREGA EL MONTO A LA CUENTA CHEQUES EN CARTERA
@@ -213,7 +211,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_debito       = 0;
       $mcs_credito      = $che_importe;
       $ID_cue           = 1;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc$mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES COBRADO RESTA EN LA CUENTA CHEQUES EN CARTERA Y SUMA EN LA CUENTA DE ID_CUE
@@ -222,12 +220,12 @@ $cuentas_impuestos      = new cuentas_impuestos;
       //RESTA DE LA CUENTA CHEQUE EN CARTERA
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
       //SUMA EN LA CUENTA DE ID_CUE
       $mcs_debitoB       = 0;
       $mcs_creditoB      = $che_importe;
-      $insert_cuentas_movimientosB=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debitoB, $mcs_creditoB, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientosB=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debitoB, $mcs_creditoB, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES UTILIZADO RESTA EN LA CUENTA CHEQUES EN CARTERA
@@ -236,7 +234,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       //RESTA DE LA CUENTA CHEQUE EN CARTERA
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES EMITIDO, NO HACE NADA
@@ -309,7 +307,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
       $mcs_movimiento   = "CHEQUE ".$che_librador." ".$che_procedencia." ".$che_estado." ".$che_tipo." ".$che_fecha." ";
       $mcd_fec          = $fechaDeHoy;
-
+      $mdc_fecDisponibilidad = $FechayHora;
       $mcs_desc         = "";
     
      
@@ -320,7 +318,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
 
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES EN CARTERA AGREGA EL MONTO A LA CUENTA CHEQUES EN CARTERA
@@ -329,7 +327,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_debito       = 0;
       $mcs_credito      = $che_importe;
       $ID_cue           = 1;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES COBRADO RESTA EN LA CUENTA CHEQUES EN CARTERA Y SUMA EN LA CUENTA DE ID_CUE
@@ -338,12 +336,12 @@ $cuentas_impuestos      = new cuentas_impuestos;
       //RESTA DE LA CUENTA CHEQUE EN CARTERA
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
       //SUMA EN LA CUENTA DE ID_CUE
       $mcs_debitoB       = 0;
       $mcs_creditoB      = $che_importe;
-      $insert_cuentas_movimientosB=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debitoB, $mcs_creditoB, $ID_cue, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientosB=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debitoB, $mcs_creditoB, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES UTILIZADO RESTA EN LA CUENTA CHEQUES EN CARTERA
@@ -352,7 +350,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       //RESTA DE LA CUENTA CHEQUE EN CARTERA
       $mcs_debito       = $che_importe;
       $mcs_credito      = 0;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES EMITIDO, NO HACE NADA

@@ -1,0 +1,89 @@
+[33mcommit 73090d16e108797871ee117b3749e96b4b2ccaea[m
+Author: Schiavone Joel Leandro <schiavone.joel@gmail.com>
+Date:   Wed Feb 28 11:31:59 2018 -0300
+
+    Incoporacion de metodo de cobro en efectivo y cheque en metodoDePago.php
+
+[33mcommit c1a880eb0d4b14e5c0711787ff2d3c970850cf4e[m
+Author: Schiavone Joel Leandro <schiavone.joel@gmail.com>
+Date:   Tue Feb 27 16:57:05 2018 -0300
+
+    Modulo de pago terminado y testeado
+
+[33mcommit 26beeeb573174d9e5f76cd77e49f5f0785ce9746[m
+Author: Schiavone Joel Leandro <schiavone.joel@gmail.com>
+Date:   Tue Feb 27 13:09:28 2018 -0300
+
+    Incorporacion de eliminar y volver atras pagos en efectivo y con cheque nuevo
+
+[33mcommit d7f9097f494ca280e2a0b45851a40d62faf5614b[m
+Author: Schiavone Joel Leandro <schiavone.joel@gmail.com>
+Date:   Fri Feb 23 15:08:36 2018 -0300
+
+    flujo de compra sin vuelta atras en metodo de pago
+
+[33mcommit 707ac7a30cfe807f8cef5e351ca37e839d1a9e2c[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Thu Feb 22 16:55:58 2018 -0300
+
+    metodo de pago, terminando que los totales se pasen al total
+
+[33mcommit 7c28efa0f70153840201a926094fb425da5e88e9[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Thu Feb 22 14:55:11 2018 -0300
+
+    Primera etapa de metodo de pago, seleccion de cheques en cartera terminada
+
+[33mcommit d6d643cd21119d36b21b77faaa6ee26c0b922901[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Wed Feb 21 16:51:36 2018 -0300
+
+    cheques terminado, se agregaron columnas nuevas a las funcionalidades, se incorporaron cuadros con saldos a las cuentas y se repararon las transferencias aunque falta reparar el mensaje que graba en los movimientos de cuenta
+
+[33mcommit 0b85af9159c11554881115c4357c73f5cc1974ea[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Wed Feb 21 10:14:32 2018 -0300
+
+    Agregado al modal de modificar cheques el cambio de estado y precedencia
+
+[33mcommit ef54baf83853bf0b3c99fb72a2014285255ee36a[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Tue Feb 20 16:51:19 2018 -0300
+
+    incorporacion a cheques de ID_cue, procedencia y estado
+
+[33mcommit 1adbb39a13f3ccc61ad91eda07d88833b74b5a55[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Tue Feb 20 12:46:11 2018 -0300
+
+    Incorporacion de Listado de Compras
+
+[33mcommit 6be16a0dbff546601fa97a941a4cbd87a48dc1b6[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Tue Feb 20 12:21:34 2018 -0300
+
+    Incorporacion de listado de ventas
+
+[33mcommit a6477fcb6f84fbb8c6c8c7c7ec1cbe3b480685b7[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Tue Feb 20 09:17:54 2018 -0300
+
+    Modulo de cheques terminado falta eliminar
+
+[33mcommit 8c8eca0474987625c9f6d718b8f35302cf6daf75[m
+Author: Schiavone Joel <schiavone.joel@gmail.com>
+Date:   Fri Feb 16 15:40:02 2018 -0300
+
+    Incorporacion de cheques
+
+[33mcommit c86f049f25aa745428fba60ecfad476d629ad024[m
+Author: Joel Leandro Schiavone <schiavone.joel@gmail.com>
+Date:   Thu Feb 15 12:25:55 2018 -0300
+
+    modificacion en el index
+
+[33mcommit 6e2aa57e5345e470bec3f7e52582fcda6bd50318[m
+Author: Joel Leandro Schiavone <schiavone.joel@gmail.com>
+Date:   Wed Feb 7 14:06:34 2018 -0300
+
+    Primera copia de seguridad en git del Point Of Sales

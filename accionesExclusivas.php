@@ -793,6 +793,8 @@ if (@$_GET['action']=='CerrarVenta')
                      $get_puestosById=$puestos->get_puestosById($ID_pue);
                      $assoc_get_puestosById=mysql_fetch_assoc($get_puestosById);
                      $ID_cue=$assoc_get_puestosById['ID_cue'];
+                     $mcs_desc                     = "";
+                     $mdc_fecDisponibilidad        = $FechayHora;
             }
           
 
@@ -814,6 +816,8 @@ if (@$_GET['action']=='CerrarVenta')
                      $get_puestosByIdB=$puestos->get_puestosById($ID_pue);
                      $assoc_get_puestosByIdB=mysql_fetch_assoc($get_puestosByIdB);
                      $ID_cue=$assoc_get_puestosByIdB['ID_cue'];
+                     $mcs_desc                     = "";
+                     $mdc_fecDisponibilidad        = "0000-00-00 00:00:00";
 
             }
             
@@ -831,17 +835,23 @@ if (@$_GET['action']=='CerrarVenta')
                 $fpo_montoA=($fpo_monto*$pla_recargo)/100;
                 $fpo_monto=$fpo_monto+$fpo_montoA;
                 $ID_tar=$assoc_get_tarjetas_planesById['ID_tar'];
+                $plan_tiempoAcre=$assoc_get_tarjetas_planesById['plan_tiempoAcre'];
                 $get_tarjetasById=$tarjetas-> get_tarjetasById($ID_tar);
                 $assoc_get_tarjetasById=mysql_fetch_assoc($get_tarjetasById);
                 $ID_cue=$assoc_get_tarjetasById['tar_cue'];
-
-             $cja_vta=$ANTERIORMENTE_cja_vta+$fpo_monto;
-             $ven_fpo3=3;
-              //GURDA LA SUMATORIA 
-              $ventaTotal=$ventaTotal+$fpo_monto;
-              $mcs_movimiento               = "Venta con tarjeta de Crédito realizada atravez del punto de venta";
-
-
+                
+                
+                $fecha = date('Y-m-j');
+                $nuevafecha = strtotime ( '+'.$plan_tiempoAcre.' day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+                $nuevafecha = $nuevafecha. " 00:00:00";
+                $cja_vta=$ANTERIORMENTE_cja_vta+$fpo_monto;
+                $ven_fpo3=3;
+                //GURDA LA SUMATORIA 
+                $ventaTotal=$ventaTotal+$fpo_monto;
+                $mcs_movimiento               = "Venta con tarjeta de Crédito realizada atravez del punto de venta";
+                $mcs_desc                     = "$".$fpo_monto." DISPONIBLES EN LA CUENTA A PARTIR DEL DIA: ".$nuevafecha;
+                $mdc_fecDisponibilidad        = $nuevafecha;
             }
                   
 
@@ -867,7 +877,8 @@ if (@$_GET['action']=='CerrarVenta')
               //GURDA LA SUMATORIA 
               $ventaTotal=$ventaTotal+$fpo_monto;
               $mcs_movimiento               = "Venta con tarjeta de Débito realizada atravez del punto de venta";
-
+              $mcs_desc                     = "";
+              $mdc_fecDisponibilidad        = $FechayHora;
             }
 
 
@@ -885,6 +896,7 @@ if (@$_GET['action']=='CerrarVenta')
                         $mcd_fecImpuesto=$FechayHora;
                         $mcs_descImpuesto="DESCUENTO AUTOMATIZADO POR EL USUARIO";
                         $mcs_creditoImpuesto=0;
+                        $mdc_fecDisponibilidadB=$FechayHora;
                           //PARA DETERMINAR SI SE LE APLICA AL MONTO UN PORCENTAJE O SE DEBE REGISTRAR UN MONTON FIJO SE EJECUTA EL SIGUIENTE CONDICIONAL
                           if ($assoc_get_cuentas_impuestosById['cti_monto']==0) 
                           {
@@ -899,9 +911,8 @@ if (@$_GET['action']=='CerrarVenta')
                         //PARA DEFINIR SI ES DEBITO O CREDITO EJECUTA LA SIGUIENTE FUNCION
                        
                           //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
-                          $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+                          $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidadB);
                         
-                       
                       }
 
                      
@@ -909,11 +920,9 @@ if (@$_GET['action']=='CerrarVenta')
                         $mcs_debito=0;
                     
 
-                      
-                      $mcs_desc                     = "";
                       $mcd_fec                      = $FechayHora;
                       
-                      $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+                      $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
 
 

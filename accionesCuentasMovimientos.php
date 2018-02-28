@@ -50,7 +50,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $ID_cueImpuesto=$ID_cue;
       $mcd_fecImpuesto=$_POST['mcd_fec'];
       $mcs_descImpuesto="DESCUENTO AUTOMATIZADO POR EL USUARIO";
-       $mcs_creditoImpuesto=0;
+      $mcs_creditoImpuesto=0;
+      $mdc_fecDisponibilidad=$_POST['mcd_fec'];
         //PARA DETERMINAR SI SE LE APLICA AL MONTO UN PORCENTAJE O SE DEBE REGISTRAR UN MONTON FIJO SE EJECUTA EL SIGUIENTE CONDICIONAL
         if ($assoc_get_cuentas_impuestosById['cti_monto']==0) 
         {
@@ -66,12 +67,12 @@ $cuentas_impuestos      = new cuentas_impuestos;
       if ($_POST['tipoMovimeinto']==1 AND $assoc_get_cuentas_impuestosById['cti_credOdeb']==1) 
       {
         //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
-        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidad);
       }
       if ($_POST['tipoMovimeinto']==2 AND $assoc_get_cuentas_impuestosById['cti_credOdeb']==0) 
       {
         //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
-        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidad);
       }
     }
 
@@ -89,8 +90,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
     $mcs_movimiento               = $_POST['mcs_movimiento'];
     $mcs_desc                     = $_POST['mcs_desc'];
     $mcd_fec                      = $_POST['mcd_fec'];
-    
-    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+    $mdc_fecDisponibilidad        = $_POST['mcd_fec'];
+    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
      if($_POST['cuentaSeleccionada'])
     {
@@ -126,8 +127,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
     $mcs_movimiento               = $_POST['mcs_movimiento'];
     $mcs_desc                     = $_POST['mcs_desc'];
     $mcd_fec                      = $_POST['mcd_fec'];
-    
-    $update_cuentas_movimientosById=$cuentas_movimientos->update_cuentas_movimientosById($ID_mcs, $mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+    $mdc_fecDisponibilidad        = $_POST['mcd_fec'];
+    $update_cuentas_movimientosById=$cuentas_movimientos->update_cuentas_movimientosById($ID_mcs, $mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
     //REDIRECCIONA
         echo '<script type="text/javascript">
@@ -168,6 +169,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_descImpuesto="DESCUENTO AUTOMATIZADO POR EL USUARIO";
        $mcs_creditoImpuesto=0;
        $mcs_descImpuesto="";
+       $mdc_fecDisponibilidad=$FechayHora;
         //PARA DETERMINAR SI SE LE APLICA AL MONTO UN PORCENTAJE O SE DEBE REGISTRAR UN MONTON FIJO SE EJECUTA EL SIGUIENTE CONDICIONAL
         if ($assoc_get_cuentas_impuestosById['cti_monto']==0) 
         {
@@ -182,7 +184,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       if ($assoc_get_cuentas_impuestosById['cti_credOdeb']==0) 
       {
         //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
-        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto);
+        $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidad);
       }
     }
 
@@ -199,8 +201,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
                                      ";
     $mcs_descEmisor                     = $_POST['observacion'];
     $mcd_fecEmisor                      = $FechayHora;
-    
-    $insert_cuentas_movimientosEmisor   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoEmisor, $mcs_debitoEmisor, $mcs_creditoEmisor, $ID_cueEmisor, $mcd_fecEmisor, $mcs_descEmisor);
+    $mdc_fecDisponibilidad              = $FechayHora;
+    $insert_cuentas_movimientosEmisor   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoEmisor, $mcs_debitoEmisor, $mcs_creditoEmisor, $ID_cueEmisor, $mcd_fecEmisor, $mcs_descEmisor, $mdc_fecDisponibilidad);
 
      $ID_cueReceptor         = $_POST['ID_cueReceptor'];
 
@@ -217,6 +219,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_descImpuestB="DESCUENTO AUTOMATIZADO POR EL USUARIO";
        $mcs_creditoImpuestoB=0;
        $mcs_descImpuestoB="";
+       $mdc_fecDisponibilidadB=$FechayHora;
         //PARA DETERMINAR SI SE LE APLICA AL MONTO UN PORCENTAJE O SE DEBE REGISTRAR UN MONTON FIJO SE EJECUTA EL SIGUIENTE CONDICIONAL
         if ($assoc_get_cuentas_impuestosByIdB['cti_monto']==0) 
         {
@@ -232,7 +235,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       if ($assoc_get_cuentas_impuestosByIdB['cti_credOdeb']==1) 
       {
         //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
-        $insert_cuentas_movimientosBB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuestoB, $mcs_debitoImpuestoB, $mcs_creditoImpuestoB, $ID_cueImpuestoB, $mcd_fecImpuestoB, $mcs_descImpuestoB);
+        $insert_cuentas_movimientosBB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuestoB, $mcs_debitoImpuestoB, $mcs_creditoImpuestoB, $ID_cueImpuestoB, $mcd_fecImpuestoB, $mcs_descImpuestoB, $mdc_fecDisponibilidadB);
       }
      
     }
@@ -254,8 +257,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
                                      ";
     $mcs_descReceptor                     = $_POST['observacion'];
     $mcd_fecReceptor                      = $FechayHora;
-    
-    $insert_cuentas_movimientosReceptor   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoReceptor, $mcs_debitoReceptor, $mcs_creditoReceptor, $ID_cueReceptor, $mcd_fecReceptor, $mcs_descReceptor);
+    $mdc_fecDisponibilidad                = $FechayHora;
+    $insert_cuentas_movimientosReceptor   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoReceptor, $mcs_debitoReceptor, $mcs_creditoReceptor, $ID_cueReceptor, $mcd_fecReceptor, $mcs_descReceptor, $mdc_fecDisponibilidad);
 
     //REDIRECCIONA
         echo '<script type="text/javascript">

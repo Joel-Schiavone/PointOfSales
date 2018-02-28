@@ -124,6 +124,7 @@ $bancos                = new bancos;
             $ID_cue=$ID_caja;
             $mcd_fec=$FechayHora;
             $mcs_desc="";
+            $mdc_fecDisponibilidad=$FechayHora;
              //SI SUMA EN CAJA INCREMENTA EL SALDO EN LA CUENTA
              if ($fec_caja==1) 
              {
@@ -139,7 +140,7 @@ $bancos                = new bancos;
                 $mesnaje_caja="debitaron";
              }
 
-             $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+             $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
              //AGREGA CONTENIDO A LA ALERTA
              $MensajeDeAlertaCuenta='<li style="font-size: 15px;">Se '.$mesnaje_caja.' $'.$cte_monto.' a la cuenta '.$assoc_get_cuentasById['ctp_desc'].'-'.$assoc_get_cuentasById['cue_desc'].' </li>';
@@ -346,6 +347,7 @@ $bancos                = new bancos;
             $ID_cue_anterior                =   $ID_caj_anterior;
             $mcd_fec_anterior               =   $FechayHora;
             $mcs_desc_anterior              =    "";
+            $mdc_fecDisponibilidad          =   $FechayHora;
              //Si incremento el saldo en la cuenta entonces ahora lo descuenta
              if ($fec_caja_anterior==1) 
              {
@@ -363,7 +365,7 @@ $bancos                = new bancos;
 
               $mcs_movimiento_anterior        =   $tce_desc_anterior." - ".$cte_numero_anterior." - ".$mesnaje_caja_anterior;
 
-             $insert_cuentas_movimientos_anterior=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento_anterior, $mcs_debito_anterior, $mcs_credito_anterior, $ID_cue_anterior, $mcd_fec_anterior, $mcs_desc_anterior);
+             $insert_cuentas_movimientos_anterior=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento_anterior, $mcs_debito_anterior, $mcs_credito_anterior, $ID_cue_anterior, $mcd_fec_anterior, $mcs_desc_anterior, $mdc_fecDisponibilidad);
 
         }
 
@@ -521,6 +523,7 @@ $bancos                = new bancos;
             $ID_cue=$ID_caja;
             $mcd_fec=$FechayHora;
             $mcs_desc="";
+            $mdc_fecDisponibilidad=$FechayHora;
              //SI SUMA EN CAJA INCREMENTA EL SALDO EN LA CUENTA
              if ($fec_caja==1) 
              {
@@ -536,7 +539,7 @@ $bancos                = new bancos;
                 $mesnaje_caja="debitaron";
              }
 
-             $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+             $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc,$mdc_fecDisponibilidad);
 
              //AGREGA CONTENIDO A LA ALERTA
              $MensajeDeAlertaCuenta='<li style="font-size: 15px;">Se '.$mesnaje_caja.' $'.$cte_monto.' a la cuenta '.$assoc_get_cuentasById['ctp_desc'].'-'.$assoc_get_cuentasById['cue_desc'].' </li>';

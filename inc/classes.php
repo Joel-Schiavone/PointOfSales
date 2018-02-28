@@ -1,6 +1,6 @@
 <?php
 
-    //21 02 2018 14:02:13 El Archivo classes.php se ha modificado correctamente
+    //28 02 2018 16:02:40 El Archivo classes.php se ha modificado correctamente
 
     class adjuntos
     {
@@ -500,7 +500,7 @@
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_cheques()
                         {
-                              $sql_cheques = 'SELECT * FROM cheques';
+                              $sql_cheques = 'SELECT * FROM cheques ';
                               $result_cheques =mysql_query($sql_cheques);
                               return $result_cheques;
                         }
@@ -1081,9 +1081,9 @@
           //Inicio Funciones para Insertar datos
 
 
-                        function insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc)
+                        function insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad)
                         {
-                              $sql_cuentas_movimientos = 'INSERT INTO cuentas_movimientos (mcs_movimiento, mcs_debito, mcs_credito, ID_cue, mcd_fec, mcs_desc) VALUES ("'.$mcs_movimiento.'", "'.$mcs_debito.'", "'.$mcs_credito.'", "'.$ID_cue.'", "'.$mcd_fec.'", "'.$mcs_desc.'")'; 
+                              $sql_cuentas_movimientos = 'INSERT INTO cuentas_movimientos (mcs_movimiento, mcs_debito, mcs_credito, ID_cue, mcd_fec, mcs_desc, mdc_fecDisponibilidad) VALUES ("'.$mcs_movimiento.'", "'.$mcs_debito.'", "'.$mcs_credito.'", "'.$ID_cue.'", "'.$mcd_fec.'", "'.$mcs_desc.'", "'.$mdc_fecDisponibilidad.'")'; 
                               $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos );
                               return $result_cuentas_movimientos;
                         }
@@ -1092,10 +1092,10 @@
           //Inicio Funciones para Modificar datos
 
           //Inicio Funcion Modifica todos los datos por ID
-                        function update_cuentas_movimientosById($ID_mcs, $mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc)
+                        function update_cuentas_movimientosById($ID_mcs, $mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad)
 
                         {
-                              $sql_cuentas_movimientos = 'UPDATE cuentas_movimientos  SET mcs_movimiento = "'.$mcs_movimiento.'" , mcs_debito = "'.$mcs_debito.'" , mcs_credito = "'.$mcs_credito.'" , ID_cue = "'.$ID_cue.'" , mcd_fec = "'.$mcd_fec.'" , mcs_desc = "'.$mcs_desc.'"  WHERE ID_mcs='.$ID_mcs.' ';
+                              $sql_cuentas_movimientos = 'UPDATE cuentas_movimientos  SET mcs_movimiento = "'.$mcs_movimiento.'" , mcs_debito = "'.$mcs_debito.'" , mcs_credito = "'.$mcs_credito.'" , ID_cue = "'.$ID_cue.'" , mcd_fec = "'.$mcd_fec.'" , mcs_desc = "'.$mcs_desc.'" , mdc_fecDisponibilidad = "'.$mdc_fecDisponibilidad.'"  WHERE ID_mcs='.$ID_mcs.' ';
                               $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos );
                               return $result_cuentas_movimientos;
                         }
