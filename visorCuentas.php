@@ -11,7 +11,7 @@ include_once('inc/classesExclusivas.php');
   $cuentas_tipo = new cuentas_tipo;
   $cuentas_movimientosE  = new cuentas_movimientosE;
  
- $ID_cue=$_POST['ID_cue'];
+  $ID_cue=$_POST['ID_cue'];
 
   $reciveFecha=$_POST['fecha'];
   $fechaSinEspacios=str_replace(" ","",$reciveFecha);
@@ -58,7 +58,13 @@ include_once('inc/classesExclusivas.php');
                 <tbody>
                     <?php
 
-                        if ($ID_cue==0) 
+                      if ($_POST['extra']=='acreditacionesPendiente') 
+                      {
+                        $get_cuentas=$cuentas_movimientosE->get_cuentas_movimientosByFechaPendientes();
+                      }
+                      else
+                      {
+                          if ($ID_cue==0) 
                         {
                           $get_cuentas=$cuentas_movimientosE->get_cuentas_movimientosByFecha($fecDesde, $fecHasta);
                         }
@@ -66,6 +72,8 @@ include_once('inc/classesExclusivas.php');
                         {
                           $get_cuentas=$cuentas_movimientosE->get_cuentas_movimientosByIdCueByFecha($ID_cue, $fecDesde, $fecHasta);
                         }  
+                      }  
+                      
                           
                           $num_get_cuentas=mysql_num_rows($get_cuentas);
                           for ($CountCuentas=0; $CountCuentas < $num_get_cuentas; $CountCuentas++) 
@@ -73,6 +81,15 @@ include_once('inc/classesExclusivas.php');
                               $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
                               $ID_cue=$assoc_get_cuentas['ID_cue'];
                               $ID_mcs=$assoc_get_cuentas['ID_mcs'];
+
+                              if ($assoc_get_cuentas['mdc_fecDisponibilidad']=="") 
+                              {
+                                $mdc_fecDisponibilidad="";
+                              }
+                              else
+                              {
+                                $mdc_fecDisponibilidad="El monto estara disponible el dia".$assoc_get_cuentas['mdc_fecDisponibilidad'];
+                              }  
 
                               if ($assoc_get_cuentas['mcs_debito']==0) 
                               {
@@ -156,7 +173,7 @@ include_once('inc/classesExclusivas.php');
 
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Observación</label>
-                                                          <textarea class="form-control" name="mcs_desc" id="mcs_desc" form="CreateForm">'. $assoc_get_cuentas['mcs_desc'].'</textarea>
+                                                          <textarea class="form-control" name="mcs_desc" id="mcs_desc" form="CreateForm">'. $assoc_get_cuentas['mcs_desc'].' '.$mdc_fecDisponibilidad.'</textarea>
                                                         </div>
 
                                                          <button type="submit" class="btn btn-success" form="CreateForm"><i class="material-icons">save</i> GUARDAR</button>

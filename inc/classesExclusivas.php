@@ -107,7 +107,16 @@
     }
     class cuentas_movimientosE
     {	
-    					  function get_cuentas_movimientosByFecha($fecDesde, $fecHasta)
+
+                      function get_cuentas_movimientosByFechaPendientes()
+                        {
+                              $sql_cuentas_movimientos = 'SELECT * from cuentas_movimientos, cuentas where cuentas_movimientos.ID_cue=cuentas.ID_cue AND  DATE(mdc_fecDisponibilidad)>CURDATE() order by mdc_fecDisponibilidad DESC'; 
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
+                              return $result_cuentas_movimientos;
+                        }
+
+
+    					         function get_cuentas_movimientosByFecha($fecDesde, $fecHasta)
                         {
                               $sql_cuentas_movimientos = 'SELECT * from cuentas_movimientos, cuentas where cuentas_movimientos.ID_cue=cuentas.ID_cue AND mcd_fec BETWEEN "'.$fecDesde.'" AND "'.$fecHasta.'" order by mcd_fec DESC'; 
                               $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
@@ -124,6 +133,20 @@
                           function traeSaldo($ID_cue)
                         {
                               $sql_cuentas_movimientos = 'SELECT (SUM(mcs_credito)-SUM(mcs_debito)) AS saldo FROM cuentas_movimientos  WHERE ID_cue='.$ID_cue.' ' ; 
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
+                              return $result_cuentas_movimientos;
+                        }
+
+                          function traeSaldoDisponible($ID_cue)
+                        {
+                              $sql_cuentas_movimientos = 'SELECT (SUM(mcs_credito)-SUM(mcs_debito)) AS saldo FROM cuentas_movimientos  WHERE ID_cue='.$ID_cue.' AND DATE(mdc_fecDisponibilidad)<=CURDATE()' ; 
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
+                              return $result_cuentas_movimientos;
+                        }
+
+                          function traeSaldoPendiente($ID_cue)
+                        {
+                              $sql_cuentas_movimientos = 'SELECT (SUM(mcs_credito)-SUM(mcs_debito)) AS saldo FROM cuentas_movimientos  WHERE ID_cue='.$ID_cue.' AND DATE(mdc_fecDisponibilidad)>CURDATE()' ; 
                               $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
                               return $result_cuentas_movimientos;
                         }
@@ -971,6 +994,7 @@ class tarjetasE
                               $result_tarjetas =mysql_query($sql_tarjetas);
                               return $result_tarjetas;
                         }
+                      
    }
 //Inicio Trae la ultima caja por usuario
 	class tarjetas_planesE

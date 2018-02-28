@@ -111,19 +111,23 @@
          $assoc_get_cuentasBB=mysql_fetch_assoc($get_cuentasBB);
          $ID_cueBB=$assoc_get_cuentasBB['ID_cue'];
 
-         $traeSaldo=$cuentas_movimientosE->traeSaldo($ID_cueBB);
-         $assoc_traeSaldo=mysql_fetch_assoc($traeSaldo);
-          echo '<div class="col-md-2" style="text-align:center; font-size:100%;"><div class="alert alert-dismissible alert-success">
+         $traeSaldoDisponible=$cuentas_movimientosE->traeSaldoDisponible($ID_cueBB);
+         $assoc_traeSaldoDisponible=mysql_fetch_assoc($traeSaldoDisponible);
+
+         $traeSaldoPendiente=$cuentas_movimientosE->traeSaldoPendiente($ID_cueBB);
+         $assoc_traeSaldoPendiente=mysql_fetch_assoc($traeSaldoPendiente);
+          echo '<div class="col-md-2" style="text-align:left; font-size:90%;"><div class="alert alert-dismissible alert-success">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong><i class="material-icons">account_balance_wallet</i> '.$assoc_get_cuentasBB['cue_desc'].' <br> SALDO: $ '.$assoc_traeSaldo['saldo'].'</strong>
+            <strong><h5><i class="material-icons">account_balance_wallet</i> '.$assoc_get_cuentasBB['cue_desc'].'</h5> <hr> SALDO DISPONIBLE: $ '.$assoc_traeSaldoDisponible['saldo'].' <br> SALDO PENDIENTE: $ '.$assoc_traeSaldoPendiente['saldo'].'</strong>
           </div></div>';
       }
     
   ?>
 </div>  
 
-        <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
-            <div class='col-md-5' style='text-align: left;'>  
+        <div class='col-md-12' style="text-align: right; margin-bottom:  5%; margin-top:  1%;">
+
+            <div class='col-md-5' style='text-align: center;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Cuentas</legend>
                   <div class="form-group">
@@ -155,7 +159,7 @@
                   });
                   </script>
             </div>
-            <div class='col-md-5' style='text-align: left;'>  
+            <div class='col-md-5' style='text-align: center;'>  
                 <fieldset>
                   <legend><i class="material-icons">filter_list</i> Filtar por Fechas</legend>
                   <div class="form-group">
@@ -169,8 +173,12 @@
              
             </div>
             <div class='col-md-2'>
-              <button class='btn btn-success' data-placement='top' data-toggle='modal' data-target='#nuevoMovimiento'><i class='material-icons'>add</i> NUEVO MOVIMIENTO</button>
+            <div class='col-md-12' style='text-align: center;'>
+              <button style="margin-top: 10%; margin-bottom: : 10%; font-size: 12px;" class='btn btn-success' data-placement='top' data-toggle='modal' data-target='#nuevoMovimiento'><i class='material-icons'>add</i> NUEVO MOVIMIENTO</button>
             </div>  
+             <div class='col-md-12' style='text-align: center;'>
+              <button class='btn btn-info' id='acreditacionesPendientes' style="margin-top: 10%; margin-bottom: : 10%; font-size: 12px;"><i class="material-icons">update</i> ACREDITACIONES PENDIENTES</button>
+            </div> 
         </div> 
 		<div class='col-md-12' style="text-align: center;" id="suggestions">
 
@@ -220,9 +228,9 @@ $(function() {
 $ ('#reportrange').on('apply.daterangepicker', function (){
   var fecha = $('#reportrange').text();
   var ID_cue = $('#ID_cue').val();
-
-  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue;
-
+  var extra = 0;
+  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue + '&extra='+extra;
+ 
   $.ajax(
                                               {
                                                   type: 'POST',
@@ -240,7 +248,8 @@ $ ('#reportrange').on('apply.daterangepicker', function (){
 $ ('#ID_cue').change(function (){
   var fecha = $('#reportrange').text();
   var ID_cue = $('#ID_cue').val();
-  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue;
+  var extra = 0;
+  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue + '&extra='+extra;
   $.ajax(
                                               {
                                                   type: 'POST',
@@ -256,9 +265,30 @@ $ ('#ID_cue').change(function (){
 });
 
 $(document).ready(function(){
-   var fecha = $('#reportrange').text();
+  var fecha = $('#reportrange').text();
   var ID_cue ="0";
-  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue;
+  var extra = 0;
+  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue + '&extra='+extra;
+  $.ajax(
+                                              {
+                                                  type: 'POST',
+                                                  url: 'visorCuentas.php',
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $('#suggestions').fadeIn(1000).html(data);
+                                                      
+                                                   }
+
+                                               });
+});
+
+$('#acreditacionesPendientes').click(function(){
+  var fecha = $('#reportrange').text();
+  var ID_cue ="0";
+  var extra = "acreditacionesPendiente";
+  var dataString = 'fecha='+fecha + '&ID_cue='+ID_cue + '&extra='+extra;
+
   $.ajax(
                                               {
                                                   type: 'POST',
