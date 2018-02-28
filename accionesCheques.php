@@ -112,6 +112,31 @@ $cuentas_impuestos      = new cuentas_impuestos;
     $drop_chequesByche_num=$chequesE->drop_chequesByche_num($che_num);
                           
   }
+
+
+  if($action=="borrarChequeCarteraPorcheNumYDescontarCuenta")
+  {
+    
+    $che_num               = $_POST['che_num'];
+    $che_importe           = $_POST['che_importe'];
+    $cue_desc              = $_POST['cuentaSeleccionada'];
+    $tipoMovimeinto        = 2;
+    $ID_cue                = 1;
+      
+    $mcs_credito=0;
+    $mcs_debito=$che_importe;
+    
+    $mcs_movimiento     = 'ELIMINACIÓN DE CHEQUE DE TERCERO CREADO EN CARTERA';
+    $mcs_desc           = '';
+    $mcd_fec            = $fechaDeHoy;
+    $tipoMovimeinto     = 2;
+
+    $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc);
+
+    
+    $drop_chequesByche_num=$chequesE->drop_chequesByche_num($che_num);
+                          
+  }
   
   if($action=="nuevoCheque")
   {
@@ -222,7 +247,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
     {
       echo '<div class="alert alert-dismissible alert-success">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <strong><i class="material-icons">done_all</i> El cheque fue emitido correctamente correctamente</strong>
+              <strong><i class="material-icons">done_all</i> El cheque fue creado correctamente</strong>
             </div>';
     }      
     else
