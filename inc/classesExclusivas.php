@@ -221,6 +221,16 @@
                         }
            //Fin: Llama a todas las columnas de la tabla
 
+                              //Inicio: Llama a todas las columnas de la tabla
+                        function get_cuentasSinCheque()
+                        {
+                              $sql_cuentas = 'SELECT * FROM cuentas, cuentas_tipo WHERE cuentas.ID_ctp=cuentas_tipo.ID_ctp AND ID_cue<>1';
+                              $result_cuentas =mysql_query($sql_cuentas);
+                              return $result_cuentas;
+                        }
+           //Fin: Llama a todas las columnas de la tabla
+
+
 
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_cuentasById($ID_cue)
