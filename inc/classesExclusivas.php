@@ -106,7 +106,14 @@
 
     }
     class cuentas_movimientosE
-    {	
+    {	        
+
+                        function  get_cuentas_movimientos_ultimo()
+                        {
+                          $sql_cuentas_movimientos = 'SELECT * FROM cuentas_movimientos ORDER BY ID_mcs DESC LIMIT 1';
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
+                               return $result_cuentas_movimientos;
+                        }
 
                       function get_cuentas_movimientosByFechaPendientes()
                         {
@@ -202,12 +209,20 @@
     }                   
 	class cuentas_impuestosE
 	{
-		 				function get_cuentas_impuestosById($ID_cue)
+		 				            function get_cuentas_impuestosById($ID_cue)
                         {
                               $sql_cuentas_impuestos = 'SELECT * FROM cuentas_impuestos WHERE ID_cue='.$ID_cue.' ' ; 
                               $result_cuentas_impuestos =mysql_query($sql_cuentas_impuestos);
                               return $result_cuentas_impuestos;
                         }
+
+                        function  get_cuentas_impuestos_ultimo()
+                        {
+                          $sql_cuentas_impuestos = 'SELECT * FROM cuentas_impuestos ORDER BY ID_cti DESC LIMIT 1';
+                              $result_cuentas_impuestos =mysql_query($sql_cuentas_impuestos);
+                               return $result_cuentas_impuestos;
+                        }
+
 	}
 
 	class cuentasE

@@ -1,6 +1,6 @@
 <?php
 
-    //28 02 2018 16:02:40 El Archivo classes.php se ha modificado correctamente
+    //01 03 2018 20:03:20 El Archivo classes.php se ha modificado correctamente
 
     class adjuntos
     {

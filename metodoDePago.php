@@ -861,7 +861,6 @@
 									                              <div class="input-group">
 									                                <span class="input-group-addon">$</span>
 									                              <input type="text" name="che_importe_tarjetaH" id="che_importe_tarjetaH" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
-									                             
 									                          </div>
 									                        </div>';
 
@@ -1006,37 +1005,49 @@
 																								    	var montoTotalDD = $('#montoTotalH').val();
 																										var sumatoriaDD = parseInt(montoTotalDD) - parseInt(totalTarjeta);
 																										$('#montoTotalH').val(sumatoriaDD);
-																											 	$('#tarjetaDiv".$ID_pla."').remove();
+																										$('#tarjetaDiv".$ID_pla."').remove();
 
-
-																											 		var mcs_movimientoE 	='MOVIMIENTO ELIMINADO: COBRO DE COMPROBANTE CON TARJETA ".$assoc_get_tarjetas['tar_desc']."';
-																								    var mcs_descE 		= '".$assoc_result_tarjetas_planes['pla_desc']."';
-																								    var mcd_fecE 		= '".$FechayHora."';
-																								    var montoE 			= sumatoriaD;
-																								    var tipoMovimeintoE 	= 2; 
-																								    var actionE 			= 'nuevoMovimiento';
-
-																								   
+																										 	
+																										var ID_mcsE = $('#RespuestaIdMovCuenta').val();
+																								        var actionE = 'eliminaMovimiento';
 	
-																								    var dataStringE = 'action='+actionE 
-																								      + '&mcs_movimiento='+mcs_movimientoE 
-																								      + '&mcs_desc='+mcs_descE
-																								      + '&mcd_fec='+mcd_fecE 
-																								      + '&cuentaSeleccionada='+cuentaSeleccionadaE 
-																								      + '&monto='+montoE
-																								      + '&tipoMovimeinto='+tipoMovimeintoE
-																								      + '&mdc_fecDisponibilidad='+mdc_fecDisponibilidadE;
+																								    	var dataStringE = 'action='+actionE 
+																								      	+ '&ID_mcs='+ID_mcsE;
 	
-																								      $.ajax(
+																								      		$.ajax(
 																								            {
 																								              type: 'POST',
 																								              url: 'accionesCuentasMovimientos.php',
 																								              data: dataStringE,
 																								              success: function(dataE)
 																								              {
-																								                $('#suggestionsTarjeta').fadeIn(1000).html(dataE);
+																								                
 																								              }
 																								            });
+
+
+																								           var contador = $('#ContadorImpuestos').val();
+
+																										  for (x=1;x<=contador;x++)  // PASAR UN ID PARA BORRAR 
+																										  {        
+																									            var ID_mcsEE = $('#RespuestaIdMovCuenta'+x).val();
+																										        var actionEE = 'eliminaMovimiento';
+			
+																										    	var dataStringEE = 'action='+actionEE 
+																										      	+ '&ID_mcs='+ID_mcsEE;
+			
+																										      		$.ajax(
+																										            {
+																										              type: 'POST',
+																										              url: 'accionesCuentasMovimientos.php',
+																										              data: dataStringEE,
+																										              success: function(dataEE)
+																										              {
+																										                
+																										              }
+																										            });
+																								            
+																									      }	
 
 
 																											});				 	

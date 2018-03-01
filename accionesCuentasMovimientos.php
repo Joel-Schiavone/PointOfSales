@@ -24,6 +24,12 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
 <?php
 
+  if($action=="eliminaMovimiento")
+  {
+    $ID_mcs=$_POST['ID_mcs'];
+    $drop_cuentas_movimientosById=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcs);
+  }
+
   if($action=="nuevoMovimiento")
   {
 
@@ -74,7 +80,18 @@ $cuentas_impuestos      = new cuentas_impuestos;
         //SE INSERTA EL MOVIMIENTO ASOCIADO A LA CUENTA
         $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidad);
       }
+
+        if($_POST['cuentaSeleccionada'])
+        {
+           $get_cuentas_movimientos_ultimoB=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
+           $assoc_get_cuentas_movimientos_ultimoB=mysql_fetch_assoc($get_cuentas_movimientos_ultimoB);
+           $ID_mcsB=$assoc_get_cuentas_movimientos_ultimoB['ID_mcs'];
+           echo "<input type='text' value='".$ID_mcsB."' id='RespuestaIdMovCuenta".$insertaImpuestos."'>";
+        }
+
     }
+
+
 
     if ($_POST['tipoMovimeinto']==1) 
     {
@@ -109,9 +126,13 @@ $cuentas_impuestos      = new cuentas_impuestos;
     
     $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
-     if($_POST['cuentaSeleccionada'])
+    if($_POST['cuentaSeleccionada'])
     {
-       
+       $get_cuentas_movimientos_ultimo=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
+       $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);
+       $ID_mcs=$assoc_get_cuentas_movimientos_ultimo['ID_mcs'];
+       echo "<input type='text' value='".$num_get_cuentas_impuestosById."' id='ContadorImpuestos'>";
+       echo "<input type='text' value='".$ID_mcs."' id='RespuestaIdMovCuenta'>";
     }
     else
     {
