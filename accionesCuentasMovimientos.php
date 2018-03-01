@@ -35,7 +35,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
           $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
     }
     else
-    {
+    { 
           $ID_cue       = $_POST['ID_cue'];
     }  
 
@@ -88,9 +88,25 @@ $cuentas_impuestos      = new cuentas_impuestos;
     } 
 
     $mcs_movimiento               = $_POST['mcs_movimiento'];
-    $mcs_desc                     = $_POST['mcs_desc'];
+    
     $mcd_fec                      = $_POST['mcd_fec'];
-    $mdc_fecDisponibilidad        = $_POST['mcd_fec'];
+    if (@$_POST['mdc_fecDisponibilidad']) 
+    {
+          $dias           = $_POST['mdc_fecDisponibilidad'];
+          $fecha          = date('Y-m-j');
+          $nuevafechaA    = strtotime ( '+'.$dias.' day' , strtotime ( $fecha ) ) ;
+          $nuevafechaB    = date ( 'Y-m-j' , $nuevafechaA );
+          $nuevafecha     = $nuevafechaB. " 00:00:00";
+          $mdc_fecDisponibilidad  = $nuevafecha;
+          $mcs_desc                     = "$ ". $_POST['monto']." DISPONIBLES EN LA CUENTA A PARTIR DEL DIA: ".$nuevafecha;    
+
+    }
+    else
+    {
+      $mdc_fecDisponibilidad        = $_POST['mcd_fec'];
+      $mcs_desc                     = $_POST['mcs_desc'];
+    }  
+    
     $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
      if($_POST['cuentaSeleccionada'])

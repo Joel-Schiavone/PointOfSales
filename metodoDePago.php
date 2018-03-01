@@ -13,6 +13,7 @@
   $tipos_pagos        = new tipos_pagos;
   $tipos_pagosE       = new tipos_pagosE;
   $tarjetas           = new tarjetas;
+  $tarjetasE           = new tarjetasE;
   $tarjetas_planesE   = new tarjetas_planesE;
   $usuariosE          = new usuariosE;
   $tarjetas_planes    = new tarjetas_planes;
@@ -699,7 +700,8 @@
 
 												// INICIO DE CUERPO DE TARJETA  
 										 		echo '<div class="panel-body">';
-										 		
+										 			
+										 			echo '<div id="suggestionsTarjeta" style="display:none"></div>';
 										 		
 								                		// CUADRO SELECTOR DE CUENTAS
 		    									echo '<div class="form-group" style="margin:3%">';
@@ -844,6 +846,234 @@
 														</div>';
 				    						echo "</div>";		
 
+				    						// PAGOS ELECTRONICOS
+				    						  echo '<div class="alert alert-dismissible alert-info" id="pagosElectronicos" style="display:none;">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            <strong><H4>DISPONIBLES PROXIMAMENTE !</H4></strong>
+                                          	</div>';
+
+
+                                          	//CREDITO 
+                                          	 echo '<div class="col-md-12" id="TarjetasDiv" style="display:none;">'; 
+
+                                          	  			echo '<div class="form-group">
+									                              <label class="control-label"><i class="material-icons">monetization_on</i> IMPORTE</label>
+									                              <div class="input-group">
+									                                <span class="input-group-addon">$</span>
+									                              <input type="text" name="che_importe_tarjetaH" id="che_importe_tarjetaH" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+									                             
+									                          </div>
+									                        </div>';
+
+
+                                                            $get_tarjetas = $tarjetasE->get_tarjetas(); 
+                                                            $num_get_tarjetas = mysql_num_rows($get_tarjetas); 
+                                                            for ($tarjetasCount=0; $tarjetasCount < $num_get_tarjetas; $tarjetasCount++) 
+                                                            { 
+                                                               $assoc_get_tarjetas = mysql_fetch_assoc($get_tarjetas);  
+                                                               $ImagenTarjeta=$assoc_get_tarjetas['tar_logo']; 
+                                                              
+                                                            	
+                                                                echo "<div class='col-md-6' style='padding:2%;' id='MuestraTarjetas'>";
+                                                              	echo '<div class="panel panel-info" id="MuestraPlanes'.$assoc_get_tarjetas['ID_tar'].' style="display:none;">';
+																	  echo '<div class="panel-heading" style="cursor:pointer" id="headingTrjetas'.$assoc_get_tarjetas['ID_tar'].'">';
+																	    echo '<h2 class="panel-title"><img src="'.$ImagenTarjeta.'" style="width:10%;" id="tarjeta'.$assoc_get_tarjetas['ID_tar'].'"> <i class="material-icons">keyboard_arrow_right</i> '.$assoc_get_tarjetas['cue_desc'].'</h2>';
+																	  echo '</div>';
+																	  echo '<div class="panel-body" style="display:none" id="bodyTrjetas'.$assoc_get_tarjetas['ID_tar'].'">';
+
+                                                                        $ID_tar=$assoc_get_tarjetas['ID_tar']; 
+                                                                        $cue_desc=$assoc_get_tarjetas['cue_desc']; 
+                                                                          echo "<br>"; 
+                                                                             /*
+                                                                             echo $get_tarjetas_planesById = $tarjetas_planesE->get_tarjetas_planesById($ID_tar, $ven_total);
+                                                                              */
+
+                                                                             $getPlanesTarjetasByIdTar=$tarjetas_planesE->getPlanesTarjetasByIdTar($ID_tar);
+                                                                             $num_getPlanesTarjetasByIdTar=mysql_num_rows($getPlanesTarjetasByIdTar);
+
+                                                                             for ($countPlanes=0; $countPlanes <  $num_getPlanesTarjetasByIdTar; $countPlanes++) 
+                                                                             { 
+                                                                               $assoc_result_tarjetas_planes=mysql_fetch_assoc($getPlanesTarjetasByIdTar);
+                                                                               
+                                                                                $pla_cant=$assoc_result_tarjetas_planes['pla_cant'];
+                                                                                $recargo=$assoc_result_tarjetas_planes['pla_recargo'];
+                                                                                $ID_pla=$assoc_result_tarjetas_planes['ID_pla'];
+                                                                                
+                                                                                echo "<input hidden type='text' id='pla_cant".$ID_pla."' value='".$pla_cant."'>";
+                                                                                echo "<input hidden type='text' id='recargo".$ID_pla."' value='".$recargo."'>";
+                                                                                echo "<input hidden type='text' id='ID_pla".$ID_pla."' value='".$ID_pla."'>";
+
+                                                                                 echo "<div class='col-md-12' style='text-align:left;'>";
+                                                                                 echo '<div class="form-group" style="text-align:center;">
+															                              <label class="control-label"><h4>
+															                              <input class="custom-control custom-checkbox" type="radio" name="ID_pla" id="ID_pla'.$assoc_get_tarjetas['ID_tar'].''.$assoc_result_tarjetas_planes['ID_pla'].'" value="'.$assoc_result_tarjetas_planes['ID_pla'].'">
+                                                                                    '.$assoc_result_tarjetas_planes['pla_desc'].' (Recargo: '.$assoc_result_tarjetas_planes['pla_recargo'].'%)</h4></label>
+															                              </div>';
+
+
+						                                          	  			echo '<div class="form-group">
+															                              <label class="control-label"><i class="material-icons">monetization_on</i> INTERESES</label>
+															                              <div class="input-group">
+															                                <span class="input-group-addon">$</span>
+															                              <input readonly type="text" id="recargoEfectivo'.$ID_pla.'" placeholder="COLOQUE UN IMPORTE PARA QUE EL SISTEMA PUEDA CALCULAR INTERESES" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+															                          </div>
+															                        </div>';
+
+															                        echo '<div class="form-group">
+															                              <label class="control-label"><i class="material-icons">monetization_on</i> VALOR DE LA CUOTA</label>
+															                              <div class="input-group">
+															                                <span class="input-group-addon">$</span>
+															                              <input readonly type="text" id="valorCuota'.$ID_pla.'" placeholder="COLOQUE UN IMPORTE PARA QUE EL SISTEMA PUEDA CALCULAR LAS CUOTAS"  class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+															                          </div>
+															                        </div>';
+
+															                         echo '<div class="form-group">
+															                              <label class="control-label"><i class="material-icons">monetization_on</i> TOTAL A PAGAR</label>
+															                              <div class="input-group">
+															                                <span class="input-group-addon">$</span>
+															                              <input  readonly type="text" id="valorTotal'.$ID_pla.'" placeholder="COLOQUE UN IMPORTE PARA QUE EL SISTEMA PUEDA CALCULAR EL TOTAL"  class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
+															                          </div>
+															                        </div><hr>';
+
+                                                                                echo "</div>"; 
+
+                                                                                echo "<script>
+																					$('#che_importe_tarjetaH').keyup(function(){
+																						var importe  		= 	$('#che_importe_tarjetaH').val();
+																						var pla_cant 		=	'".$assoc_result_tarjetas_planes['pla_cant']."';
+					                                                                    var recargo  		=	'".$assoc_result_tarjetas_planes['pla_recargo']."';
+					                                                                    var ID_pla 			=	'".$assoc_result_tarjetas_planes['ID_pla']."';	
+
+																						var pagoTotalA 		= (parseInt(importe)*parseInt(recargo))/100;
+					                                                                    var pagoTotal    	= parseInt(pagoTotalA)+parseInt(importe);
+																						var valorDeCuota    = parseInt(pagoTotal)/parseInt(pla_cant);
+																							
+																						$('#recargoEfectivo".$ID_pla."').val(pagoTotalA);
+																						$('#valorTotal".$ID_pla."').val(pagoTotal);
+																						$('#valorCuota".$ID_pla."').val(valorDeCuota);
+																						
+																					});</script>";
+
+																					 echo "<script>
+																							 $('#ID_pla".$assoc_get_tarjetas['ID_tar']."".$assoc_result_tarjetas_planes['ID_pla']."').click(function(){
+																							 			
+																								 	var totalTarjeta = $('#valorTotal".$ID_pla."').val();
+																								 	
+																								 	var montoTotal = $('#montoTotalH').val();
+																								 
+																								 	var sumatoriaD = parseInt(montoTotal) + parseInt(totalTarjeta);
+	
+																								 	$('#montoTotalH').val(sumatoriaD);
+
+																								 	var cuentaSeleccionada = '".$cue_desc."';
+																								 		
+																									$('#MontoNuevoH').append('<div class=\'alert alert-dismissible alert-success\' id=\'tarjetaDiv".$ID_pla."\'><strong><img src=\'".$ImagenTarjeta."\' style=\'width:10%;\'> ".$cue_desc."</strong> $ '+sumatoriaD+' <button type=\'button\' id=\'eliminartarjeta".$ID_pla."\'>&times;</button></div>');	
+				    
+																							        $('#botonEfectivo').prop('disabled', false);
+
+																									var mcs_movimiento 	='COBRO DE COMPROBANTE CON TARJETA ".$assoc_get_tarjetas['tar_desc']."';
+																								    var mcs_desc 		= '".$assoc_result_tarjetas_planes['pla_desc']."';
+																								    var mcd_fec 		= '".$FechayHora."';
+																								    var monto 			= sumatoriaD;
+																								    var tipoMovimeinto 	= 1; 
+																								    var action 			= 'nuevoMovimiento';
+
+																								    var mdc_fecDisponibilidad = '".$assoc_result_tarjetas_planes['plan_tiempoAcre']."';
+	
+																								    var dataStringF = 'action='+action 
+																								      + '&mcs_movimiento='+mcs_movimiento 
+																								      + '&mcs_desc='+mcs_desc
+																								      + '&mcd_fec='+mcd_fec 
+																								      + '&cuentaSeleccionada='+cuentaSeleccionada 
+																								      + '&monto='+monto
+																								      + '&tipoMovimeinto='+tipoMovimeinto
+																								      + '&mdc_fecDisponibilidad='+mdc_fecDisponibilidad;
+	
+																								      $.ajax(
+																								            {
+																								              type: 'POST',
+																								              url: 'accionesCuentasMovimientos.php',
+																								              data: dataStringF,
+																								              success: function(dataF)
+																								              {
+																								                $('#suggestionsTarjeta').fadeIn(1000).html(dataF);
+																								              }
+																								            });
+
+
+																								     $('#eliminartarjeta".$ID_pla."').click(function(){
+																								      	$('#tarjetaDiv".$ID_pla."').remove();
+																								    	var montoTotalDD = $('#montoTotalH').val();
+																										var sumatoriaDD = parseInt(montoTotalDD) - parseInt(totalTarjeta);
+																										$('#montoTotalH').val(sumatoriaDD);
+																											 	$('#tarjetaDiv".$ID_pla."').remove();
+
+
+																											 		var mcs_movimientoE 	='MOVIMIENTO ELIMINADO: COBRO DE COMPROBANTE CON TARJETA ".$assoc_get_tarjetas['tar_desc']."';
+																								    var mcs_descE 		= '".$assoc_result_tarjetas_planes['pla_desc']."';
+																								    var mcd_fecE 		= '".$FechayHora."';
+																								    var montoE 			= sumatoriaD;
+																								    var tipoMovimeintoE 	= 2; 
+																								    var actionE 			= 'nuevoMovimiento';
+
+																								   
+	
+																								    var dataStringE = 'action='+actionE 
+																								      + '&mcs_movimiento='+mcs_movimientoE 
+																								      + '&mcs_desc='+mcs_descE
+																								      + '&mcd_fec='+mcd_fecE 
+																								      + '&cuentaSeleccionada='+cuentaSeleccionadaE 
+																								      + '&monto='+montoE
+																								      + '&tipoMovimeinto='+tipoMovimeintoE
+																								      + '&mdc_fecDisponibilidad='+mdc_fecDisponibilidadE;
+	
+																								      $.ajax(
+																								            {
+																								              type: 'POST',
+																								              url: 'accionesCuentasMovimientos.php',
+																								              data: dataStringE,
+																								              success: function(dataE)
+																								              {
+																								                $('#suggestionsTarjeta').fadeIn(1000).html(dataE);
+																								              }
+																								            });
+
+
+																											});				 	
+																							});
+
+
+																						</script>";
+
+                                                                             }
+
+
+                                                                             echo '<br><br><div id="EfectivoTarjeta'.$assoc_result_tarjetas_planes['ID_tar'].'" style="display:none; margin:3%;" class="input-group">
+                                                                              <span class="input-group-addon">Monto En Efectivo $</span>
+                                                                              <input type="text" name="efectivo" placeholder="00.00" class="form-control">
+                                                                          
+                                                                            </div>';
+
+                                                                             echo '<input hidden type="text" name="ID_tar" id="ID_tar" value="'.$assoc_get_tarjetas['ID_tar'].'">';
+                                                                              
+                                                                   echo "</div></div>";  
+
+                                                               echo "<script>
+                                                               $('#headingTrjetas".$assoc_get_tarjetas['ID_tar']."').click(function(){
+                                                                $('#bodyTrjetas".$assoc_get_tarjetas['ID_tar']."').toggle('slow');
+                                                               });
+
+																
+                                                               </script>";
+
+
+
+                                                                 echo "</div>";
+                                                            }
+
+                                                              
+                                                  echo '</div>'; 
+
 
 
 												// FIN TARJETA CUERPO	  
@@ -942,8 +1172,6 @@
 		      var ID_ban = $('#ID_ban').val();
 		      var che_librador = $('#librador').val();
 		      var che_estado = "EN CARTERA";
-		      var che_procedencia = "TERCERO";
-		      var che_num = $('#che_num').val()
 		      var che_beneficiario = $('#beneficiario').val()
 		      var dataString = 'action='+action 
 		      + '&cuentaSeleccionada='+cuentaSeleccionadaX 
@@ -1113,7 +1341,7 @@
 
 
 		$(document).ready(function(){
-			 var valorDeFormaDePago = $("#FormaDePago").val();
+			 					var valorDeFormaDePago = $("#FormaDePago").val();
                                         if(valorDeFormaDePago==1)
                                         {
                                           $('#montoAcobrar').fadeIn(500);
@@ -1121,10 +1349,9 @@
                                         else
                                         {
                                           $('#montoAcobrar').fadeOut(500);
-                                        }   
-
+                                        }  
                                       });
-			$("#FormaDePago").change(function(){
+									$("#FormaDePago").change(function(){
                                         var valorDeFormaDePago = $("#FormaDePago").val();
                                         if(valorDeFormaDePago==1)
                                         {
@@ -1134,17 +1361,33 @@
                                         {
                                           $('#montoAcobrar').fadeOut(500);
                                         }   
-
                                      
                                         if(valorDeFormaDePago==6)
                                         {
                                           $("#recibirChequeDeTercero").fadeIn(500);
-
                                         }
                                         else
                                         {
                                           $("#recibirChequeDeTercero").fadeOut(500);
-                                        }                                           
+                                        }     
+
+                                        if(valorDeFormaDePago==5)
+                                        {
+                                          $("#pagosElectronicos").fadeIn(500);
+                                        }
+                                        else
+                                        {
+                                          $("#pagosElectronicos").fadeOut(500);
+                                        }   
+
+                                        if(valorDeFormaDePago==3)
+                                        {
+                                          $("#TarjetasDiv").fadeIn(500);
+                                        }
+                                        else
+                                        {
+                                          $("#TarjetasDiv").fadeOut(500);
+                                        }                                  
 
                                       });
 	
@@ -1355,8 +1598,6 @@
 					      var che_importeXX = $('#montoBXX'+che_num).val();
 					      var cuentaSeleccionadaXX = $('#cuentaBXX'+che_num).val();
 
-		
-
 
 		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
 		    			var montoTotalBX = $('#montoTotal').val();
@@ -1389,8 +1630,7 @@
 	 });
 
 	
-</script>-->
-
+</script>
 
 		    <!--////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
