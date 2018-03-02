@@ -88,9 +88,12 @@
                         }
                          //Fin: Llama a todas las columnas de la tabla filtradas
 
-                     
-                       
-          		
+                        function get_cheques_ultimo()
+                        {
+                          $sql_cheques = 'SELECT * FROM cheques ORDER BY ID_che DESC LIMIT 1';
+                              $result_cheques =mysql_query($sql_cheques);
+                               return $result_cheques;
+                        }
                         
 	}
 
@@ -212,6 +215,13 @@
 		 				            function get_cuentas_impuestosById($ID_cue)
                         {
                               $sql_cuentas_impuestos = 'SELECT * FROM cuentas_impuestos WHERE ID_cue='.$ID_cue.' ' ; 
+                              $result_cuentas_impuestos =mysql_query($sql_cuentas_impuestos);
+                              return $result_cuentas_impuestos;
+                        }
+
+                         function get_cuentas_impuestosByIdDebito($ID_cue, $cti_credOdeb)
+                        {
+                              $sql_cuentas_impuestos = 'SELECT * FROM cuentas_impuestos WHERE ID_cue='.$ID_cue.' AND cti_credOdeb='.$cti_credOdeb.'' ; 
                               $result_cuentas_impuestos =mysql_query($sql_cuentas_impuestos);
                               return $result_cuentas_impuestos;
                         }

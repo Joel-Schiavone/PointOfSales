@@ -26,8 +26,42 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
   if($action=="eliminaMovimiento")
   {
-    $ID_mcs=$_POST['ID_mcs'];
-    $drop_cuentas_movimientosById=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcs);
+
+      $ID_mcs=$_POST['ID_mcs'];
+      $cuentaSeleccionada=$_POST['cuentaSeleccionada'];
+
+      if($_POST['ID_cue'])
+      {
+        $ID_cue=$_POST['ID_cue'];
+      }
+      else
+      {
+          $cue_desc               = $_POST['cuentaSeleccionada'];
+          $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
+          $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
+          $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
+      }  
+    // SE DINTINGUE SI EL MOVIMIENTO ES DEBITO O CREDITO PORQUE UNA CUENTA PUEDE TENER CONFIGURADO 3 DESCUENTO POR CREDITO Y 5 POR DEBITO ENTONCES AL MOMENTO DE ELIMINAR TENEMOS QUE SABER SI VAMOS A BORRAR PARA ATRAS 3 O 5.      
+    if ($_POST['tipoMovimiento']==1) 
+    {
+      $cti_credOdeb=1;
+      //BORRA MOVIMIENTOS
+      $drop_cuentas_movimientosById=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcs);
+      //BUSCA SI LA CUENTA DONDE SE EJECUTO EL MOVIMIENTO POSEE DESCUENTOS AUTOMATICOS
+      $get_cuentas_impuestosById=$cuentas_impuestosE->get_cuentas_impuestosByIdDebito($ID_cue, $cti_credOdeb);
+      if ($get_cuentas_impuestosById) 
+      {
+          $num_get_cuentas_impuestosById=mysql_num_rows($get_cuentas_impuestosById);
+          $ID_mcsRestado=$ID_mcs;
+          for ($eliminaImpuestos=0; $eliminaImpuestos < $num_get_cuentas_impuestosById; $eliminaImpuestos++) 
+          { 
+            $ID_mcsRestado=$ID_mcsRestado-1;
+            $drop_cuentas_movimientosByIdB=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcsRestado);
+           } 
+      }
+     
+    }
+    
   }
 
   if($action=="nuevoMovimiento")
@@ -81,17 +115,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
         $insert_cuentas_movimientosB   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimientoImpuesto, $mcs_debitoImpuesto, $mcs_creditoImpuesto, $ID_cueImpuesto, $mcd_fecImpuesto, $mcs_descImpuesto, $mdc_fecDisponibilidad);
       }
 
-        if($_POST['cuentaSeleccionada'])
-        {
-           $get_cuentas_movimientos_ultimoB=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
-           $assoc_get_cuentas_movimientos_ultimoB=mysql_fetch_assoc($get_cuentas_movimientos_ultimoB);
-           $ID_mcsB=$assoc_get_cuentas_movimientos_ultimoB['ID_mcs'];
-           echo "<input type='text' value='".$ID_mcsB."' id='RespuestaIdMovCuenta".$insertaImpuestos."'>";
-        }
-
     }
-
-
 
     if ($_POST['tipoMovimeinto']==1) 
     {
@@ -131,12 +155,11 @@ $cuentas_impuestos      = new cuentas_impuestos;
        $get_cuentas_movimientos_ultimo=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
        $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);
        $ID_mcs=$assoc_get_cuentas_movimientos_ultimo['ID_mcs'];
-       echo "<input type='text' value='".$num_get_cuentas_impuestosById."' id='ContadorImpuestos'>";
-       echo "<input type='text' value='".$ID_mcs."' id='RespuestaIdMovCuenta'>";
+       echo "<input hidden type='text' value='".$ID_mcs."' id='RespuestaIdMovCuenta'>";
     }
     else
     {
-          //REDIRECCIONA
+        //REDIRECCIONA
         echo '<script type="text/javascript">
         window.location.assign("cuentas.php?M=6");
         </script>';

@@ -734,8 +734,9 @@
 										  			echo '</div>';
 
 											echo "<hr>";
-
-											// CUADRO DE MONTO A COBRAR EN EFECTIVO
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// CUADRO DE MONTO A COBRAR EN EFECTIVO FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 											echo "<div class='col-md-6' id='montoAcobrar' style='display:none'>";
 		    										echo '<div class="panel panel-success" id="opcionEfectivoH">';
 											  				echo '<div class="panel-heading">';
@@ -771,10 +772,36 @@
 										  			echo '</div>';
 										  echo '</div>';
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// CUADRO CTA CTE FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+											echo "<div class='col-md-12' id='ctactecuadro' style='display:none'>";
+															echo '<div class="form-group">';
+																	echo '<div class="input-group">';
+																				    echo '<span class="input-group-addon">$</span>';
+																				    echo '<input type="text" class="form-control" id="totalctacte" placeholder="00.00" value="00.00">';
+																  			echo '</div>';
+																	echo '</div>';
+																
+		    									
+														 			echo '<div class="form-group">';
+																  			echo '<div class="input-group">';
+																				    echo '<span class="input-group-addon"><i class="material-icons" style="font-size:14px;">accessibility</i> <strong> CLIENTES </strong></span>';
+																				    echo '<input type="text" class="form-control" id="buscarCliente" placeholder="Ingrese nombre del cliente" value="">';
+																  			echo '</div>';
+																  	echo '</div>';
+
+																  			echo '<div class="col-md-12"  id="suggestionsClientes">';
+																  			echo '</div>';
+
+																  			echo '<button class="btn btn-primary" id="botonMontoCtaCte"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
+											  				
+										echo '</div>';		
 
 
-
-										  	// INICIO FORMULARIO PARA ACEPTAR CHEQUES	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// INICIO FORMULARIO PARA ACEPTAR CHEQUES	FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										echo "<div class='col-md-6' id='recibirChequeDeTercero' style='display:none'>";
 				    						echo '<div class="panel panel-success">';
 												  echo '<div class="panel-heading">';
@@ -846,14 +873,18 @@
 														</div>';
 				    						echo "</div>";		
 
-				    						// PAGOS ELECTRONICOS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// PAGOS ELECTRONICOS	FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////				    						
 				    						  echo '<div class="alert alert-dismissible alert-info" id="pagosElectronicos" style="display:none;">
                                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                             <strong><H4>DISPONIBLES PROXIMAMENTE !</H4></strong>
                                           	</div>';
 
 
-                                          	//CREDITO 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// CREDITOS FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                           	 echo '<div class="col-md-12" id="TarjetasDiv" style="display:none;">'; 
 
                                           	  			echo '<div class="form-group">
@@ -996,10 +1027,14 @@
 																								              success: function(dataF)
 																								              {
 																								                $('#suggestionsTarjeta').fadeIn(1000).html(dataF);
+
+																								                 var ID_mcsE = $('#RespuestaIdMovCuenta').val();
+																											      $('#MontoNuevoH').append('<input hidden type=\'text\' name=\'RespuestaIdMovCuenta".$ID_pla."\' id=\'RespuestaIdMovCuenta".$ID_pla."\' value='+ID_mcsE+'>');	
 																								              }
 																								            });
 
 
+	
 																								     $('#eliminartarjeta".$ID_pla."').click(function(){
 																								      	$('#tarjetaDiv".$ID_pla."').remove();
 																								    	var montoTotalDD = $('#montoTotalH').val();
@@ -1007,12 +1042,16 @@
 																										$('#montoTotalH').val(sumatoriaDD);
 																										$('#tarjetaDiv".$ID_pla."').remove();
 
-																										 	
-																										var ID_mcsE = $('#RespuestaIdMovCuenta').val();
-																								        var actionE = 'eliminaMovimiento';
+																										var ID_mcsE 			= $('#RespuestaIdMovCuenta".$ID_pla."').val();
+																										var cuentaSeleccionadaE = cuentaSeleccionada;
+																										var tipoMovimientoE 	= '1';
+																								        var actionE 			= 'eliminaMovimiento';
 	
 																								    	var dataStringE = 'action='+actionE 
-																								      	+ '&ID_mcs='+ID_mcsE;
+																								      	+ '&ID_mcs='+ID_mcsE
+																								      	+ '&cuentaSeleccionada='+cuentaSeleccionadaE
+																								      	+ '&tipoMovimiento='+tipoMovimientoE;
+
 	
 																								      		$.ajax(
 																								            {
@@ -1028,27 +1067,7 @@
 
 																								           var contador = $('#ContadorImpuestos').val();
 
-																										  for (x=1;x<=contador;x++)  // PASAR UN ID PARA BORRAR 
-																										  {        
-																									            var ID_mcsEE = $('#RespuestaIdMovCuenta'+x).val();
-																										        var actionEE = 'eliminaMovimiento';
-			
-																										    	var dataStringEE = 'action='+actionEE 
-																										      	+ '&ID_mcs='+ID_mcsEE;
-			
-																										      		$.ajax(
-																										            {
-																										              type: 'POST',
-																										              url: 'accionesCuentasMovimientos.php',
-																										              data: dataStringEE,
-																										              success: function(dataEE)
-																										              {
-																										                
-																										              }
-																										            });
-																								            
-																									      }	
-
+																									
 
 																											});				 	
 																							});
@@ -1097,7 +1116,9 @@
 
 							echo '</div>';
 
-							// INICIO DE TOTALES, CUADRO DE LA DERECHA FUERA DE LA TARJETA
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// INICIO DE TOTALES, CUADRO DE LA DERECHA FUERA DE LA TARJETA FLUJO VENTAS ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////							
 								echo "<div class='col-md-3'>";
 		    						echo "<div class='col-md-12' style='text-align:center'>";
 		    							echo '<div class="panel panel-primary">';
@@ -1125,16 +1146,23 @@
 
 		    		?>
 
-	    <!--////////////////////////////////////////////////////////////////////////////////////////////
+	  
+		    <!--////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    /////////////////////I N I C I O   S C R I P T  O T R O F L U J O //////////////////////////////
+		    /////////////////////I N I C I O   S C R I P T  F L U J O   V E N T A  /////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////-->
 	
 	<script type="text/javascript">
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// SCRIPT CHEQUE FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	 $(document).ready(function(){
         $('#che_tipo').change(function(){
 
@@ -1171,7 +1199,7 @@
 	 	$('#montoTotalH').val(sumatoria);
 	 	var cuentaSeleccionadaBX = "CHEQUE DE TERCERO Nº"+$('#che_num').val();
 	 	var cuentaSeleccionadaX = "CHEQUE EN CARTERA";
-
+	 	var che_num = $('#che_num').val();
 	 		 	//ejecuta replace para quitar todos los espacios del nombre de la cuenta y asi poder utilizarlo posteriormente como identificador de los div que se agregaran con la cuenta y el monto, el identificador se construira con la operatoria y el nombre de cuenta ejemplo: efecitvoBancoGalicia	
      	var cuentaSeleccionadaCX = cuentaSeleccionadaX.replace(/ /g,'');
 
@@ -1183,7 +1211,8 @@
 		      var ID_ban = $('#ID_ban').val();
 		      var che_librador = $('#librador').val();
 		      var che_estado = "EN CARTERA";
-		      var che_beneficiario = $('#beneficiario').val()
+		      var che_beneficiario = $('#beneficiario').val();
+		      var che_procedencia = "TERCERO";
 		      var dataString = 'action='+action 
 		      + '&cuentaSeleccionada='+cuentaSeleccionadaX 
 		      + '&che_importe='+che_importe
@@ -1203,32 +1232,44 @@
 		                                                      success: function(data)
 		                                                       {
 		                                                          $('#suggestionsTableH').fadeIn(1000).html(data);
+		                                                          var chequeAeliminar = $('#chequeeliminar').val();
+		                                                          $("#MontoNuevoH").append( "<input hidden type='text' name='cheque"+che_num+"Eliminado' id='cheque"+che_num+"Eliminado' value='"+chequeAeliminar+"'>");
+		                                                          var cuentaeliminar = $('#cuentaeliminar').val();
+		                                                          $("#MontoNuevoH").append( "<input hidden type='text' name='cuenta"+che_num+"Eliminado' id='cuenta"+che_num+"Eliminado' value='"+cuentaeliminar+"'>");
+
+	 	
 		                                                       }
 
 		                                                   });
 
 
 
-     	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-warning' id='nuevoChequeH"+cuentaSeleccionadaCX+"'><strong>" + cuentaSeleccionadaBX + "</strong> $ "+che_importe+"<br> Cuenta a Acreditar: " +cuentaSeleccionadaX+" <input hidden type='text' name='cuentaBXX"+che_num+"' id='cuentaBXX"+che_num+"' value='"+cuentaSeleccionadaX+"'><input hidden type='text' name='montoBXX"+che_num+"' id='montoBXX"+che_num+"' value='"+che_importe+"'><input hidden type='text' name='che_numXX"+che_num+"' id='che_numXX"+che_num+"' value='"+che_num+"'><button type='button' id='eliminarNuevoChequeH"+cuentaSeleccionadaCX+"'>&times;</button></div>");
+     	$("#MontoNuevoH").append( "<div class='alert alert-dismissible alert-warning' id='nuevoChequeH"+che_num+"'><strong>" + cuentaSeleccionadaBX + "</strong> $ "+che_importe+"<br> Cuenta a Acreditar: " +cuentaSeleccionadaX+" <input hidden type='text' name='cuentaBXX"+che_num+"' id='cuentaBXX"+che_num+"' value='"+cuentaSeleccionadaX+"'><input hidden type='text' name='montoBXX"+che_num+"' id='montoBXX"+che_num+"' value='"+che_importe+"'><input hidden type='text' name='che_numXX"+che_num+"' id='che_numXX"+che_num+"' value='"+che_num+"'><button type='button' id='eliminarNuevoChequeH"+che_num+"'>&times;</button></div>");
 	 	
 		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
-		      	 $('#eliminarNuevoChequeH'+cuentaSeleccionadaCX).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 	      var actionXX = "borrarChequeCarteraPorcheNumYDescontarCuenta";
-					      var che_numXX = $('#che_numXX'+che_num).val();
-					      var che_importeXX = $('#montoBXX'+che_num).val();
-					      var cuentaSeleccionadaXX = $('#cuentaBXX'+che_num).val();
-
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+		      	 $('#eliminarNuevoChequeH'+che_num).click(function(){
+		      	 		var che_importeXX = che_importe;
+		      	 		//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
 		    			var montoTotalBX = $('#montoTotalH').val();
 					 	var sumatoriaB = parseInt(montoTotalBX) - parseInt(che_importeXX);
 					 	$('#montoTotalH').val(sumatoriaB);
 
-				 	 	  var dataStringXX = 'action='+actionXX 
-					      + '&cuentaSeleccionada='+cuentaSeleccionadaXX 
-					      + '&che_importe='+che_importeXX
-					      + '&che_num='+che_numXX;
+					 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+		      	 		var ID_cheXX 				= $('#cheque'+che_num+'Eliminado').val();
+		      	 		var opcionVolverXX  		= "no";
+    					var opcionBorrarCuentaXX  	= "si";
+    					var cuentaSeleccionadaXX 	= cuentaSeleccionadaX;
+    					var tipoMovimientoXX 		= 1;
+    					var actionXX 				= "borrarCheque";
+    					var ID_mcsXX				= $('#cuenta'+che_num+'Eliminado').val();
 
+				 	 	var dataStringXX = 'action='+actionXX 
+				 	 	+ '&ID_che='+ID_cheXX 
+					    + '&opcionVolver='+opcionVolverXX 
+					    + '&opcionBorrarCuenta='+opcionBorrarCuentaXX 
+					    + '&cuentaSeleccionada='+cuentaSeleccionadaXX 
+					    + '&ID_mcs='+ID_mcsXX 
+					    + '&tipoMovimiento='+tipoMovimientoXX;
 
 				      	$.ajax(
 				                                                  {
@@ -1242,11 +1283,14 @@
 
 				                                                   });
 
-				      	$('#nuevoChequeH'+cuentaSeleccionadaCX).remove();
+				      	$('#nuevoChequeH'+che_num).remove();
 				 });
 
 	 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// SCRIPT EFECTIVO FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL EFECTIVO
 	 $('#botonEfectivoH').click(function(){
@@ -1350,6 +1394,127 @@
 
 	 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// SCRIPT CTA CTE FLUJO VENTA ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+$('#buscarCliente').keyup(function(){
+		var buscarClienteP = $('#buscarCliente').val();
+		var actionP = "listarClientes";
+		var dataStringP = 'action='+actionP + '&buscarCliente='+buscarClienteP;
+
+				      	$.ajax(
+				                                                  {
+				                                                      type: 'POST',
+				                                                      url: 'accionesCtaCte.php',
+				                                                      data: dataStringP,
+				                                                      success: function(dataP)
+				                                                       {
+				                                                         $('#suggestionsClientes').fadeIn(100).html(dataP);
+				                                                       }
+
+				                                                   });
+});
+
+
+
+		//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL MONTO
+	 $('#botonMontoCtaCte').click(function(){
+	 	alert('click');
+	 	//trae monto en efectivo puesto
+	 	var totalctacte = $('#totalctacte').val();
+	 	//trae monto total de sumatoria
+	 	var montoTotal = $('#montoTotalH').val();
+	 	//suma ambos monstos
+	 	var sumatoria = parseInt(montoTotal) + parseInt(totalctacte);
+	 	//coloca el resultado en el monto total de la sumatoria
+	 	$('#montoTotalH').val(sumatoria);
+	 	//trae la cuenta seleccionada
+	 	var cuentaSeleccionada = 2;  
+
+	 	var ID_cli=$('#ID_cli').val();
+
+	 	var cli_nombre=$('#cli_nombre').val();
+	 	
+		//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras
+	 	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-success' id='ctacte"+ID_cli+"'><strong> CUENTA MOROSOS </strong> $ "+totalctacte+" <button type='button' id='eliminarctacte"+ID_cli+"'>&times;</button></div>");
+
+
+	 		//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+			var mcs_movimiento 	="COBRO DE COMPROBANTE EN CTA CTE DE " + cli_nombre;
+		    var mcs_desc 		="";
+		    var mcd_fec 		="<?php echo $FechayHora;?>";
+		    var monto 			=totalctacte;
+		    var tipoMovimeinto 	=1; //Acredita
+		    var action 			="nuevoMovimiento";
+
+		    var dataString = 'action='+action 
+		      + '&mcs_movimiento='+mcs_movimiento 
+		      + '&mcs_desc='+mcs_desc
+		      + '&mcd_fec='+mcd_fec 
+		      + '&cuentaSeleccionada='+cuentaSeleccionada 
+		      + '&monto='+monto
+		      + '&tipoMovimeinto='+tipoMovimeinto;
+
+		      $.ajax(
+		                                                  {
+		                                                      type: 'POST',
+		                                                      url: 'accionesCuentasMovimientos.php',
+		                                                      data: dataString,
+		                                                      success: function(dataPP)
+		                                                       {
+		                                                           $('#suggestionsClientes').fadeIn(100).html(dataPP); 
+		                                                           var ID_mcsPP = $('#RespuestaIdMovCuenta').val();
+		                                                           $( "#MontoNuevoH" ).append( "<input type='text' name='RespuestaIdMovCuentaCtaCte"+ID_cli+"' id='RespuestaIdMovCuentaCtaCte"+ID_cli+"' value='"+ID_mcsPP+"'>");
+		                                                       }
+
+		                                                   });
+
+		      	
+		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
+		      	 $('#eliminarctacte'+ID_cli).click(function(){
+		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+		      	 	
+		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+		    			var montoTotalB = $('#montoTotalH').val();
+					 	var sumatoriaB = parseInt(montoTotalB)-parseInt(monto);
+					 	$('#montoTotalH').val(sumatoriaB);
+
+					 	var ID_mcsPPP = $('#RespuestaIdMovCuentaCtaCte'+ID_cli).val();
+					 	var ID_cuePPP = 2;
+					 	var actionPPP = "eliminaMovimiento";
+					 	var tipoMovimientoPP = 1;
+
+
+				 	 	var dataStringPPP = 'action='+actionPPP 
+		      			+ '&ID_cue='+ID_cuePPP 
+		      			+ '&ID_mcs='+ID_mcsPPP
+		      			+ '&tipoMovimiento='+tipoMovimientoPPP;
+		
+		      			$('#ctacte'+ID_cli).remove();
+				      	$.ajax(
+				                                                  {
+				                                                      type: 'POST',
+				                                                      url: 'accionesCuentasMovimientos.php',
+				                                                      data: dataStringPPP,
+				                                                      success: function(dataPPP)
+				                                                       {
+				                                                       	
+				                                                       }
+
+				                                                   });
+				 });
+
+	 });
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+										  	//////////////////////// SCRIPT OCULTA Y MUESTRA FORMAS DE COBRO FLUJO VENTAS///////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 		$(document).ready(function(){
 			 					var valorDeFormaDePago = $("#FormaDePago").val();
@@ -1366,38 +1531,47 @@
                                         var valorDeFormaDePago = $("#FormaDePago").val();
                                         if(valorDeFormaDePago==1)
                                         {
-                                          $('#montoAcobrar').fadeIn(500);
+                                          $('#montoAcobrar').fadeIn(100);
                                         }
                                         else
                                         {
-                                          $('#montoAcobrar').fadeOut(500);
+                                          $('#montoAcobrar').fadeOut(100);
+                                        }   
+
+                                         if(valorDeFormaDePago==2)
+                                        {
+                                          $('#ctactecuadro').fadeIn(100);
+                                        }
+                                        else
+                                        {
+                                          $('#ctactecuadro').fadeOut(100);
                                         }   
                                      
                                         if(valorDeFormaDePago==6)
                                         {
-                                          $("#recibirChequeDeTercero").fadeIn(500);
+                                          $("#recibirChequeDeTercero").fadeIn(100);
                                         }
                                         else
                                         {
-                                          $("#recibirChequeDeTercero").fadeOut(500);
+                                          $("#recibirChequeDeTercero").fadeOut(100);
                                         }     
 
                                         if(valorDeFormaDePago==5)
                                         {
-                                          $("#pagosElectronicos").fadeIn(500);
+                                          $("#pagosElectronicos").fadeIn(100);
                                         }
                                         else
                                         {
-                                          $("#pagosElectronicos").fadeOut(500);
+                                          $("#pagosElectronicos").fadeOut(100);
                                         }   
 
                                         if(valorDeFormaDePago==3)
                                         {
-                                          $("#TarjetasDiv").fadeIn(500);
+                                          $("#TarjetasDiv").fadeIn(100);
                                         }
                                         else
                                         {
-                                          $("#TarjetasDiv").fadeOut(500);
+                                          $("#TarjetasDiv").fadeOut(100);
                                         }                                  
 
                                       });
@@ -1408,10 +1582,10 @@
 	
 
 
-		    <!--////////////////////////////////////////////////////////////////////////////////////////////
+		<!--////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    /////////////////////I N I C I O   S C R I P T  F L U J O   V E N T A  /////////////////////////
+		    //////////////////// I N I C I O   S C R I P T  F L U J O   C O M P R A ////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1643,14 +1817,17 @@
 	
 </script>
 
-		    <!--////////////////////////////////////////////////////////////////////////////////////////////
+  <!--////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    //////////////////// I N I C I O   S C R I P T  F L U J O   C O M P R A ////////////////////////
+		    /////////////////////I N I C I O   S C R I P T  F L U J O   V E N T A  VIEJO/////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+		    
 
 
 
@@ -1865,3 +2042,12 @@
 	 });
 
 </script>-->
+
+  <!--////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    /////////////////////I N I C I O   S C R I P T  O T R O F L U J O //////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////-->

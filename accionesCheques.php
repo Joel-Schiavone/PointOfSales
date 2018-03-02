@@ -26,15 +26,73 @@ $cuentas_impuestos      = new cuentas_impuestos;
 <?php
 
   if($action=="borrarCheque")
-  {
-    
+  { 
+    //Borrar cheque se encarga de eliminar el cheque, recibe los siguientes valores:
+    //ID_che : Identificador del cheque a eliminar
+    //opcionVolver : Puede ser "si" o "no" dependiendo de si se quiere que la funcion lo redirija a otra pagina luego de ejecutarse o no haga nada que es util cuando se utiliza por ajax.
+    //opcionBorrarCuenta : Opcion de seleccionar si se desea eliminar la cuenta o no
+        //Solo si la opcionBorrarCuenta es si: ID_cue o  cuentaSeleccionada: Identificador de la cuenta que se desea eliminar o en su defecto el nombre de la misma y la funcion se encargara de buscar el id
+        //Solo si la opcionBorrarCuenta es si: tipoMovimiento: Para identificar si los descuentos que se van a eliminar correspondern al debito o al credito
+
     $ID_che               = $_POST['ID_che'];
-   
-    $drop_chequesById=$cheques->drop_chequesById($ID_che);
-    //REDIRECCIONA
+    $opcionVolver         = $_POST['opcionVolver'];
+    $opcionBorrarCuenta   = $_POST['opcionBorrarCuenta'];
+
+    if ($opcionBorrarCuenta=="si") 
+    {
+        $ID_mcs = $_POST['ID_mcs'];
+        if ($_POST['ID_cue']) 
+        {
+          $ID_cue=$_POST['ID_cue'];
+        }
+        else
+        {
+          $cuentaSeleccionada=$_POST['cuentaSeleccionada'];
+          $cue_desc               = $_POST['cuentaSeleccionada'];
+          $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
+          $assoc_get_cuentasByDesc= mysql_fetch_assoc($get_cuentasByDesc);
+          $ID_cue                 = $assoc_get_cuentasByDesc['ID_cue'];
+        }  
+            // SE DINTINGUE SI EL MOVIMIENTO ES DEBITO O CREDITO PORQUE UNA CUENTA PUEDE TENER CONFIGURADO 3 DESCUENTO POR CREDITO Y 5 POR DEBITO ENTONCES AL MOMENTO DE ELIMINAR TENEMOS QUE SABER SI VAMOS A BORRAR PARA ATRAS 3 O 5.      
+            if ($_POST['tipoMovimiento']==1) 
+            {
+              $cti_credOdeb=1;
+              //BORRA MOVIMIENTOS
+              $drop_cuentas_movimientosById=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcs);
+              //BUSCA SI LA CUENTA DONDE SE EJECUTO EL MOVIMIENTO POSEE DESCUENTOS AUTOMATICOS
+              $get_cuentas_impuestosById=$cuentas_impuestosE->get_cuentas_impuestosByIdDebito($ID_cue, $cti_credOdeb);
+              if ($get_cuentas_impuestosById) 
+              {
+                  $num_get_cuentas_impuestosById=mysql_num_rows($get_cuentas_impuestosById);
+                  $ID_mcsRestado=$ID_mcs;
+                  for ($eliminaImpuestos=0; $eliminaImpuestos < $num_get_cuentas_impuestosById; $eliminaImpuestos++) 
+                  { 
+                    $ID_mcsRestado=$ID_mcsRestado-1;
+                    $drop_cuentas_movimientosByIdB=$cuentas_movimientos->drop_cuentas_movimientosById($ID_mcsRestado);
+                   } 
+              }
+    }
+    else
+    {
+
+    }  
+     $drop_chequesById=$cheques->drop_chequesById($ID_che);
+    if($opcionVolver=="no")
+     {
+
+     } 
+     else
+     {
+        
+         //REDIRECCIONA
                                 echo '<script type="text/javascript">
                                 window.location.assign("cheques.php?M=8");
                                 </script>';
+     } 
+
+    
+     
+    }
   }
 
     if($action=="borrarChequeDebitadoPorcheNumYDescontarCuenta")
@@ -44,7 +102,8 @@ $cuentas_impuestos      = new cuentas_impuestos;
     $che_importe           = $_POST['che_importe'];
     $cue_desc              = $_POST['cuentaSeleccionada'];
     $tipoMovimeinto        =1;
-                
+    
+
                
     //A CONTINUACION COPIO LA ACCION NUEVOMOVIMIENTO DE ACCIONESCUENTASMOVIMIENTOS PORQUE NO ENCUENTRO FORMA DE ENLAZARLA
 
@@ -211,7 +270,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
       $mcs_debito       = 0;
       $mcs_credito      = $che_importe;
       $ID_cue           = 1;
-      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc$mdc_fecDisponibilidad);
+      $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
     }
 
     //SI EL ESTADO ES COBRADO RESTA EN LA CUENTA CHEQUES EN CARTERA Y SUMA EN LA CUENTA DE ID_CUE
@@ -247,6 +306,17 @@ $cuentas_impuestos      = new cuentas_impuestos;
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <strong><i class="material-icons">done_all</i> El cheque fue creado correctamente</strong>
             </div>';
+
+            $get_cheques_ultimo=$chequesE->get_cheques_ultimo();
+            $assoc_get_cheques_ultimo=mysql_fetch_assoc($get_cheques_ultimo);
+            $ID_che=$assoc_get_cheques_ultimo['ID_che'];
+
+            $get_cuentas_movimientos_ultimo=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
+            $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);
+            $ID_mcs=$assoc_get_cuentas_movimientos_ultimo['ID_mcs'];
+
+            echo "<input hidden type='text' name='chequeeliminar' id='chequeeliminar' value='".$ID_che."'>";
+            echo "<input hidden type='text' name='cuentaeliminar' id='cuentaeliminar' value='".$ID_mcs."'>";
     }      
     else
     {
