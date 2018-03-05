@@ -22,7 +22,8 @@
   $venta_detalleE     = new venta_detalleE;
   $puestosE           = new puestosE;
   $monto 					= 150;
-  $ID_fce 					= 1;
+  $montoLimite 				=$monto;
+  $ID_fce 					= 2;
   $FechayHora 				= date("Y-m-d H:i:s");
 
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -266,61 +267,16 @@
 							                                                      success: function(dataB)
 							                                                       {
 							                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
+
+							                                                          	 var ID_mcsB = $('#RespuestaIdMovCuenta').val();
+								                                                      	 var ID_cheB = $('#chequeeliminar').val();	
+																						$( '#MontoNuevo' ).append( '<input hidden type=\'text\' name=\'RespuestaIdMovCuentaChequeNuevoCompra".$ID_che."\' id=\'RespuestaIdMovCuentaChequeNuevoCompra".$ID_che."\' value='+ID_mcsB+'><input hidden type=\'text\' name=\'chequeeliminarCompra".$ID_che."\' id=\'chequeeliminarCompra".$ID_che."\' value='+ID_cheB+'>');	
 							                                                       }
 
 							                                                   });
 
 															}
-															if(estadoChequeSeleccion=='Seleccionado')
-															{
-																				var che_importe = ".$assoc_get_chequesE['che_importe'].";
-																 	var montoTotal = $('#montoTotal').val();
-																 	var sumatoria = parseInt(montoTotal) - parseInt(che_importe);
-																 	$('#montoTotal').val(sumatoria);
-
-																 	$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
-
-																 	var ID_che             ='".$ID_che."';
-																    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
-																    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
-																    var che_num            ='".$assoc_get_chequesE['che_num']."';
-																    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
-																    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
-																    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
-																    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
-																    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
-																    var che_estado         ='EN CARTERA';
-																    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
-																    var action 			   ='modificarCheque';
-																    var metodoDePago 	   ='si';
-
-																    	 var dataString = 'action='+action 
-																		      + '&ID_che='+ID_che 
-																		      + '&ID_ban='+ID_ban
-																		      + '&che_fecha='+che_fecha 
-																		      + '&che_num='+che_num 
-																		      + '&che_beneficiario='+che_beneficiario
-																		      + '&che_importe='+che_importe
-																		      + '&che_tipo='+che_tipo
-																		      + '&che_librador='+che_librador
-																		      + '&che_procedencia='+che_procedencia
-																		      + '&che_estado='+che_estado
-																		      + '&ID_cue='+ID_cue
-																		      + '&metodoDePago='+metodoDePago;
-																				$.ajax(
-								                                                  {
-								                                                      type: 'POST',
-								                                                      url: 'accionesCheques.php',
-								                                                      data: dataString,
-								                                                      success: function(dataB)
-								                                                       {
-								                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
-								                                                       }
-
-								                                                   });
-
-								                                                   $('#divCheque".$assoc_get_chequesE['ID_che']."').remove();
-															}
+															
 
 														$('#CancelarChequeTercero".$assoc_get_chequesE['ID_che']."').click(function(){
 
@@ -331,46 +287,67 @@
 
 																 	$('#ChequeSeleccion".$assoc_get_chequesE['ID_che']."').css('background-color', '#fff');
 
-																 	var ID_che             ='".$ID_che."';
-																    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
-																    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
-																    var che_num            ='".$assoc_get_chequesE['che_num']."';
-																    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
-																    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
-																    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
-																    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
-																    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
-																    var che_estado         ='EN CARTERA';
-																    var ID_cue             ='".$assoc_get_chequesE['ID_cue']."';
-																    var action 			   ='modificarCheque';
-																    var metodoDePago 	   ='si';
+																 	var ID_mcsC = $('#RespuestaIdMovCuentaChequeNuevoCompra".$ID_che."').val();
+																	var ID_cueC = 1;
+																	var actionC = 'eliminaMovimiento';
+																	var tipoMovimientoC = 1;
 
-																    	 var dataString = 'action='+action 
-																		      + '&ID_che='+ID_che 
-																		      + '&ID_ban='+ID_ban
-																		      + '&che_fecha='+che_fecha 
-																		      + '&che_num='+che_num 
-																		      + '&che_beneficiario='+che_beneficiario
-																		      + '&che_importe='+che_importe
-																		      + '&che_tipo='+che_tipo
-																		      + '&che_librador='+che_librador
-																		      + '&che_procedencia='+che_procedencia
-																		      + '&che_estado='+che_estado
-																		      + '&ID_cue='+ID_cue
-																		      + '&metodoDePago='+metodoDePago;
-																				$.ajax(
-								                                                  {
-								                                                      type: 'POST',
-								                                                      url: 'accionesCheques.php',
-								                                                      data: dataString,
-								                                                      success: function(dataB)
-								                                                       {
-								                                                          $('#suggestionsTableCheque').fadeIn(1000).html(dataB);
-								                                                       }
+																	var dataStringC = 'action='+actionC 
+																	+ '&ID_cue='+ID_cueC 
+																	+ '&ID_mcs='+ID_mcsC
+																	+ '&tipoMovimiento='+tipoMovimientoC;
+																											
 
-								                                                   });
+																	$.ajax(
+																		{
+																			type: 'POST',
+																			url: 'accionesCuentasMovimientos.php',
+																			data: dataStringC,
+																			success: function(dataC)
+																			{
+																													                                                       	
+																			}
 
-								                                                   $('#divCheque".$assoc_get_chequesE['ID_che']."').remove();
+																		});
+
+																var ID_che             ='".$ID_che."';
+															    var ID_ban             ='".$assoc_get_chequesE['ID_ban']."';
+															    var che_fecha          ='".$assoc_get_chequesE['che_fecha']."';
+															    var che_num            ='".$assoc_get_chequesE['che_num']."';
+															    var che_beneficiario   ='".$assoc_get_chequesE['che_beneficiario']."';
+															    var che_importe        ='".$assoc_get_chequesE['che_importe']."';
+															    var che_tipo           ='".$assoc_get_chequesE['che_tipo']."';
+															    var che_librador       ='".$assoc_get_chequesE['che_librador']."';
+															    var che_procedencia    ='".$assoc_get_chequesE['che_procedencia']."';
+															    var che_estado         ='EN CARTERA';
+															    var ID_cue             =$('#RespuestaIdMovCuentaChequeNuevoCompra".$ID_che."').val();
+															    var action 			   ='cambiarEstadoDeChequeAcartera';
+
+															    	 var dataStringCC = 'action='+action 
+																	      + '&ID_che='+ID_che 
+																	      + '&ID_ban='+ID_ban
+																	      + '&che_fecha='+che_fecha 
+																	      + '&che_num='+che_num 
+																	      + '&che_beneficiario='+che_beneficiario
+																	      + '&che_importe='+che_importe
+																	      + '&che_tipo='+che_tipo
+																	      + '&che_librador='+che_librador
+																	      + '&che_procedencia='+che_procedencia
+																	      + '&che_estado='+che_estado
+																	      + '&ID_cue='+ID_cue;
+																			$.ajax(
+							                                                  {
+							                                                      type: 'POST',
+							                                                      url: 'accionesCheques.php',
+							                                                      data: dataStringCC,
+							                                                      success: function(dataCC)
+							                                                       {
+
+							                                                       }
+
+							                                                   });
+
+								                                     $('#divCheque".$assoc_get_chequesE['ID_che']."').remove();
 					
 															});
 
@@ -465,7 +442,7 @@
 										  		echo '<div class="form-group">';
 													  echo '<div class="input-group">';
 													    echo '<span class="input-group-addon">$</span>';
-													     echo '<input class="form-control" type="text" id="montoTotal" value="00:00" placeholder="00.00">';
+													     echo '<input class="form-control" type="text" id="montoTotal" value="" placeholder="00.00">';
 													  echo '</div>';
 													echo '</div>';
 										    echo "<div id='MontoNuevo'></div>";
@@ -479,6 +456,7 @@
 
 		    			echo "</div>";	
 		    		}
+		 
 
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -490,185 +468,6 @@
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
 
 		    		elseif ($ID_fce==2) 
-		    		{
-		    			/*
-		    			echo '<div class="container-fluid">';
-						  		echo '<div class="col-md-12" style="text-align: center;">';
-						  			echo '<div class="alert alert-dismissible alert-info">';
-						  				echo '<h3><i class="material-icons">explore</i> Método de Cobro</h3>';
-						  			echo '</div>';
-						  		echo '</div>';
-						echo '</div>';
-
-						echo "<div class='container-fluid'>";
-						echo "<div class='col-md-12'>";
-
-							// INICIO DIV IZQUIERDA METODOS DE PAGOS
-		    					echo "<div class='col-md-9'>";
-
-		    							// INICIO DE TARJETA CABECERA
-		    							echo '<div class="panel panel-primary">';
-
-		    									//  TITULO DE CABECERA DE TARJETA
-												  echo '<div class="panel-heading">';
-												    echo '<h2 class="panel-title"><strong><i class="material-icons">touch_app</i> SELECCIONE CUENTAS PARA ACREDITAR</strong></h2>';
-												  echo '</div>';
-
-											// INICIO DE CUERPO DE TARJETA  
-										 	echo '<div class="panel-body">';
-
-										 		// CUADRO SELECTOR DE CUENTAS
-		    									echo '<div class="form-group" style="margin:3%">';
-										 			 echo '<div class="input-group">';
-														    echo '<span class="input-group-addon"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> CUENTA</span>';
-														    echo '<select class="form-control" id="cuentaSeleccionadaH">';
-														    		$get_cuentasH=$cuentasE->get_cuentas();
-														    		$num_get_cuentasH=mysql_num_rows($get_cuentasH);
-														    		for ($cuentCuentasH=0; $cuentCuentasH < $num_get_cuentasH; $cuentCuentasH++) 
-														    		{ 
-														    			$assoc_get_cuentasH=mysql_fetch_assoc($get_cuentasH);
-														    			echo "<option value='".$assoc_get_cuentasH['cue_desc']."'>".$assoc_get_cuentasH['cue_desc']." / ".$assoc_get_cuentasH['ctp_desc']."</option>";
-														    		}	
-														    echo '</select>';
-										  			echo '</div>';
-												echo '</div>';
-
-											echo "<hr>";
-
-											// CUADRO DE MONTO A COBRAR EN EFECTIVO
-											echo "<div class='col-md-6'>";
-		    										echo '<div class="panel panel-success" id="opcionEfectivoH">';
-											  				echo '<div class="panel-heading">';
-															    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> COMPLETAR EL MONTO A ACREDITAR</strong></h2>';
-															echo '</div>';
-													  		echo '<div class="panel-body">';
-													  				echo '<div class="form-group">';
-																  			echo '<div class="input-group">';
-																				    echo '<span class="input-group-addon">$</span>';
-																				    echo '<input type="text" class="form-control" id="totalEfectivoH" placeholder="00.00" value="00.00">';
-																  			echo '</div>';
-																	echo '</div>';
-														 			echo '<button class="btn btn-primary" id="botonEfectivoH"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
-															 		echo '<div id="suggestionsTableEfectivoH">';
-																	echo '</div>';
-											  				echo '</div>';
-										  			echo '</div>';
-										  echo '</div>';
-
-										// INICIO FORMULARIO PARA ACEPTAR CHEQUES	
-										echo "<div class='col-md-6' id='recibirChequeDeTercero' style='display:none'>";
-				    						echo '<div class="panel panel-success">';
-												  echo '<div class="panel-heading">';
-												    echo '<h2 class="panel-title"><strong><i class="material-icons">add_box</i> RECIBIR CHEQUE</strong></h2>';
-												  echo '</div>';
-												  echo '<div class="panel-body">';
-												    echo '<fieldset>
-									                        <input hidden name="action" value="nuevoCheque" type="text">
-									                            <label class="control-label"><i class="material-icons">account_balance</i> BANCO</label>
-									                            <div class="form-group">
-									                              <select class="form-control" id="ID_ban" name="ID_ban" required>';
-									                                $get_bancos=$bancos->get_bancos();
-									                                $num_get_bancos=mysql_num_rows($get_bancos);
-									                                for ($countBancos=0; $countBancos < $num_get_bancos; $countBancos++) 
-									                                { 
-									                                  $assoc_get_bancos=mysql_fetch_assoc($get_bancos);
-									                                  echo "<option value='".$assoc_get_bancos['ID_ban']."'>".$assoc_get_bancos['ban_desc']."</option>";
-									                                }
-									                        echo '</select></div>
-
-									                           <div class="form-group">
-									                              <label class="control-label"><i class="material-icons">monetization_on</i> IMPORTE</label>
-									                              <div class="input-group">
-									                                <span class="input-group-addon">$</span>
-									                              <input type="text" name="che_importe" id="che_importe_nuevoH" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
-									                          </div>
-									                        </div>
-
-									                         <div class="form-group">
-									                            <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
-									                            <input type="text" class="form-control" id="che_num" name="che_num" placeholder="" required>
-									                          </div>
-
-									                          <div class="form-group">
-									                            <label for="librador"><i class="material-icons">account_circle</i> LIBRADOR</label>
-									                            <input type="text" class="form-control" id="librador" name="che_librador" placeholder="Librador" required>
-									                          </div>
-
-									                                  <label class="control-label"><i class="material-icons">bookmark_border</i> TIPO</label>
-									                                    <div class="form-group">
-									                                      <select class="form-control" id="che_tipo" name="che_tipo">
-									                                        <option value="CRUZADOS">CRUZADOS</option>
-									                                        <option value="CERTIFICADO">CERTIFICADO</option>
-									                                        <option value="AL BENEFICIARIO">AL BENEFICIARIO</option>
-									                                        <option value="DE CAJA">DE CAJA</option>
-									                                        <option value="DE VENTANILLA">DE VENTANILLA</option>
-									                                        <option value="DE VIAJERO">DE VIAJERO</option>
-									                                        <option value="A LA ORDEN">A LA ORDEN</option>
-									                                      </select>
-									                                    </div>  
-
-									                        <div class="form-group" style="display:none;" id="beneficiario">
-									                            <label for="librador"><i class="material-icons">face</i> BENEFICIARIO</label>
-									                            <input type="text" class="form-control" id="che_beneficiario" name="che_beneficiario">
-									                          </div>
-
-									                            <div class="form-group">
-									                            <label for="librador"><i class="material-icons">date_range</i> FECHA</label>
-									                            <input type="date" class="form-control" id="fecha" name="che_fecha">
-									                          </div>
-
-									                          <div class="form-group">
-									                            <button class="btn btn-primary" id="botonChequeNuevoH"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
-												 			 echo '</div>
-												  			</fieldset>';
-															echo "<div id='suggestionsTableH'>";
-															echo "</div>";
-															echo '</div>
-														</div>';
-				    						echo "</div>";		
-
-									// FIN TARJETA CUERPO	  
-									echo '</div>';	
-
-								// FIN TARJETA 	  
-									echo '</div>';
-
-								// FIN DIV IZQUIERDA METODOS DE PAGOS	
-								echo '</div>';	  	
-
-							    // INICIO DE TOTALES, CUADRO DE LA DERECHA FUERA DE LA TARJETA
-								echo "<div class='col-md-3'>";
-		    						echo "<div class='col-md-12' style='text-align:center'>";
-		    							echo '<div class="panel panel-primary">';
-										  echo '<div class="panel-heading">';
-										    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> MONTO TOTAL A COBRAR: $ '.$monto.' </strong> </h2>';
-										  echo '</div>';
-										  echo '<div class="panel-body">';
-										  		echo '<div class="form-group">';
-													  echo '<div class="input-group">';
-													    echo '<span class="input-group-addon">$</span>';
-													     echo '<input class="form-control" type="text" id="montoTotalH" value="00.00" placeholder="00.00" readonly>';
-													  echo '</div>';
-													echo '</div>';
-										    echo "<div id='MontoNuevoH'></div>";
-										  echo '</div>';
-										  echo '<a href="comprobantes.php"><button style="margin:2%;" class="btn btn-success"><i class="material-icons">done_all</i> Finalizar Pago</button></a>';
-										echo '</div>';
-
-									echo "</div>";
-							echo "</div>";		
-		    			echo "</div>";
-						echo '</div>';			*/
-		    		}
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ///////////////////////////// 	  I N I C I O   O T R O  F L U J O   ///////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    		else 
 		    		{
 		    			//echo '<div class="alert alert-dismissible alert-danger">';
   							//echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
@@ -1135,6 +934,21 @@
 										    		}	
 
 
+  				 ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ///////////////////////////// 	  I N I C I O   O T R O  F L U J O   ///////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+		    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+		    		else 
+		    		{
+		    			
+		    		}
+
+
 		    		?>
 
 	  
@@ -1388,9 +1202,6 @@
 
 
 
-
-
-
 $('#buscarCliente').keyup(function(){
 		var buscarClienteP = $('#buscarCliente').val();
 		var actionP = "listarClientes";
@@ -1501,103 +1312,6 @@ $('#buscarCliente').keyup(function(){
 
 });
 
-	
-
-
-
-/*
-
-	
-
-		//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL MONTO
-	 $('#botonMontoCtaCte').click(function(){
-	 	//trae monto en efectivo puesto
-	 	var totalctacte = $('#totalctacte').val();
-	 	//trae monto total de sumatoria
-	 	var montoTotal = $('#montoTotalH').val();
-	 	//suma ambos monstos
-	 	var sumatoria = parseInt(montoTotal) + parseInt(totalctacte);
-	 	//coloca el resultado en el monto total de la sumatoria
-	 	$('#montoTotalH').val(sumatoria);
-	 	//trae la cuenta seleccionada
-	 	var cuentaSeleccionada = "MOROSOS";  
-
-	 	var ID_cli=$('#ID_cli').val();
-
-	 	var cli_nombre=$('#cli_nombre').val();
-	 	
-		//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras
-	 	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-success' id='ctacte"+ID_cli+"'><strong> CUENTA MOROSOS </strong> $ "+totalctacte+" <button type='button' id='eliminarctacte"+ID_cli+"'>&times;</button></div>");
-
-
-	 		//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-			var mcs_movimiento 	="COBRO DE COMPROBANTE EN CTA CTE DE " + cli_nombre;
-		    var mcs_desc 		="";
-		    var mcd_fec 		="<?php echo $FechayHora;?>";
-		    var monto 			=totalctacte;
-		    var tipoMovimeinto 	=1; //Acredita
-		    var action 			="nuevoMovimiento";
-
-		    var dataString = 'action='+action 
-		      + '&mcs_movimiento='+mcs_movimiento 
-		      + '&mcs_desc='+mcs_desc
-		      + '&mcd_fec='+mcd_fec 
-		      + '&cuentaSeleccionada='+cuentaSeleccionada 
-		      + '&monto='+monto
-		      + '&tipoMovimeinto='+tipoMovimeinto;
-
-		      $.ajax(
-		                                                  {
-		                                                      type: 'POST',
-		                                                      url: 'accionesCuentasMovimientos.php',
-		                                                      data: dataString,
-		                                                      success: function(dataPP)
-		                                                       {
-		                                                           $('#suggestionsClientes').fadeIn(100).html(dataPP); 
-		                                                           var ID_mcsPP = $('#RespuestaIdMovCuenta').val();
-		                                                           $( "#MontoNuevoH" ).append( "<input type='text' name='RespuestaIdMovCuentaCtaCte"+ID_cli+"' id='RespuestaIdMovCuentaCtaCte"+ID_cli+"' value='"+ID_mcsPP+"'>");
-		                                                       }
-
-		                                                   });
-
-		      	
-		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
-		      	 $('#eliminarctacte'+ID_cli).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 	
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
-		    			var montoTotalB = $('#montoTotalH').val();
-					 	var sumatoriaB = parseInt(montoTotalB)-parseInt(monto);
-					 	$('#montoTotalH').val(sumatoriaB);
-
-					 	var ID_mcsPPP = $('#RespuestaIdMovCuentaCtaCte'+ID_cli).val();
-					 	var ID_cuePPP = 2;
-					 	var actionPPP = "eliminaMovimiento";
-					 	var tipoMovimientoPP = 1;
-
-
-				 	 	var dataStringPPP = 'action='+actionPPP 
-		      			+ '&ID_cue='+ID_cuePPP 
-		      			+ '&ID_mcs='+ID_mcsPPP
-		      			+ '&tipoMovimiento='+tipoMovimientoPPP;
-		
-		      			$('#ctacte'+ID_cli).remove();
-				      	$.ajax(
-				                                                  {
-				                                                      type: 'POST',
-				                                                      url: 'accionesCuentasMovimientos.php',
-				                                                      data: dataStringPPP,
-				                                                      success: function(dataPPP)
-				                                                       {
-				                                                       	
-				                                                       }
-
-				                                                   });
-				 });
-
-	 });
-
-*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// SCRIPT OCULTA Y MUESTRA FORMAS DE COBRO FLUJO VENTAS///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1760,6 +1474,8 @@ $('#buscarCliente').keyup(function(){
 		                                                      success: function(dataC)
 		                                                       {
 		                                                          $('#suggestionsTableEfectivo').fadeIn(1000).html(dataC);
+				                                                      	 var ID_mcsC = $('#RespuestaIdMovCuenta').val();
+																		$( "#MontoNuevo" ).append( "<input hidden type='text' name='RespuestaIdMovCuentaEfectivoCompra"+cuentaSeleccionadaC+"' id='RespuestaIdMovCuentaEfectivoCompra"+cuentaSeleccionadaC+"' value='"+ID_mcsC+"'>");	
 		                                                       }
 
 		                                                   });
@@ -1767,47 +1483,39 @@ $('#buscarCliente').keyup(function(){
 		      	
 		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
 		      	 $('#eliminarEfectivo'+cuentaSeleccionadaC).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 		var cuentaB 		= $('#cuentaB').val();
-					    var montoB 			= $('#montoB').val();
-					    var actionB 		= "nuevoMovimiento";
-					    var mcs_movimientoB = "ELIMINACIÓN DE PAGO DE COMPROBANTE EN EFECTIVO";
-					    var mcs_descB 		= "";
-		    			var mcd_fecB 		= "<?php echo $FechayHora;?>";
-		    			var tipoMovimeintoB = 1;
+		      	 
 
 		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
 		    			var montoTotalB = $('#montoTotal').val();
 					 	var sumatoriaB = parseInt(montoTotalB) - parseInt(montoB);
 					 	$('#montoTotal').val(sumatoriaB);
 
+					 		    var ID_mcsC = $('#RespuestaIdMovCuentaEfectivoCompra'+cuentaSeleccionadaC).val();
+								var ID_cueC = 2;
+								var actionC = "eliminaMovimiento";
+								var tipoMovimientoC = 1;
 
-				 	 	var dataStringB = 'action='+actionB 
-		      			+ '&mcs_movimiento='+mcs_movimientoB 
-		      			+ '&mcs_desc='+mcs_descB
-		      			+ '&mcd_fec='+mcd_fecB 
-		      			+ '&cuentaSeleccionada='+cuentaB 
-		      			+ '&monto='+montoB
-		      			+ '&tipoMovimeinto='+tipoMovimeintoB;
+								var dataStringC = 'action='+actionC 
+								+ '&ID_cue='+ID_cueC 
+								+ '&ID_mcs='+ID_mcsC
+								+ '&tipoMovimiento='+tipoMovimientoC;
+																		
+
+								$.ajax(
+									{
+										type: 'POST',
+										url: 'accionesCuentasMovimientos.php',
+										data: dataStringC,
+										success: function(dataCC)
+										{
+																				                                                       	
+										}
+
+									});
+				 	 
 		
 		      			$('#efectivo'+cuentaSeleccionadaC).remove();
-				      	$.ajax(
-				                                                  {
-				                                                      type: 'POST',
-				                                                      url: 'accionesCuentasMovimientos.php',
-				                                                      data: dataStringB,
-				                                                      success: function(dataD)
-				                                                       {
-				                                                       	//vuelve a agregar a las opciones del selector de cuentas la cuenta que anteriormente habia quitado
-				                                                          $('#cuentaSeleccionada').append($('<option>', {
-																				    value: cuentaSeleccionada,
-																				    text: cuentaSeleccionada
-																				}));
-
-				                                                          
-				                                                       }
-
-				                                                   });
+				      	
 				 });
 
 	 });
@@ -1906,231 +1614,6 @@ $('#buscarCliente').keyup(function(){
 	
 </script>
 
-  <!--////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    /////////////////////I N I C I O   S C R I P T  F L U J O   V E N T A  VIEJO/////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////
-		    ////////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-		    
-
-
-
-<!-- SCRIPT DE EFECTIVO EN FLUJO COMPRAS -->
-<!--<script>
-	//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL EFECTIVO
-	 $('#botonEfectivoH').click(function(){
-	 	//trae monto en efectivo puesto
-	 	var totalEfectivo = $('#totalEfectivoH').val();
-	 	//trae monto total de sumatoria
-	 	var montoTotal = $('#montoTotalH').val();
-	 	//suma ambos monstos
-	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
-	 	//coloca el resultado en el monto total de la sumatoria
-	 	$('#montoTotalH').val(sumatoria);
-	 	//trae la cuenta seleccionada
-	 	var cuentaSeleccionada = $('#cuentaSeleccionadaH').val();
-	 		
-	 	//ejecuta replace para quitar todos los espacios del nombre de la cuenta y asi poder utilizarlo posteriormente como identificador de los div que se agregaran con la cuenta y el monto, el identificador se construira con la operatoria y el nombre de cuenta ejemplo: efecitvoBancoGalicia	
-	 	var cuentaSeleccionadaB = cuentaSeleccionada;
-     	var cuentaSeleccionadaC = cuentaSeleccionadaB.replace(/ /g,'');
-
-     	//quita del selector de cuentas la opcion de la cuenta seleccionada
-		$("#cuentaSeleccionadaH option[value='"+cuentaSeleccionada+"']").each(function() {
-		    $(this).remove();
-		});
-
-		//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras
-	 	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-success' id='efectivoH"+cuentaSeleccionadaC+"'><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+" <input hidden type='text' name='cuentaBH' id='cuentaBH' value='"+cuentaSeleccionada+"'><input hidden type='text' name='montoBH"+cuentaSeleccionadaC+"' id='montoBH"+cuentaSeleccionadaC+"' value='"+totalEfectivo+"'><input hidden type='text' name='actionBH' id='actionBH' value='volverAtrasMetodoDePago'><button type='button' id='eliminarEfectivoH"+cuentaSeleccionadaC+"'>&times;</button></div>");
-
-
-	 		//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-			var mcs_movimiento 	="COBRO DE COMPROBANTE EN EFECTIVO";
-		    var mcs_desc 		="";
-		    var mcd_fec 		="<?php echo $FechayHora;?>";
-		    var monto 			=totalEfectivo;
-		    var tipoMovimeinto 	=1; //Acredita
-		    var action 			="nuevoMovimiento";
-
-		    var dataString = 'action='+action 
-		      + '&mcs_movimiento='+mcs_movimiento 
-		      + '&mcs_desc='+mcs_desc
-		      + '&mcd_fec='+mcd_fec 
-		      + '&cuentaSeleccionada='+cuentaSeleccionada 
-		      + '&monto='+monto
-		      + '&tipoMovimeinto='+tipoMovimeinto;
-
-		      $.ajax(
-		                                                  {
-		                                                      type: 'POST',
-		                                                      url: 'accionesCuentasMovimientos.php',
-		                                                      data: dataString,
-		                                                      success: function(dataC)
-		                                                       {
-		                                                          $('#suggestionsTableEfectivo').fadeIn(1000).html(dataC);
-		                                                       }
-
-		                                                   });
-
-		      	
-		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
-		      	 $('#eliminarEfectivoH'+cuentaSeleccionadaC).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 		var cuentaB 		= $('#cuentaBH').val();
-					    var montoB 			= $('#montoBH'+cuentaSeleccionadaC).val();
-					    var actionB 		= "nuevoMovimiento";
-					    var mcs_movimientoB = "ELIMINACIÓN DE COBRO DE COMPROBANTE EN EFECTIVO";
-					    var mcs_descB 		= "";
-		    			var mcd_fecB 		= "<?php echo $FechayHora;?>";
-		    			var tipoMovimeintoB = 2;
-
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
-		    			var montoTotalB = $('#montoTotalH').val();
-					 	var sumatoriaB = parseInt(montoTotalB)-parseInt(montoB);
-					 	$('#montoTotalH').val(sumatoriaB);
-
-
-				 	 	var dataStringB = 'action='+actionB 
-		      			+ '&mcs_movimiento='+mcs_movimientoB 
-		      			+ '&mcs_desc='+mcs_descB
-		      			+ '&mcd_fec='+mcd_fecB 
-		      			+ '&cuentaSeleccionada='+cuentaB 
-		      			+ '&monto='+montoB
-		      			+ '&tipoMovimeinto='+tipoMovimeintoB;
-		
-		      			$('#efectivoH'+cuentaSeleccionadaC).remove();
-				      	$.ajax(
-				                                                  {
-				                                                      type: 'POST',
-				                                                      url: 'accionesCuentasMovimientos.php',
-				                                                      data: dataStringB,
-				                                                      success: function(dataH)
-				                                                       {
-				                                                       	//vuelve a agregar a las opciones del selector de cuentas la cuenta que anteriormente habia quitado
-				                                                          $('#cuentaSeleccionadaH').append($('<option>', {
-																				    value: cuentaSeleccionada,
-																				    text: cuentaSeleccionada
-																				}));
-
-				                                                          
-				                                                       }
-
-				                                                   });
-				 });
-
-	 });
-
-</script>		    
-
-
-<script type="text/javascript">
-
-	$('#cuentaSeleccionadaH').change(function(){
-	 	var cuentaSeleccionada = $('#cuentaSeleccionadaH').val();
-	 	if(cuentaSeleccionada=="CHEQUE EN CARTERA")
-	 	{
-	 		$('#recibirChequeDeTercero').fadeIn(500);
-	 		$('#opcionEfectivoH').fadeOut(500);
-	 	}
-	 	else
-	 	{
-	 		$('#opcionEfectivoH').fadeIn(500);
-	 		$('#recibirChequeDeTercero').fadeOut(500);
-	 	}	
-	 });
-
-
-	 $('#botonChequeNuevoH').click(function(){
-	 	//SUMA MONTO DEL CHEQUE NUEVO AL TOTAL
-	 	var che_importe = $('#che_importe_nuevoH').val();
-	 	var montoTotal = $('#montoTotalH').val();
-	 	var sumatoria = parseInt(montoTotal) + parseInt(che_importe);
-	 	$('#montoTotalH').val(sumatoria);
-	 	var cuentaSeleccionadaBX = "CHEQUE DE TERCERO Nº"+$('#che_num').val();
-	 	var cuentaSeleccionadaX = $('#cuentaSeleccionadaH').val();
-
-	 		 	//ejecuta replace para quitar todos los espacios del nombre de la cuenta y asi poder utilizarlo posteriormente como identificador de los div que se agregaran con la cuenta y el monto, el identificador se construira con la operatoria y el nombre de cuenta ejemplo: efecitvoBancoGalicia	
-     	var cuentaSeleccionadaCX = cuentaSeleccionadaX.replace(/ /g,'');
-
-
-	 		 // GUARDA CHEQUE EN LA TABLA DE CHEQUES COMO PROPIO DEBITADO
-	 		  var action = "nuevoCheque";
-		      var fecha = $('#fecha').val();
-		      var che_tipo = $('#che_tipo').val();
-		      var ID_ban = $('#ID_ban').val();
-		      var che_librador = $('#librador').val();
-		      var che_estado = "EN CARTERA";
-		      var che_procedencia = "TERCERO";
-		      var che_num = $('#che_num').val()
-		      var che_beneficiario = $('#beneficiario').val()
-		      var dataString = 'action='+action 
-		      + '&cuentaSeleccionada='+cuentaSeleccionadaX 
-		      + '&che_importe='+che_importe
-		      + '&che_fecha='+fecha 
-		      + '&che_tipo='+che_tipo 
-		      + '&ID_ban='+ID_ban
-		      + '&che_librador='+che_librador
-		      + '&che_estado_tercero='+che_estado
-		      + '&che_procedencia='+che_procedencia
-		      + '&che_num='+che_num
-		      + '&che_beneficiario='+che_beneficiario;
-		      $.ajax(
-		                                                  {
-		                                                      type: 'POST',
-		                                                      url: 'accionesCheques.php',
-		                                                      data: dataString,
-		                                                      success: function(data)
-		                                                       {
-		                                                          $('#suggestionsTableH').fadeIn(1000).html(data);
-		                                                       }
-
-		                                                   });
-
-
-
-     	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-warning' id='nuevoChequeH"+cuentaSeleccionadaCX+"'><strong>" + cuentaSeleccionadaBX + "</strong> $ "+che_importe+"<br> Cuenta a Acreditar: " +cuentaSeleccionadaX+" <input hidden type='text' name='cuentaBXX"+che_num+"' id='cuentaBXX"+che_num+"' value='"+cuentaSeleccionadaX+"'><input hidden type='text' name='montoBXX"+che_num+"' id='montoBXX"+che_num+"' value='"+che_importe+"'><input hidden type='text' name='che_numXX"+che_num+"' id='che_numXX"+che_num+"' value='"+che_num+"'><button type='button' id='eliminarNuevoChequeH"+cuentaSeleccionadaCX+"'>&times;</button></div>");
-	 	
-		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
-		      	 $('#eliminarNuevoChequeH'+cuentaSeleccionadaCX).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 	      var actionXX = "borrarChequeCarteraPorcheNumYDescontarCuenta";
-					      var che_numXX = $('#che_numXX'+che_num).val();
-					      var che_importeXX = $('#montoBXX'+che_num).val();
-					      var cuentaSeleccionadaXX = $('#cuentaBXX'+che_num).val();
-
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
-		    			var montoTotalBX = $('#montoTotalH').val();
-					 	var sumatoriaB = parseInt(montoTotalBX) - parseInt(che_importeXX);
-					 	$('#montoTotalH').val(sumatoriaB);
-
-				 	 	  var dataStringXX = 'action='+actionXX 
-					      + '&cuentaSeleccionada='+cuentaSeleccionadaXX 
-					      + '&che_importe='+che_importeXX
-					      + '&che_num='+che_numXX;
-
-
-				      	$.ajax(
-				                                                  {
-				                                                      type: 'POST',
-				                                                      url: 'accionesCheques.php',
-				                                                      data: dataStringXX,
-				                                                      success: function(dataH)
-				                                                       {
-				                                                       
-				                                                       }
-
-				                                                   });
-
-				      	$('#nuevoChequeH'+cuentaSeleccionadaCX).remove();
-				 });
-
-	 });
-
-</script>-->
 
   <!--////////////////////////////////////////////////////////////////////////////////////////////
 		    ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -365,6 +365,22 @@ $cuentas_impuestos      = new cuentas_impuestos;
                               
   }
 
+  if($action=="cambiarEstadoDeChequeAcartera")
+  {
+    $ID_che             =$_POST['ID_che'];
+    $ID_ban             =$_POST['ID_ban'];
+    $che_fecha          =$_POST['che_fecha'];
+    $che_num            =$_POST['che_num'];
+    $che_beneficiario   =$_POST['che_beneficiario'];
+    $che_importe        =$_POST['che_importe'];
+    $che_tipo           =$_POST['che_tipo'];
+    $che_librador       =$_POST['che_librador'];
+    $che_procedencia    =$_POST['che_procedencia'];
+    $che_estado         =$_POST['che_estado'];
+    $ID_cue             =$_POST['ID_cue'];
+     $update_chequesById=$cheques->update_chequesById($ID_che, $che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado);
+  }
+
   if($action=="modificarCheque")
   {
     $ID_che             =$_POST['ID_che'];
@@ -466,10 +482,16 @@ $cuentas_impuestos      = new cuentas_impuestos;
       
     }  
 
-        if ($_POST['metodoDePago']=='si') 
+    if ($_POST['metodoDePago']=="si") 
     {
-      
-    }      
+     
+
+              $get_cuentas_movimientos_ultimo=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
+              $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);
+              $ID_mcs=$assoc_get_cuentas_movimientos_ultimo['ID_mcs'];
+              echo "<input hidden type='text' value='".$ID_mcs."' id='RespuestaIdMovCuenta'>";
+              echo "<input hidden type='text' name='chequeeliminar' id='chequeeliminar' value='".$ID_che."'>";
+    }       
     else
     {
                               //REDIRECCIONA
