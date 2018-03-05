@@ -450,14 +450,14 @@
                                           var pdv_fecVencimiento        = reultadoData.split('/')[10];
 
                                           
-                                            if(tce_movcaja==0)
+                                          /*  if(tce_movcaja==0)
                                            {
                                              $('#buscaCuenta').fadeOut(100);
                                            }
                                            else
                                            {
                                              $('#buscaCuenta').fadeIn(100);
-                                           } 
+                                           } */
 
                                            if(tce_detalleArticulos==0)
                                            {
@@ -543,12 +543,13 @@
                   </div>   
               </div>
 
-               <div class='col-md-3' id='buscaCuenta' style="display: none;"> 
+               <!--<div class='col-md-3' id='buscaCuenta' style="display: none;"> 
                   <div class="form-group">
                         <label class="control-label" for="focusedInput"><i class="material-icons">account_balance_wallet</i> Cuenta </label>
                         <select name="ID_caja"  id='ID_caja'  class="selectpicker" data-live-search="true" required>
                           <option value='0'>Ninguno</option>
                                 <?php
+                                /*
                                   $get_cuentasB=$cuentas->get_cuentas();
                                   $num_get_cuentasB=mysql_num_rows($get_cuentasB);
                                   for ($countaget_cuentasB=0; $countaget_cuentasB < $num_get_cuentasB; $countaget_cuentasB++) 
@@ -558,10 +559,11 @@
                                     $cue_desc=$assoc_get_cuentasB['cue_desc'];
                                     echo "<option value='".$ID_cue."'>".$cue_desc."</option>";
                                   }
+                                  */
                                 ?>
                         </select> 
                   </div>   
-              </div>
+              </div>-->
 
               <?php 
 

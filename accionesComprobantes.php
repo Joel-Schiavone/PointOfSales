@@ -113,12 +113,12 @@ $bancos                = new bancos;
 
 
     //TRAE DETALLES DE LA CUENTA PARA ARMAR EL MENSAJE 
-        $get_cuentasById=$cuentasE->get_cuentasById($ID_caja);
-        $assoc_get_cuentasById=mysql_fetch_assoc($get_cuentasById);
+       // $get_cuentasById=$cuentasE->get_cuentasById($ID_caja);
+       // $assoc_get_cuentasById=mysql_fetch_assoc($get_cuentasById);
 
     //SI MUEVE CAJA 
 
-        if ($tce_movcaja==1) 
+        /*if ($tce_movcaja==1) 
         {
             $mcs_movimiento=$assoc_get_tipo_comprobantesById['tce_desc']." - ".$numeracionDeComprobante;
             $ID_cue=$ID_caja;
@@ -145,7 +145,7 @@ $bancos                = new bancos;
              //AGREGA CONTENIDO A LA ALERTA
              $MensajeDeAlertaCuenta='<li style="font-size: 15px;">Se '.$mesnaje_caja.' $'.$cte_monto.' a la cuenta '.$assoc_get_cuentasById['ctp_desc'].'-'.$assoc_get_cuentasById['cue_desc'].' </li>';
              
-        }
+        }*/
 
         //TRAE SUCURSAL, PARA ELLO TOMA EL ID DEL TIPO DE COMPROBANTE Y BUSCA TODOS LOS PUNTOS DE VENTAS QUE CONTENGAN ESE TIPO DE COMPROBANTE, LUEGO BUSCA TODOS LOS PUESTOS QUE CONTENGAN ESE PUNTO DE VENTA Y ESA CUENTA.
 
@@ -270,7 +270,26 @@ $bancos                = new bancos;
                         $insert_comprobantes_datos=$comprobantes_datos->insert_comprobantes_datos($ID_cte, $ID_usu, $cpd_fecha, $ID_pdv, $cpd_original, $cpd_copia);
                         $CREADOMODIFICADO="CREADO";
                          
-                 
+                    
+        if ($tce_movcaja==1) 
+        {
+            $monto=$cte_monto;
+            if ($fec_caja==1) 
+            {
+            //$cte_monto=$cte_monto;  
+            $ID_fce = 2;
+            }
+             else
+            {
+             $ID_fce = 1;
+            }
+                  //REDIRECCIONA
+                                echo '<script type="text/javascript">
+                                window.location.assign("metodoDePago.php?ID_fce='.$ID_fce.'&monto='.$monto.'");
+                               </script>';
+
+         }             
+
                  echo '<div class="container-fluid" id="contenedorDeAlerta">';
                              echo '<div class="alert alert-success">';
                               echo "<h4><i class='material-icons'>thumb_up</i> COMPROBANTE ".$assoc_get_tipo_comprobantesById['tce_desc']." - ".$numeracionDeComprobante." ".$CREADOMODIFICADO." CORRECTAMENTE </h4><hr>";
@@ -288,6 +307,8 @@ $bancos                = new bancos;
 
                               echo '</div>';
                              echo '</div>';
+
+
             
           }
 

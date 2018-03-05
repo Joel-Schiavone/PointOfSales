@@ -21,9 +21,9 @@
   $venta_detalle      = new venta_detalle;
   $venta_detalleE     = new venta_detalleE;
   $puestosE           = new puestosE;
-  $monto 					= 150;
+  $monto 					= $_GET['monto'];
   $montoLimite 				=$monto;
-  $ID_fce 					= 2;
+  $ID_fce 					= $_GET['ID_fce'];
   $FechayHora 				= date("Y-m-d H:i:s");
 
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
