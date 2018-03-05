@@ -22,7 +22,7 @@
   $venta_detalleE     = new venta_detalleE;
   $puestosE           = new puestosE;
   $monto 					= 150;
-  $ID_fce 					= 3;
+  $ID_fce 					= 1;
   $FechayHora 				= date("Y-m-d H:i:s");
 
 		    ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -447,7 +447,7 @@
 							                            <button class="btn btn-primary" id="botonChequeNuevo"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
 										  echo '</div></fieldset></div>';
 
-										  echo "<div id='suggestionsTable'>";
+										  echo "<div id='suggestionsChequeNuevoCompra'>";
 										  echo "</div>";
 										echo '</div>';
 		    					echo "</div>";
@@ -737,12 +737,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// CUADRO DE MONTO A COBRAR EN EFECTIVO FLUJO VENTA ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-											echo "<div class='col-md-6' id='montoAcobrar' style='display:none'>";
-		    										echo '<div class="panel panel-success" id="opcionEfectivoH">';
-											  				echo '<div class="panel-heading">';
-															    echo '<h2 class="panel-title"><strong><i class="material-icons">monetization_on</i> COMPLETAR EL MONTO A ACREDITAR</strong></h2>';
-															echo '</div>';
-													  		echo '<div class="panel-body">';
+											echo "<div class='col-md-12' id='montoAcobrar' style='display:none'>";
+		    										
+											  				echo '<div class="form-group">';
+																  			echo '<div class="input-group">';
+																				    echo '<span class="input-group-addon">$</span>';
+																				    echo '<input type="text" class="form-control" id="totalEfectivoH" placeholder="00.00" value="">';
+																  			echo '</div>';
+																	echo '</div>';
 
 													  		echo '<div class="form-group">';
 													  			 echo '<div class="input-group">';
@@ -759,17 +761,10 @@
 												  				echo '</div>';
 												  			echo '</div>';	
 
-													  				echo '<div class="form-group">';
-																  			echo '<div class="input-group">';
-																				    echo '<span class="input-group-addon">$</span>';
-																				    echo '<input type="text" class="form-control" id="totalEfectivoH" placeholder="00.00" value="00.00">';
-																  			echo '</div>';
-																	echo '</div>';
-														 			echo '<button class="btn btn-primary" id="botonEfectivoH"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
+													  				
+														 		
 															 		echo '<div id="suggestionsTableEfectivoH">';
 																	echo '</div>';
-											  				echo '</div>';
-										  			echo '</div>';
 										  echo '</div>';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -779,7 +774,7 @@
 															echo '<div class="form-group">';
 																	echo '<div class="input-group">';
 																				    echo '<span class="input-group-addon">$</span>';
-																				    echo '<input type="text" class="form-control" id="totalctacte" placeholder="00.00" value="00.00">';
+																				    echo '<input type="text" class="form-control" id="totalctacte" placeholder="00.00" value="">';
 																  			echo '</div>';
 																	echo '</div>';
 																
@@ -794,20 +789,18 @@
 																  			echo '<div class="col-md-12"  id="suggestionsClientes">';
 																  			echo '</div>';
 
-																  			echo '<button class="btn btn-primary" id="botonMontoCtaCte"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
+																  			
 											  				
 										echo '</div>';		
+
+
+										
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// INICIO FORMULARIO PARA ACEPTAR CHEQUES	FLUJO VENTA ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-										echo "<div class='col-md-6' id='recibirChequeDeTercero' style='display:none'>";
-				    						echo '<div class="panel panel-success">';
-												  echo '<div class="panel-heading">';
-												    echo '<h2 class="panel-title"><strong><i class="material-icons">add_box</i> RECIBIR CHEQUE</strong></h2>';
-												  echo '</div>';
-												  echo '<div class="panel-body">';
+										echo "<div class='col-md-12' id='recibirChequeDeTercero' style='display:none'>";
 												    echo '<fieldset>
 									                        <input hidden name="action" value="nuevoCheque" type="text">
 									                            <label class="control-label"><i class="material-icons">account_balance</i> BANCO</label>
@@ -869,8 +862,6 @@
 												  			</fieldset>';
 															echo "<div id='suggestionsTableH'>";
 															echo "</div>";
-															echo '</div>
-														</div>';
 				    						echo "</div>";		
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -888,7 +879,7 @@
                                           	 echo '<div class="col-md-12" id="TarjetasDiv" style="display:none;">'; 
 
                                           	  			echo '<div class="form-group">
-									                              <label class="control-label"><i class="material-icons">monetization_on</i> IMPORTE</label>
+									                             
 									                              <div class="input-group">
 									                                <span class="input-group-addon">$</span>
 									                              <input type="text" name="che_importe_tarjetaH" id="che_importe_tarjetaH" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="00.00" required>
@@ -1158,6 +1149,7 @@
 	
 	<script type="text/javascript">
 
+	
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// SCRIPT CHEQUE FLUJO VENTA ///////////////////////////
@@ -1291,9 +1283,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// SCRIPT EFECTIVO FLUJO VENTA ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
-			//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL EFECTIVO
-	 $('#botonEfectivoH').click(function(){
+
+	//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL EFECTIVO
+	 $('#cuentaSeleccionadaHH').change(function(){
 	 	//trae monto en efectivo puesto
 	 	var totalEfectivo = $('#totalEfectivoH').val();
 	 	//trae monto total de sumatoria
@@ -1309,13 +1303,15 @@
 	 	var cuentaSeleccionadaB = cuentaSeleccionada;
      	var cuentaSeleccionadaC = cuentaSeleccionadaB.replace(/ /g,'');
 
+     	
+
      	//quita del selector de cuentas la opcion de la cuenta seleccionada
 		$("#cuentaSeleccionadaHH option[value='"+cuentaSeleccionada+"']").each(function() {
 		    $(this).remove();
 		});
 
 		//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras
-	 	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-success' id='efectivoH"+cuentaSeleccionadaC+"'><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+" <input hidden type='text' name='cuentaBH' id='cuentaBH' value='"+cuentaSeleccionada+"'><input hidden type='text' name='montoBH"+cuentaSeleccionadaC+"' id='montoBH"+cuentaSeleccionadaC+"' value='"+totalEfectivo+"'><input hidden type='text' name='actionBH' id='actionBH' value='volverAtrasMetodoDePago'><button type='button' id='eliminarEfectivoH"+cuentaSeleccionadaC+"'>&times;</button></div>");
+	 	$( "#MontoNuevoH" ).append( "<div class='alert alert-dismissible alert-success' id='efectivoH"+cuentaSeleccionadaC+"'><strong>" + cuentaSeleccionada + "</strong> $ "+totalEfectivo+" <button type='button' id='eliminarEfectivoH"+cuentaSeleccionadaC+"'>&times;</button></div>");
 
 
 	 		//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
@@ -1326,77 +1322,72 @@
 		    var tipoMovimeinto 	=1; //Acredita
 		    var action 			="nuevoMovimiento";
 
-		    var dataString = 'action='+action 
+		    var dataStringPX = 'action='+action 
 		      + '&mcs_movimiento='+mcs_movimiento 
 		      + '&mcs_desc='+mcs_desc
 		      + '&mcd_fec='+mcd_fec 
 		      + '&cuentaSeleccionada='+cuentaSeleccionada 
 		      + '&monto='+monto
-		      + '&tipoMovimeinto='+tipoMovimeinto;
+		      + '&tipoMovimeinto='+tipoMovimeinto;		    
 
 		      $.ajax(
 		                                                  {
+																				    
 		                                                      type: 'POST',
 		                                                      url: 'accionesCuentasMovimientos.php',
-		                                                      data: dataString,
-		                                                      success: function(dataC)
+		                                                      data: dataStringPX,
+		                                                      success: function(dataPX)
 		                                                       {
-		                                                          $('#suggestionsTableEfectivo').fadeIn(1000).html(dataC);
+		                                                          $('#suggestionsTableEfectivoH').fadeIn(1000).html(dataPX);
+		                                                           var ID_mcsPPXX = $('#RespuestaIdMovCuenta').val();
+																   $( "#MontoNuevoH" ).append( "<input hidden type='text' name='RespuestaIdMovCuentaEfectivo"+cuentaSeleccionadaC+"' id='RespuestaIdMovCuentaEfectivo"+cuentaSeleccionadaC+"' value='"+ID_mcsPPXX+"'>");
 		                                                       }
 
 		                                                   });
 
-		      	
-		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
-		      	 $('#eliminarEfectivoH'+cuentaSeleccionadaC).click(function(){
-		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 		var cuentaB 		= $('#cuentaBH').val();
-					    var montoB 			= $('#montoBH'+cuentaSeleccionadaC).val();
-					    var actionB 		= "nuevoMovimiento";
-					    var mcs_movimientoB = "ELIMINACIÓN DE COBRO DE COMPROBANTE EN EFECTIVO";
-					    var mcs_descB 		= "";
-		    			var mcd_fecB 		= "<?php echo $FechayHora;?>";
-		    			var tipoMovimeintoB = 2;
-
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
-		    			var montoTotalB = $('#montoTotalH').val();
-					 	var sumatoriaB = parseInt(montoTotalB)-parseInt(montoB);
-					 	$('#montoTotalH').val(sumatoriaB);
-
-
-				 	 	var dataStringB = 'action='+actionB 
-		      			+ '&mcs_movimiento='+mcs_movimientoB 
-		      			+ '&mcs_desc='+mcs_descB
-		      			+ '&mcd_fec='+mcd_fecB 
-		      			+ '&cuentaSeleccionada='+cuentaB 
-		      			+ '&monto='+montoB
-		      			+ '&tipoMovimeinto='+tipoMovimeintoB;
 		
-		      			$('#efectivoH'+cuentaSeleccionadaC).remove();
-				      	$.ajax(
-				                                                  {
-				                                                      type: 'POST',
-				                                                      url: 'accionesCuentasMovimientos.php',
-				                                                      data: dataStringB,
-				                                                      success: function(dataH)
-				                                                       {
-				                                                       	//vuelve a agregar a las opciones del selector de cuentas la cuenta que anteriormente habia quitado
-				                                                          $('#cuentaSeleccionadaHH').append($('<option>', {
-																				    value: cuentaSeleccionada,
-																				    text: cuentaSeleccionada
-																				}));
+		      	 		      //dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
+							 $('#eliminarEfectivoH'+cuentaSeleccionadaC).click(function(){
+							  //prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+																		      	 	
+							//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+								var montoTotalB = $('#montoTotalH').val();
+								var sumatoriaB = parseInt(montoTotalB)-parseInt(monto);
+								$('#montoTotalH').val(sumatoriaB);
 
-				                                                          
-				                                                       }
+								var ID_mcsPX = $('#RespuestaIdMovCuentaEfectivo'+cuentaSeleccionadaC).val();
+								var ID_cuePX = 2;
+								var actionPX = "eliminaMovimiento";
+								var tipoMovimientoPX = 1;
 
-				                                                   });
-				 });
+								var dataStringPX = 'action='+actionPX 
+								+ '&ID_cue='+ID_cuePX 
+								+ '&ID_mcs='+ID_mcsPX
+								+ '&tipoMovimiento='+tipoMovimientoPX;
+																		
+								$('#efectivoH'+cuentaSeleccionadaC).remove();
+
+								$.ajax(
+									{
+										type: 'POST',
+										url: 'accionesCuentasMovimientos.php',
+										data: dataStringPX,
+										success: function(dataPX)
+										{
+																				                                                       	
+										}
+
+									});
+							});
 
 	 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// SCRIPT CTA CTE FLUJO VENTA ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 
@@ -1413,16 +1404,113 @@ $('#buscarCliente').keyup(function(){
 				                                                      success: function(dataP)
 				                                                       {
 				                                                         $('#suggestionsClientes').fadeIn(100).html(dataP);
+				                                                       		$('#mostradorDeDatosDeCliente').click(function(){
+																				var clienteSeleccionadoB = $('#clienteSeleccionadoB').val();
+																				
+																				$('#MontoNuevoH').append('<input hidden type="text" id="clienteSeleccionadoC" name="clienteSeleccionadoC" value='+clienteSeleccionadoB+'>');	
+
+																				//trae monto en efectivo puesto
+																			 	var totalctacte = $('#totalctacte').val();
+																			 	//trae monto total de sumatoria
+																			 	var montoTotal = $('#montoTotalH').val();
+																			 	//suma ambos monstos
+																			 	var sumatoria = parseInt(montoTotal) + parseInt(totalctacte);
+																			 	//coloca el resultado en el monto total de la sumatoria
+																			 	$('#montoTotalH').val(sumatoria);
+																			 	//trae la cuenta seleccionada
+																			 	var cuentaSeleccionada = "MOROSOS";  
+
+																			 	var ID_cli=clienteSeleccionadoB;
+
+																			 	var nombreDeCliente = $('#clienteNombre').val();
+
+																				//agrega a los resultados un div nuevo con el detalle y el monto y la posibiliad de volver el proceso atras 
+
+																			 	$( "#MontoNuevoH").append( "<div class='alert alert-dismissible alert-success' id='ctacte"+ID_cli+"'><strong> CUENTA MOROSOS: "+nombreDeCliente+" </strong> $ "+totalctacte+" <button type='button' id='eliminarctacte"+ID_cli+"'>&times;</button></div>");
+
+																			 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+																				var mcs_movimiento 	="COBRO DE COMPROBANTE EN CTA CTE DE " + nombreDeCliente;
+																			    var mcs_desc 		="";
+																			    var mcd_fec 		="<?php echo $FechayHora;?>";
+																			    var monto 			=totalctacte;
+																			    var tipoMovimeinto 	=1; //Acredita
+																			    var action 			="nuevoMovimiento";
+
+																			    var dataString = 'action='+action 
+																			      + '&mcs_movimiento='+mcs_movimiento 
+																			      + '&mcs_desc='+mcs_desc
+																			      + '&mcd_fec='+mcd_fec 
+																			      + '&cuentaSeleccionada='+cuentaSeleccionada 
+																			      + '&monto='+monto
+																			      + '&tipoMovimeinto='+tipoMovimeinto;
+
+																			      $.ajax(
+																			                                                  {
+																			                                                      type: 'POST',
+																			                                                      url: 'accionesCuentasMovimientos.php',
+																			                                                      data: dataString,
+																			                                                      success: function(dataPP)
+																			                                                       {
+																			                                                           $('#suggestionsClientes').fadeIn(100).html(dataPP); 
+																			                                                           var ID_mcsPP = $('#RespuestaIdMovCuenta').val();
+																			                                                           $( "#MontoNuevoH" ).append( "<input hidden type='text' name='RespuestaIdMovCuentaCtaCte"+ID_cli+"' id='RespuestaIdMovCuentaCtaCte"+ID_cli+"' value='"+ID_mcsPP+"'>");
+																			                                                       }
+
+																			                                                   });
+																			      //dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
+																			       $('#eliminarctacte'+ID_cli).click(function(){
+																		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
+																		      	 	
+																		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
+																		    			var montoTotalB = $('#montoTotalH').val();
+																					 	var sumatoriaB = parseInt(montoTotalB)-parseInt(monto);
+																					 	$('#montoTotalH').val(sumatoriaB);
+
+																					 	var ID_mcsPPP = $('#RespuestaIdMovCuentaCtaCte'+ID_cli).val();
+																					 	var ID_cuePPP = 2;
+																					 	var actionPPP = "eliminaMovimiento";
+																					 	var tipoMovimientoPPP = 1;
+
+
+																				 	 	var dataStringPPP = 'action='+actionPPP 
+																		      			+ '&ID_cue='+ID_cuePPP 
+																		      			+ '&ID_mcs='+ID_mcsPPP
+																		      			+ '&tipoMovimiento='+tipoMovimientoPPP;
+																		
+																		      			$('#ctacte'+ID_cli).remove();
+																				      	$.ajax(
+																				                                                  {
+																				                                                      type: 'POST',
+																				                                                      url: 'accionesCuentasMovimientos.php',
+																				                                                      data: dataStringPPP,
+																				                                                      success: function(dataPPP)
+																				                                                       {
+																				                                                       	
+																				                                                       }
+
+																				                                                   });
+																				 });
+																			});	
+
+																			
+																		      	
 				                                                       }
 
 				                                                   });
+
+
 });
 
+	
 
+
+
+/*
+
+	
 
 		//AL PRESIONAR EL BOTON DE AGREGAR AL TOTAL EL MONTO
 	 $('#botonMontoCtaCte').click(function(){
-	 	alert('click');
 	 	//trae monto en efectivo puesto
 	 	var totalctacte = $('#totalctacte').val();
 	 	//trae monto total de sumatoria
@@ -1432,7 +1520,7 @@ $('#buscarCliente').keyup(function(){
 	 	//coloca el resultado en el monto total de la sumatoria
 	 	$('#montoTotalH').val(sumatoria);
 	 	//trae la cuenta seleccionada
-	 	var cuentaSeleccionada = 2;  
+	 	var cuentaSeleccionada = "MOROSOS";  
 
 	 	var ID_cli=$('#ID_cli').val();
 
@@ -1509,7 +1597,7 @@ $('#buscarCliente').keyup(function(){
 
 	 });
 
-
+*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										  	//////////////////////// SCRIPT OCULTA Y MUESTRA FORMAS DE COBRO FLUJO VENTAS///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1766,7 +1854,10 @@ $('#buscarCliente').keyup(function(){
 		                                                      data: dataString,
 		                                                      success: function(data)
 		                                                       {
-		                                                          $('#suggestionsTable').fadeIn(1000).html(data);
+		                                                          	 $('#suggestionsChequeNuevoCompra').fadeIn(100).html(data); 
+				                                                      	 var ID_mcsD = $('#RespuestaIdMovCuenta').val();
+				                                                      	 var ID_cheD = $('#chequeeliminar').val();	
+																		$( "#MontoNuevo" ).append( "<input hidden type='text' name='RespuestaIdMovCuentaChequeNuevoCompra"+che_num+"' id='RespuestaIdMovCuentaChequeNuevoCompra"+che_num+"' value='"+ID_mcsD+"'><input  hidden type='text' name='chequeeliminar"+che_num+"' id='chequeeliminar"+che_num+"' value='"+ID_cheD+"'>");	
 		                                                       }
 
 		                                                   });
@@ -1778,39 +1869,37 @@ $('#buscarCliente').keyup(function(){
 		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
 		      	 $('#eliminarNuevoCheque'+cuentaSeleccionadaCX).click(function(){
 		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-		      	 	      var actionXX = "borrarChequeDebitadoPorcheNumYDescontarCuenta";
-					      var che_numXX = $('#che_numXX'+che_num).val();
-					      var che_importeXX = $('#montoBXX'+che_num).val();
-					      var cuentaSeleccionadaXX = $('#cuentaBXX'+che_num).val();
+		      	 	    var ID_cheXX 				= $('#chequeeliminar'+che_num).val();
+		      	 		var opcionVolverXX  		= "no";
+    					var opcionBorrarCuentaXX  	= "si";
+    					var cuentaSeleccionadaXX 	= cuentaSeleccionadaX;
+    					var tipoMovimientoXX 		= 1;
+    					var actionXX 				= "borrarCheque";
+    					var ID_mcsXX				= $('#RespuestaIdMovCuentaChequeNuevoCompra'+che_num).val();
 
-
-		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
-		    			var montoTotalBX = $('#montoTotal').val();
-					 	var sumatoriaB = parseInt(montoTotalBX) - parseInt(che_importeXX);
-					 	$('#montoTotal').val(sumatoriaB);
-
-				 	 	  var dataStringXX = 'action='+actionXX 
-					      + '&cuentaSeleccionada='+cuentaSeleccionadaXX 
-					      + '&che_importe='+che_importeXX
-					      + '&che_num='+che_numXX;
-
+				 	 	var dataStringXX = 'action='+actionXX 
+				 	 	+ '&ID_che='+ID_cheXX 
+					    + '&opcionVolver='+opcionVolverXX 
+					    + '&opcionBorrarCuenta='+opcionBorrarCuentaXX 
+					    + '&cuentaSeleccionada='+cuentaSeleccionadaXX
+					    + '&ID_mcs='+ID_mcsXX 
+					    + '&tipoMovimiento='+tipoMovimientoXX;
 
 				      	$.ajax(
 				                                                  {
 				                                                      type: 'POST',
 				                                                      url: 'accionesCheques.php',
 				                                                      data: dataStringXX,
-				                                                      success: function(dataD)
+				                                                      success: function(data)
 				                                                       {
-				                                                      
-				                                                          alert(html(dataD));
+				                                                       
 				                                                       }
 
 				                                                   });
 
+
 				      	$('#nuevoCheque'+cuentaSeleccionadaCX).remove();
 				 });
-		    
 
 	 });
 

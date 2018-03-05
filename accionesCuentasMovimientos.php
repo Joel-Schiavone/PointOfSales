@@ -156,6 +156,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
        $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);
        $ID_mcs=$assoc_get_cuentas_movimientos_ultimo['ID_mcs'];
        echo "<input hidden type='text' value='".$ID_mcs."' id='RespuestaIdMovCuenta'>";
+
     }
     else
     {
