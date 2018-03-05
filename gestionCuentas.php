@@ -31,10 +31,48 @@
                                                     <legend>Datos de la cuenta</legend>
                                                         <input hidden type="text" name="action" value="nuevaCuenta">
                                                 
-                                                        <div class="form-group">
-                                                          <label for="exampleInputEmail1">Título</label>
-                                                          <input type="text" class="form-control" name="cue_desc" id="cue_desc" placeholder="Título">
-                                                        </div>
+                                            <div class="form-group has-success" id="contenedorCodigo">
+                                                  <label for="che_num" class="control-label" id="labelA" style="display:block; text-align: left;">Título<i class="material-icons">done</i> Disponible</label>
+                                                  <label for="che_num" class="control-label" id="labelB" style="display:none; text-align: left;">Título<i class="material-icons">clear</i> Duplicado</label>
+                                                  <input type="text" class="form-control" name="cue_desc" id="cue_desc" placeholder="Título">
+                                             </div>
+
+                                                   <script>$("#cue_desc").keyup(function()
+                                                      {
+                                                        var cue_desc = $(this).val();      
+                                                        var action = "validaNombreDeCuentaDuplicado";
+                                                        var dataString = "cue_desc="+cue_desc + "&action="+action;
+
+                                                        $.ajax(
+                                                        {
+                                                            type: "POST",
+                                                            url: "accionesCuentasMovimientos.php",
+                                                            data: dataString,
+                                                            success: function(datas)
+                                                             {
+                                                                if(datas==0)
+                                                                {
+                                                                   $("#contenedorCodigo").removeClass("form-group has-error");
+                                                                   $("#contenedorCodigo").addClass("form-group has-success");
+                                                                   $("#labelB").css("display", "none");
+                                                                   $("#labelA").css("display", "block");
+                                                                   $("#botonGuardarNuevaCuenta").css("display", "block");
+                                                                }
+                                                                else
+                                                                {
+                                                                   $("#contenedorCodigo").removeClass("form-group has-success");
+                                                                   $("#contenedorCodigo").addClass("form-group has-error");
+                                                                   $("#labelA").css("display", "none");
+                                                                   $("#labelB").css("display", "block");
+                                                                   $("#botonGuardarNuevaCuenta").css("display", "none");
+                                                                } 
+                                                               
+                                                              }
+                                                             
+                                                         });
+                                                     });</script>
+
+
 
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Tipo</label>
@@ -86,7 +124,7 @@
                                                         </div>
 
 
-                                                         <button type="submit" class="btn btn-success"><i class="material-icons">save</i> GUARDAR</button>
+                                                         <button type="submit" class="btn btn-success" id="botonGuardarNuevaCuenta"><i class="material-icons">save</i> GUARDAR</button>
 
                                                 </fieldset>        
 
@@ -363,7 +401,7 @@
                                       <div class="modal-content">
                                          <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Cerrar Caja</h4>
+                                            <h4 class="modal-title" id="myModalLabel">MODIFICAR CUENTA</h4>
                                           </div>
                                           <div class="modal-body">
                                             <form  action="accionesExclusivas.php" method="post" enctype="multipart/form-data">
@@ -372,13 +410,49 @@
                                                         <input hidden type="text" name="action" value="editarCuenta">
                                                         <input hidden type="text" name="ID_cue" value="'.$assoc_get_cuentas['ID_cue'].'">
                                                 
-                                                        <div class="form-group">
-                                                          <label for="exampleInputEmail1">Título</label>
-                                                          <input style="width:100%;" type="text" class="form-control" name="cue_desc" id="cue_desc" placeholder="Título" value="'.$assoc_get_cuentas['cue_desc'].'">
-                                                        </div>
-                                                        <br><br>
+                                                        <div class="form-group has-success" id="contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'">
+                                                              <label for="che_num" class="control-label" id="labelA'.$assoc_get_cuentas['ID_cue'].'" style="display:block; text-align: left;">Título<i class="material-icons">done</i> Disponible</label>
+                                                              <label for="che_num" class="control-label" id="labelB'.$assoc_get_cuentas['ID_cue'].'" style="display:none; text-align: left;">Título<i class="material-icons">clear</i> Duplicado</label>
+                                                              <input style="width:100%;" type="text" class="form-control" name="cue_desc'.$assoc_get_cuentas['ID_cue'].'" id="cue_desc'.$assoc_get_cuentas['ID_cue'].'" placeholder="Título" value="'.$assoc_get_cuentas['cue_desc'].'">
+                                                         </div>
 
+                                                               <script>$("#cue_desc'.$assoc_get_cuentas['ID_cue'].'").keyup(function()
+                                                                  {
+                                                                    var cue_desc = $("#cue_desc'.$assoc_get_cuentas['ID_cue'].'").val();      
+                                                                    var action = "validaNombreDeCuentaDuplicado";
+                                                                    var dataString = "cue_desc="+cue_desc + "&action="+action;
 
+                                                                    $.ajax(
+                                                                    {
+                                                                        type: "POST",
+                                                                        url: "accionesCuentasMovimientos.php",
+                                                                        data: dataString,
+                                                                        success: function(datas)
+                                                                         {
+                                                                            if(datas==0)
+                                                                            {
+                                                                               $("#contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'").removeClass("form-group has-error");
+                                                                               $("#contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'").addClass("form-group has-success");
+                                                                               $("#labelB'.$assoc_get_cuentas['ID_cue'].'").css("display", "none");
+                                                                               $("#labelA'.$assoc_get_cuentas['ID_cue'].'").css("display", "block");
+                                                                               $("#GuardarCambiosCuentas'.$assoc_get_cuentas['ID_cue'].'").css("display", "block");
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                               $("#contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'").removeClass("form-group has-success");
+                                                                               $("#contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'").addClass("form-group has-error");
+                                                                               $("#labelA'.$assoc_get_cuentas['ID_cue'].'").css("display", "none");
+                                                                               $("#labelB'.$assoc_get_cuentas['ID_cue'].'").css("display", "block");
+                                                                               $("#GuardarCambiosCuentas'.$assoc_get_cuentas['ID_cue'].'").css("display", "none");
+                                                                            } 
+                                                                           
+                                                                          }
+                                                                         
+                                                                     });
+                                                                 });</script><br><br>
+
+  
+            
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Tipo</label>
                                                           <select style="width:100%;" name="ID_ctp" class="form-control"> ';
@@ -448,7 +522,7 @@
 
 
 
-                                                         <button type="submit" class="btn btn-success"><i class="material-icons">save</i> GUARDAR</button>
+                                                         <button type="submit" class="btn btn-success" id="GuardarCambiosCuentas'.$assoc_get_cuentas['ID_cue'].'"><i class="material-icons">save</i> GUARDAR</button>
                                                         <br><br>
 
 

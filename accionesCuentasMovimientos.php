@@ -17,12 +17,15 @@ $cuentas_movimientosE   = new cuentas_movimientosE;
 $cuentasE               = new cuentasE;
 $cuentas_impuestosE     = new cuentas_impuestosE;
 $cuentas_impuestos      = new cuentas_impuestos;
-?>
- <!-- Inicio: Estilos Generales-->
-  <link href="css/generales.css" rel="stylesheet"> 
- <!-- Fin: Estilos Generales-->
 
-<?php
+  if ($action=="validaNombreDeCuentaDuplicado") 
+  {
+        $cue_desc=$_POST['cue_desc'];
+        $get_cuentasByDesc=$cuentasE->get_cuentasByDesc($cue_desc);
+        $num_get_cuentasByDesc=mysql_num_rows($get_cuentasByDesc);
+        echo $numero=$num_get_cuentasByDesc;
+  }
+
 
   if($action=="eliminaMovimiento")
   {

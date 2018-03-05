@@ -77,12 +77,52 @@
                           </div>
                         </div>
 
-                         <div class="form-group">
-                            <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
-                            <input type="text" class="form-control" id="che_num " name="che_num" placeholder="" required>
-                          </div>
+                           <div class="form-group has-success" id="contenedorCodigo">
+                             <label for="che_num" class="control-label" id="labelA" style="display:block; text-align: left;">NUMERO <i class="material-icons">done</i></label>
+                               <label for="che_num" class="control-label" id="labelB" style="display:none; text-align: left;">NUMERO <i class="material-icons">clear</i> Duplicado</label>
+                                  <input type="text" class="form-control" id="che_num" name="che_num" placeholder="" required>
+                                
+                       </div>';
 
-                          <div class="form-group">
+                              //VALIDA QUE EL CODIGO NO SE DUPLIQUE
+                              echo '<script>$("#che_num").keyup(function()
+                                {
+                                  var che_num = $(this).val();      
+                                  var action = "validaCodigoDeCheuqeDuplicado";
+                                  var dataString = "che_num="+che_num + "&action="+action;
+
+                                  $.ajax(
+                                  {
+                                      type: "POST",
+                                      url: "accionesCheques.php",
+                                      data: dataString,
+                                      success: function(datas)
+                                       {
+                                          if(datas==0)
+                                          {
+                                             $("#contenedorCodigo").removeClass("form-group has-error");
+                                             $("#contenedorCodigo").addClass("form-group has-success");
+                                             $("#labelB").css("display", "none");
+                                             $("#labelA").css("display", "block");
+                                             $("#botonGuardarNuevoCheque").css("display", "block");
+                                          }
+                                          else
+                                          {
+                                             $("#contenedorCodigo").removeClass("form-group has-success");
+                                             $("#contenedorCodigo").addClass("form-group has-error");
+                                             $("#labelA").css("display", "none");
+                                             $("#labelB").css("display", "block");
+                                             $("#botonGuardarNuevoCheque").css("display", "none");
+                                          } 
+                                         
+                                        }
+                                       
+                                   });
+                               });</script>';
+
+
+
+                      echo '<div class="form-group">
                             <label for="librador"><i class="material-icons">account_circle</i> LIBRADOR</label>
                             <input type="text" class="form-control" id="librador" name="che_librador" placeholder="Librador" required>
                           </div>
@@ -152,7 +192,7 @@
                                     </div>  
 
                           <div class="form-group">
-                            <button class="btn btn-success" type="submit"><i class="material-icons">save</i> Guardar</button>
+                            <button class="btn btn-success" type="submit" id="botonGuardarNuevoCheque"><i class="material-icons">save</i> Guardar</button>
                             </form>
                           </div>
                    </div>
@@ -457,6 +497,10 @@ $("#che_estadoB").change(function (){
 
                                                });
 });
+
+
+
+
 
 </script>
 

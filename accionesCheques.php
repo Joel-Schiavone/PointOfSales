@@ -25,6 +25,16 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
 <?php
 
+if ($action=="validaCodigoDeCheuqeDuplicado") 
+{
+
+      $che_num=$_POST['che_num'];
+
+      $get_chequesEByche_num=$chequesE->get_chequesEByche_num($che_num);
+      $num_get_chequesEByche_num=mysql_num_rows($get_chequesEByche_num);
+       echo $numero= $num_get_chequesEByche_num;
+}
+
   if($action=="borrarCheque")
   { 
     //Borrar cheque se encarga de eliminar el cheque, recibe los siguientes valores:
@@ -337,7 +347,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
 
     $insert_cheques=$cheques->insert_cheques($che_num, $ID_ban, $che_importe, $che_librador, $che_tipo, $che_fecha, $che_beneficiario, $ID_cue, $che_procedencia, $che_estado);
     
-    if ($_POST['cuentaSeleccionada']) 
+    if (@$_POST['cuentaSeleccionada']) 
     {
       echo '<div class="alert alert-dismissible alert-success">
               <button type="button" class="close" data-dismiss="alert">&times;</button>

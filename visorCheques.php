@@ -153,7 +153,7 @@
                       {
                        $class="warning";
                       } 
-                      /* Inicio Modal nuevo cheque */                          
+                      /* Inicio Modal modificar cheque */                          
                         echo '<div class="modal fade" id="VerCheque'.$assoc_get_chequesE['ID_che'].'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
                                 <div class="modal-dialog modal-lg" role="document" >
                                   <div class="modal-content">
@@ -202,10 +202,13 @@
 
                                       </div>
                                       <div class="modal-body" style="text-align:center;">
-                                      <div class="col-md-12" id="editarCartel'.$assoc_get_chequesE['ID_che'].'" style="display:none;"></div>
+                                      <div class="col-md-12" id="editarCartel'.$assoc_get_chequesE['ID_che'].'" style="display:none;">
+
+
+                                    </div>
                                       <input hidden type="text" name="action" value="modificarCheque">
                                       <input hidden type="text" name="ID_che'.$assoc_get_chequesE['ID_che'].'" id="Input_ID_che'.$assoc_get_chequesE['ID_che'].'" value="'.$assoc_get_chequesE['ID_che'].'">
-
+  
                                           <div class="col-md-12" style="border: 2px solid #333; text-align:center;">
                                            <div class="col-md-12" style="margin-top:10px;">
                                               <div class="col-md-4">
@@ -234,8 +237,45 @@
                                               <div class="col-md-4">
                                                    <H3 id="che_num'.$assoc_get_chequesE['ID_che'].'">Nº '.$assoc_get_chequesE['che_num'].'</H3>
                                                    <div class="form-group" id="Edit_che_num'.$assoc_get_chequesE['ID_che'].'" style="display:none">
-                                                      <label for="che_num "><i class="material-icons">fingerprint</i> NUMERO</label>
-                                                      <input type="text" class="form-control" id="Input_che_num'.$assoc_get_chequesE['ID_che'].'" name="che_num" placeholder="" value="'.$assoc_get_chequesE['che_num'].'" required>
+                                                        <label for="che_num" class="control-label" id="labelA" style="display:block; text-align: left;">NUMERO <i class="material-icons">done</i></label>
+                                                        <label for="che_num" class="control-label" id="labelB" style="display:none; text-align: left;">NUMERO <i class="material-icons">clear</i> Duplicado</label>
+                                                        <input type="text" class="form-control" id="Input_che_num'.$assoc_get_chequesE['ID_che'].'" name="che_num" placeholder="" value="'.$assoc_get_chequesE['che_num'].'" required>';
+
+                                                        //VALIDA QUE EL CODIGO NO SE DUPLIQUE
+                                                        echo '<script>$("#Input_che_num'.$assoc_get_chequesE['ID_che'].'").keyup(function()
+                                                          {
+                                                            var che_num = $("#Input_che_num'.$assoc_get_chequesE['ID_che'].'").val();      
+                                                            var action = "validaCodigoDeCheuqeDuplicado";
+                                                            var dataString = "che_num="+che_num + "&action="+action;
+                    
+                                                            $.ajax(
+                                                            {
+                                                                type: "POST",
+                                                                url: "accionesCheques.php",
+                                                                data: dataString,
+                                                                success: function(datas)
+                                                                 {
+                                                                    if(datas==0)
+                                                                    {
+                                                                       $("#Edit_che_num'.$assoc_get_chequesE['ID_che'].'").removeClass("form-group has-error");
+                                                                       $("#Edit_che_num'.$assoc_get_chequesE['ID_che'].'").addClass("form-group has-success");
+                                                                       $("#labelB").css("display", "none");
+                                                                       $("#labelA").css("display", "block");
+                                                                       $("#salvar'.$assoc_get_chequesE['ID_che'].'").css("display", "block");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                       $("#Edit_che_num'.$assoc_get_chequesE['ID_che'].'").removeClass("form-group has-success");
+                                                                       $("#Edit_che_num'.$assoc_get_chequesE['ID_che'].'").addClass("form-group has-error");
+                                                                       $("#labelA").css("display", "none");
+                                                                       $("#labelB").css("display", "block");
+                                                                       $("#salvar'.$assoc_get_chequesE['ID_che'].'").css("display", "none");
+                                                                    } 
+                                                                   
+                                                                  }
+                                                                 
+                                                             });
+                                                         });</script>
                                                     </div>
                                               </div>
                                             </div>  
