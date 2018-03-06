@@ -235,12 +235,25 @@
 
 	}
 
+  class cuentas_tipoE
+  {
+    //Inicio: Llama a todas las columnas de la tabla
+                        function get_cuentas_tipoE()
+                        {
+                              $sql_cuentas_tipo = 'SELECT * FROM cuentas_tipo WHERE ID_ctp!=4';
+                              $result_cuentas_tipo =mysql_query($sql_cuentas_tipo);
+                              return $result_cuentas_tipo;
+                        }
+                         //Fin: Llama a todas las columnas de la tabla
+  }
+
+
 	class cuentasE
 	{
           //Inicio: Llama a todas las columnas de la tabla
                         function get_cuentas()
                         {
-                              $sql_cuentas = 'SELECT * FROM cuentas, cuentas_tipo WHERE cuentas.ID_ctp=cuentas_tipo.ID_ctp';
+                              $sql_cuentas = 'SELECT * FROM cuentas, cuentas_tipo WHERE cuentas.ID_ctp=cuentas_tipo.ID_ctp AND ID_cue!=1 AND ID_cue!=2';
                               $result_cuentas =mysql_query($sql_cuentas);
                               return $result_cuentas;
                         }

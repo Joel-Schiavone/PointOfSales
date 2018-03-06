@@ -6,6 +6,7 @@
   $cuentas      = new cuentas;
   $cuentasE     = new cuentasE;
   $cuentas_tipo = new cuentas_tipo;
+  $cuentas_tipoE= new cuentas_tipoE;
   $cuentas_impuestosE  = new cuentas_impuestosE;
 ?>
 <!--Fin: Documentos requeridos --> 
@@ -78,7 +79,7 @@
                                                             <label for="exampleInputEmail1">Tipo</label>
                                                             <select name="ID_ctp" class="form-control"> 
                                                                 <?php
-                                                                  $get_cuentas_tipoB=$cuentas_tipo->get_cuentas_tipo();
+                                                                  $get_cuentas_tipoB=$cuentas_tipoE->get_cuentas_tipoE();
                                                                   $num_get_cuentas_tipoB=mysql_num_rows($get_cuentas_tipoB);
                                                                     for ($countTiposDeCuentasB=0; $countTiposDeCuentasB < $num_get_cuentas_tipoB; $countTiposDeCuentasB++) 
                                                                     { 
@@ -193,7 +194,7 @@
                         { 
                             $assoc_get_cuentas=mysql_fetch_assoc($get_cuentas);
 
-                            $get_cuentas_tipo=$cuentas_tipo->get_cuentas_tipo();
+                            $get_cuentas_tipo=$cuentas_tipoE->get_cuentas_tipoE();
                             $num_get_cuentas_tipo=mysql_num_rows($get_cuentas_tipo);
 
                             $get_cuentas_impuestosById=$cuentas_impuestosE->get_cuentas_impuestosById($assoc_get_cuentas['ID_cue']);
