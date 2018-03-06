@@ -140,11 +140,7 @@
                                 <!--Fin Modal nueva cuenta-->
 
 	<div class="container-fluid">
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">account_balance_wallet</i> Gestión de Cuentas <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-			</div> 
-		</div> 
+		
         <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
             <button class='btn btn-success' data-placement='top' data-toggle='modal' data-target='#nuevaCuenta'><i class='material-icons'>add</i> NUEVA CUENTA</button>
         </div> 
@@ -347,7 +343,7 @@
                                           <div class="modal-body">
                                             <div class="alert alert-dismissible alert-info">
                                               <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                              <strong><i class="material-icons">info</i> Info</strong> Complete el formulario para incorporar un descuento automático a la cuenta '.$assoc_get_cuentas['cue_desc'].', cada vez que ingrese o egrese saldo.
+                                              <strong><i class="material-icons">info</i> </strong> Complete el formulario para incorporar un descuento automático a la cuenta '.$assoc_get_cuentas['cue_desc'].', cada vez que ingrese o egrese saldo.
                                             </div>
                                             <form action="accionesExclusivas.php" method="post" enctype="multipart/form-data">
                                                <fieldset>
@@ -414,7 +410,7 @@
                                                         <div class="form-group has-success" id="contenedorCodigo'.$assoc_get_cuentas['ID_cue'].'">
                                                               <label for="che_num" class="control-label" id="labelA'.$assoc_get_cuentas['ID_cue'].'" style="display:block; text-align: left;">Título<i class="material-icons">done</i> Disponible</label>
                                                               <label for="che_num" class="control-label" id="labelB'.$assoc_get_cuentas['ID_cue'].'" style="display:none; text-align: left;">Título<i class="material-icons">clear</i> Duplicado</label>
-                                                              <input style="width:100%;" type="text" class="form-control" name="cue_desc'.$assoc_get_cuentas['ID_cue'].'" id="cue_desc'.$assoc_get_cuentas['ID_cue'].'" placeholder="Título" value="'.$assoc_get_cuentas['cue_desc'].'">
+                                                              <input style="width:100%;" type="text" class="form-control" name="cue_desc" id="cue_desc'.$assoc_get_cuentas['ID_cue'].'" placeholder="Título" value="'.$assoc_get_cuentas['cue_desc'].'">
                                                          </div>
 
                                                                <script>$("#cue_desc'.$assoc_get_cuentas['ID_cue'].'").keyup(function()

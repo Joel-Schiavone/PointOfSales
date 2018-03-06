@@ -7,12 +7,7 @@
 ?>
 		<div class='container-fluid' style="text-align: center;">
 			
-				<div class='col-md-12'>
-					<div class="alert alert-dismissible alert-info">
-						<h3><i class="material-icons">assignment_late</i> Parametros de mi empresa  <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-					</div> 
-				</div>	
-
+			
 				<div class='container' style="text-align: center;">
 
 					<form action="accionesParametros.php" method="POST">

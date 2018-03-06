@@ -26,14 +26,12 @@
 	}
 </style>
 	
-	<div class="container-fluid">
-		<!--Contenedor de Tesoreria central general-->
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">flag</i> Cajas en Tiempo Real <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
+<div class="alert alert-dismissible alert-warning">
+				<h3><i class="material-icons">warning</i> ESTA PÁGINA SE ENCUENTRA EN DESARROLLO, PODRIA PRESENTAR IRREGULARIDADES <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
 			</div> 
+
+	<div class="container-fluid">
 		
-		</div> 
 
 		<div id="capa">
 			

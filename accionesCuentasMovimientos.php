@@ -70,7 +70,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
   if($action=="nuevoMovimiento")
   {
 
-    if($_POST['cuentaSeleccionada'])
+    if(@$_POST['cuentaSeleccionada'])
     {
           $cue_desc               = $_POST['cuentaSeleccionada'];
           $get_cuentasByDesc      = $cuentasE->get_cuentasByDesc($cue_desc);
@@ -153,7 +153,7 @@ $cuentas_impuestos      = new cuentas_impuestos;
     
     $insert_cuentas_movimientos   = $cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
 
-    if($_POST['cuentaSeleccionada'])
+    if(@$_POST['cuentaSeleccionada'])
     {
        $get_cuentas_movimientos_ultimo=$cuentas_movimientosE->get_cuentas_movimientos_ultimo();
        $assoc_get_cuentas_movimientos_ultimo=mysql_fetch_assoc($get_cuentas_movimientos_ultimo);

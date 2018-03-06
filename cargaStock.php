@@ -28,12 +28,7 @@
 	}
 </style>
 <form action='accionesExclusivas.php' method='POST'>
-	<div class="container-fluid">
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">backup</i> Ingreso de Articulos <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-			</div> 
-		</div> 
+ 
 </div>
 <div class="container-fluid">
 		  			<div class='col-md-12' style="text-align: center; border-bottom: 1px solid #333; margin-top: 2%; margin-bottom: 2%;">

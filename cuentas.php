@@ -94,17 +94,11 @@
                                     </div>
                                 <!--Fin Modal nueva cuenta-->
 
-	<div class="container-fluid">
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">account_balance_wallet</i> Movimientos de cuentas <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-			</div> 
-		</div> 
 
 
 <div class="container-fluid">
   <?php 
-     $get_cuentasBB=$cuentasE->get_cuentas();
+     $get_cuentasBB=$cuentasE->get_cuentasConCheques();
      $num_get_cuentasBB=mysql_num_rows($get_cuentasBB);
      for ($CountCuentasBB=0; $CountCuentasBB < $num_get_cuentasBB; $CountCuentasBB++) 
       { 

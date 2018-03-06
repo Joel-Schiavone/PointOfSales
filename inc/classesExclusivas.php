@@ -140,6 +140,13 @@
                               return $result_cuentas_movimientos;
                         }
 
+                        function get_cuentas_movimientosByIdCue($ID_cue)
+                        {
+                              $sql_cuentas_movimientos = 'SELECT * from cuentas_movimientos, cuentas where cuentas_movimientos.ID_cue=cuentas.ID_cue AND cuentas_movimientos.ID_cue='.$ID_cue.' order by mcd_fec DESC' ; 
+                              $result_cuentas_movimientos =mysql_query($sql_cuentas_movimientos);
+                              return $result_cuentas_movimientos;
+                        }
+
                           function traeSaldo($ID_cue)
                         {
                               $sql_cuentas_movimientos = 'SELECT (SUM(mcs_credito)-SUM(mcs_debito)) AS saldo FROM cuentas_movimientos  WHERE ID_cue='.$ID_cue.' ' ; 
@@ -258,6 +265,18 @@
                               return $result_cuentas;
                         }
            //Fin: Llama a todas las columnas de la tabla
+
+                          //Inicio: Llama a todas las columnas de la tabla
+                        function get_cuentasConCheques()
+                        {
+                              $sql_cuentas = 'SELECT * FROM cuentas, cuentas_tipo WHERE cuentas.ID_ctp=cuentas_tipo.ID_ctp';
+                              $result_cuentas =mysql_query($sql_cuentas);
+                              return $result_cuentas;
+                        }
+           //Fin: Llama a todas las columnas de la tabla
+
+                  
+                       
 
                               //Inicio: Llama a todas las columnas de la tabla
                         function get_cuentasSinCheque()
@@ -598,6 +617,13 @@
 		      $result_paginas =mysql_query($sql_paginas);
 		       return $result_paginas;
 		}
+
+    function get_paginasAndModulosByPagUrl($pag_url)
+    {
+      $sql_paginas = 'SELECT * FROM paginas, modulos WHERE paginas.ID_mod=modulos.ID_mod AND pag_url="'.$pag_url.'"' ; 
+          $result_paginas =mysql_query($sql_paginas);
+           return $result_paginas;
+    }
 	}
 	//fin Trae todos los usuarios por usuario y clave
 	
@@ -768,7 +794,7 @@
 
 	    function get_articulosTodosConProveedores()
 		 {
-	      $sql_articulos = 'SELECT articulos.ID_art, articulos.art_cod, articulos.art_desc, categorias.cat_desc, sub_categorias.sub_desc, precios.pre_cant, proveedores.pro_desc, precios.pre_iva, articulos.art_unidad FROM articulos, categorias, sub_categorias, precios, proveedores WHERE articulos.ID_sub=sub_categorias.ID_sub AND sub_categorias.ID_cat=categorias.ID_cat AND precios.ID_pre=articulos.ID_pre AND articulos.ID_pro=proveedores.ID_pro ORDER BY articulos.ID_art DESC LIMIT 0, 10' ; 
+	      $sql_articulos = 'SELECT articulos.ID_art, articulos.art_cod, articulos.art_desc, categorias.cat_desc, sub_categorias.sub_desc, precios.pre_cant, proveedores.pro_desc, precios.pre_iva, articulos.art_unidad FROM articulos, categorias, sub_categorias, precios, proveedores WHERE articulos.ID_sub=sub_categorias.ID_sub AND sub_categorias.ID_cat=categorias.ID_cat AND precios.ID_pre=articulos.ID_pre AND articulos.ID_pro=proveedores.ID_pro ORDER BY articulos.ID_art DESC' ; 
 	       $result_articulos =mysql_query($sql_articulos);
 	      return $result_articulos;
 	    }
@@ -1500,7 +1526,7 @@ class tarjetasE
 	{
 	   function get_tipo_comprobantes()
                         {
-                              $sql_tipo_comprobantes = 'SELECT * FROM tipo_comprobantes, flujo_comprobantes WHERE tipo_comprobantes.ID_fce=flujo_comprobantes.ID_fce ORDER BY tipo_comprobantes.ID_tce DESC';
+                              $sql_tipo_comprobantes = 'SELECT * FROM tipo_comprobantes, flujo_comprobantes WHERE tipo_comprobantes.ID_fce=flujo_comprobantes.ID_fce AND ID_tce!=1 ORDER BY tipo_comprobantes.ID_tce DESC';
                               $result_tipo_comprobantes =mysql_query($sql_tipo_comprobantes);
                               return $result_tipo_comprobantes;
                         }

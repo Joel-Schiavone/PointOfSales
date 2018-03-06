@@ -113,6 +113,7 @@
                 <tbody>
                   <?php 
 
+
                   if ($ID_che!='') 
                           {
                             $sql_cheques='SELECT * FROM cheques, bancos, cuentas WHERE cheques.ID_cue=cuentas.ID_cue AND cheques.ID_ban=bancos.ID_ban '.$ID_che.'';
@@ -367,10 +368,18 @@
 
                                               <div class="alert alert-dismissible alert-warning" id="alertaBorrado'.$assoc_get_chequesE['ID_che'].'" style="display:none">
                                               <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                              <h4 class="alert-heading">Cuidado!</h4>
+                                              <h4 class="alert-heading">CUIDADO!</h4>
                                               <p class="mb-0">¿Estas seguro que deseas eliminar este registro?</p>
-                                              <button class="btn btn-success" id="borradoSi'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">done_all</i> Si</button>
-                                              <button class="btn btn-danger" id="borradoNo'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">cancel</i> No</button>
+                                              <button class="btn btn-success" id="borradoCasiSi'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">done_all</i> Si</button>
+                                              <button class="btn btn-danger" id="borradoCasiNo'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">cancel</i> No</button>
+                                            </div>   
+
+                                             <div class="alert alert-dismissible alert-warning" id="alertaConsulta'.$assoc_get_chequesE['ID_che'].'" style="display:none">
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                              <h4 class="alert-heading">CUIDADO!</h4>
+                                              <p class="mb-0">¿Deseas contrarestar el movimiento que este cheque genero en las cuentas? Tenga en consideracion que la siguiente accion no contrarestara los movimientos que puedieran haberse generado en la cuentas por la configuración de descuentos o acreditaciones automáticas</p>
+                                              <button class="btn btn-success" id="borradoSiDefinitivo'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">done_all</i> Si</button>
+                                              <button class="btn btn-danger" id="borradoNoDefinitivo'.$assoc_get_chequesE['ID_che'].'"><i class="material-icons">cancel</i> No</button>
                                             </div>   
 
                                              <div class="alert alert-dismissible alert-warning" id="borradoCartel'.$assoc_get_chequesE['ID_che'].'" style="display:none">
@@ -397,31 +406,39 @@
                           echo"<th>".$assoc_get_chequesE['cue_desc']."</th>";
                           echo"<th>$ ".$assoc_get_chequesE['che_importe']."</th>";
                          
-                      echo"</tr>";
+                      echo "</tr>";
 
                       echo '<script>
 
                           $("#borrado'.$assoc_get_chequesE['ID_che'].'").click(function(){
-                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
-                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
+                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(100);
+                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(100);
                           });
 
-                           $("#borradoNo'.$assoc_get_chequesE['ID_che'].'").click(function(){
-                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
-                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
+                         
+                           $("#borradoCasiNo'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                            $("#borrado'.$assoc_get_chequesE['ID_che'].'").fadeIn(100);
+                            $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(100);
+                            $("#alertaConsulta'.$assoc_get_chequesE['ID_che'].'").fadeOut(100);
                           });
+                          
+                          $("#borradoCasiSi'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                              $("#alertaBorrado'.$assoc_get_chequesE['ID_che'].'").fadeOut(100);
+                              $("#alertaConsulta'.$assoc_get_chequesE['ID_che'].'").fadeIn(100);
+                             });
 
 
-                            $ ("#borradoSi'.$assoc_get_chequesE['ID_che'].'").click(function (){
-                                
-                                    var ID_che             =$("#Input_ID_che'.$assoc_get_chequesE['ID_che'].'").val();
-                                    var action             ="borrarCheque" ;
+                            $ ("#borradoSiDefinitivo'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                                  
+                                    var ID_che             = '.$assoc_get_chequesE['ID_che'].';
+                                    var action             = "EliminaCheque";
+                                    var mueveCuenta        = "si";
                                 
                                 var dataString = "&ID_che="+ID_che 
-                                + "&action="+action;
+                                + "&action="+action
+                                + "&mueveCuenta="+mueveCuenta;
 
-                                $.ajax(
-                                              {
+                                        $.ajax({
                                                   type: "POST",
                                                   url: "accionesCheques.php",
                                                   data: dataString,
@@ -429,13 +446,42 @@
                                                    {
                                                       $("#borradoCartel'.$assoc_get_chequesE['ID_che'].'").fadeIn(1000).html(data);
 
-                                                      
                                                    }
 
-                                               }) });
+                                                }) 
 
-                    
-                      $("#editar'.$assoc_get_chequesE['ID_che'].'").click(function(){
+
+                              });
+
+                                        $ ("#borradoNoDefinitivo'.$assoc_get_chequesE['ID_che'].'").click(function(){
+                                  
+                                    var ID_che             = '.$assoc_get_chequesE['ID_che'].';
+                                    var action             = "EliminaCheque";
+                                    var mueveCuenta        = "no";
+                                
+                                var dataString = "&ID_che="+ID_che 
+                                + "&action="+action
+                                + "&mueveCuenta="+mueveCuenta;
+
+                                        $.ajax({
+                                                  type: "POST",
+                                                  url: "accionesCheques.php",
+                                                  data: dataString,
+                                                  success: function(data)
+                                                   {
+                                                      $("#borradoCartel'.$assoc_get_chequesE['ID_che'].'").fadeIn(1000).html(data);
+
+                                                   }
+
+                                                }) 
+
+
+                              });
+
+
+
+
+                        $("#editar'.$assoc_get_chequesE['ID_che'].'").click(function(){
                         $("#Edit_ID_ban'.$assoc_get_chequesE['ID_che'].'").fadeIn(500);
                         $("#ID_ban'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                         $("#che_fecha'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
@@ -524,7 +570,8 @@
                               $("#Edit_che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                               $("#che_beneficiario'.$assoc_get_chequesE['ID_che'].'").fadeOut(500);
                              }   
-                        });});
+                        });
+                      });
 
 
                                 $ ("#salvar'.$assoc_get_chequesE['ID_che'].'").click(function (){
@@ -609,6 +656,11 @@
         responsive: true,
     });
     });
+
+
+
+                         
+
 
      </script>
   

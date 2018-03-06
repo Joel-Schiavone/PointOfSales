@@ -40,7 +40,7 @@ if ($action=="validaCodigoDeCheuqeDuplicado")
     //Borrar cheque se encarga de eliminar el cheque, recibe los siguientes valores:
     //ID_che : Identificador del cheque a eliminar
     //opcionVolver : Puede ser "si" o "no" dependiendo de si se quiere que la funcion lo redirija a otra pagina luego de ejecutarse o no haga nada que es util cuando se utiliza por ajax.
-    //opcionBorrarCuenta : Opcion de seleccionar si se desea eliminar la cuenta o no
+    //opcionBorrarCuenta : Opcion de seleccionar si se desea eliminar los movimientos de cuenta o no
         //Solo si la opcionBorrarCuenta es si: ID_cue o  cuentaSeleccionada: Identificador de la cuenta que se desea eliminar o en su defecto el nombre de la misma y la funcion se encargara de buscar el id
         //Solo si la opcionBorrarCuenta es si: tipoMovimiento: Para identificar si los descuentos que se van a eliminar correspondern al debito o al credito
 
@@ -513,4 +513,86 @@ if ($action=="validaCodigoDeCheuqeDuplicado")
     
 
   }
+
+    if($action=="EliminaCheque")
+    {
+      $ID_che                  =$_POST['ID_che'];
+      $mueveCuenta             =$_POST['mueveCuenta'];
+      //BUSCA EL CHEQUE A MODIFICAR PARA VER SI CAMBIO DE ESTADO 
+      $get_chequesById=$cheques->get_chequesById($ID_che);
+      $assoc_get_chequesById=mysql_fetch_assoc($get_chequesById);
+      
+      $che_librador= $assoc_get_chequesById['che_librador'];
+      $che_procedencia= $assoc_get_chequesById['che_procedencia'];
+      $che_estado= $assoc_get_chequesById['che_estado'];
+      $che_tipo= $assoc_get_chequesById['che_tipo'];
+      $che_fecha= $assoc_get_chequesById['che_fecha'];
+      $che_importe= $assoc_get_chequesById['che_importe'];
+
+      if ($mueveCuenta=="si") 
+      {
+            //TRAE DATOS DE CUENTA MEDIANTE EL ID DE CUENTA SI ESTE EXISTE
+            $ID_cue = $assoc_get_chequesById['ID_cue'];
+          
+            $get_cuentasById        = $cuentas->get_cuentasById($ID_cue);
+            $assoc_get_cuentasById  = mysql_fetch_assoc($get_cuentasById);
+
+            $cue_desc         = $assoc_get_cuentasById['cue_desc'];
+            $ID_ctp           = $assoc_get_cuentasById['ID_ctp'];
+            $cue_direccion    = $assoc_get_cuentasById['cue_direccion'];
+            $cue_sucursal     = $assoc_get_cuentasById['cue_sucursal'];
+            $cue_cbu          = $assoc_get_cuentasById['cue_cbu'];
+            $cue_cuit         = $assoc_get_cuentasById['cue_cuit'];
+            $cue_num          = $assoc_get_cuentasById['cue_num'];
+            $cue_moneda       = $assoc_get_cuentasById['cue_moneda'];
+
+            $mcs_movimiento   = "CHEQUE ELIMINADO: ".$che_librador." ".$che_procedencia." ".$che_estado." ".$che_tipo." ".$che_fecha." ";
+            $mcd_fec          = $fechaDeHoy;
+            $mdc_fecDisponibilidad = $FechayHora;
+            $mcs_desc         = "";
+        
+
+            //SI EL ESTADO ES DEBITADO RESTA EL MONTO A LA CUENTA DE ID_CUE
+            if ($che_estado=="DEBITADO") 
+            {
+              
+              $mcs_debito       = 0;
+              $mcs_credito      = $che_importe;
+
+              $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
+            }
+
+            //SI EL ESTADO ES EN CARTERA AGREGA EL MONTO A LA CUENTA CHEQUES EN CARTERA
+            if ($che_estado=="EN CARTERA") 
+            {
+              $mcs_debito       = $che_importe;
+              $mcs_credito      = 0;
+              $ID_cue           = 1;
+              $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, 1, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
+            }
+
+            //SI EL ESTADO ES COBRADO RESTA EN LA CUENTA CHEQUES EN CARTERA Y SUMA EN LA CUENTA DE ID_CUE
+            if ($che_estado=="COBRADO") 
+            {
+              //RESTA DE LA CUENTA CHEQUE EN CARTERA
+              $mcs_debito       = $che_importe;
+              $mcs_credito      = 0;
+              $insert_cuentas_movimientos=$cuentas_movimientos->insert_cuentas_movimientos($mcs_movimiento, $mcs_debito, $mcs_credito, $ID_cue, $mcd_fec, $mcs_desc, $mdc_fecDisponibilidad);
+
+             
+            }
+
+      }
+
+      $drop_chequesById=$cheques->drop_chequesById($ID_che);
+    
+                              //REDIRECCIONA
+                                echo '<script type="text/javascript">
+                              window.location.assign("cheques.php?M=10&ID_che='.$ID_che.'");
+                              </script>';
+
+    }  
+    
+
+  
 ?>

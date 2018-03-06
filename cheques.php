@@ -32,13 +32,6 @@
 </style>
 
                        
-<div class="container-fluid">
-  		<div class='col-md-12' style="text-align: center;">
-  			<div class="alert alert-dismissible alert-info">
-  				<h3><i class="material-icons">style</i> Cheques<img src='media/loading/cargando4.gif' id='cargandoBoton' style="display: none;"> </h3>
-  			</div> 
-  		</div> 
-</div>
 
 <?php 
 

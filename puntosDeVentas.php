@@ -85,12 +85,6 @@
                                 <!--Fin Modal nueva cuenta-->
 	<div class="container-fluid">
 
-
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">confirmation_number</i> Puntos de Ventas<img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-			</div> 
-		</div> 
         <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
             <button class='btn btn-success' data-placement='top' data-toggle='modal' data-target='#nuevoPuntoVenta'><i class='material-icons'>add</i> NUEVO PUNTO DE VENTA</button>
         </div> 
@@ -148,7 +142,7 @@
 
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Punto de Venta</label>
-                                                          <input type="datetime-local" class="form-control" id="pdv_puntoVenta" name="pdv_puntoVenta" placeholder="Punto de Venta" value="'.$assoc_get_puntos_de_ventas['pdv_puntoVenta'].'">
+                                                          <input type="text" class="form-control" id="pdv_puntoVenta" name="pdv_puntoVenta" placeholder="Punto de Venta" value="'.$assoc_get_puntos_de_ventas['pdv_puntoVenta'].'">
                                                         </div>
                                                         
                                                          <div class="form-group">
@@ -158,7 +152,7 @@
 
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Fecha de Vencimiento</label>
-                                                          <input type="datatime-local" class="form-control" id="pdv_fecVencimiento" name="pdv_fecVencimiento" value="'.$pdv_fecVencimiento.'">
+                                                          <input type="datetime-local" class="form-control" id="pdv_fecVencimiento" name="pdv_fecVencimiento" value="'.$pdv_fecVencimiento.'">
                                                         </div>
         
                                                         <div class="form-group">

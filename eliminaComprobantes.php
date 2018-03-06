@@ -39,11 +39,12 @@
 <div class="container-fluid">
   		<div class='col-md-12' style="text-align: center;">
   			<div class="alert alert-dismissible alert-danger">
-  				<h3><i class="material-icons">edit</i> Eliminar Comprobante<img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
+  				<h3> ¿ Eliminar Comprobante ?<img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
+            <br>
+                <button class='btn btn-danger' id='eliminarComprobante'><i class='material-icons'>delete_forever</i> ELIMINAR</button>
+        
   			</div> 
   		</div> 
 </div>
 
-          <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
-                <button class='btn btn-danger' id='eliminarComprobante'><i class='material-icons'>delete_forever</i> ELIMINAR</button>
-          </div> 
+          

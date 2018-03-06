@@ -101,7 +101,7 @@
 						           			echo $assoc_get_categorias['ID_cat'];
 						         		echo "</th>";
 						           		echo "<th style='text-align:center;'>";
-						           			echo "<input type='text' class='form-control' name='cat_desc' value='".$assoc_get_categorias['cat_desc']."'>";
+						           			echo "<input type='text' class='form-control' name='cat_desc' id='cat_desc".$assoc_get_categorias['ID_cat']."' value='".$assoc_get_categorias['cat_desc']."'>";
 						           			  echo '<input hidden type="text" name="action" value="update_categorias">';
                    							  echo '<input hidden type="text" name="ID_cat" value="'.$assoc_get_categorias['ID_cat'].'">';
 						         		echo "</th>";
@@ -129,7 +129,10 @@
 								                  data: dataString,
 								                  success: function(data)
 								                   {
-								                      $('#suggestions').fadeIn(1000).html(data);
+								                      $('#suggestions').fadeIn(100).html(data);
+								                      $('#nombreDeSubcategoriaSeleccionada').fadeIn(100);
+								                      var nombreDeSubcategoriaSeleccionada = $('#cat_desc".$assoc_get_categorias['ID_cat']."').val();
+								                      $('#nombreDeSubcategoriaSeleccionada').val(nombreDeSubcategoriaSeleccionada);
 								                   }
 								               });
 						           });</script>";
@@ -154,7 +157,8 @@
 			      </div>	
 				</div>
 			<div class='col-md-6'>
-			<p><h3>SUB CATEGORIAS</h3></p>
+			<p><h3>SUB CATEGORIAS <input id="nombreDeSubcategoriaSeleccionada" name="nombreDeSubcategoriaSeleccionada" value="" style="border: 0px; display: none;"></h3></p>
+
 				<div class="table-responsive" id="suggestions" class="suggestions">
 			       
 			      </div>	

@@ -2641,7 +2641,7 @@ window.location.assign("cajaSuc.php?M=4");
   if (@$_GET['action']=='dropCuenta')
   {
      $ID_cue          =$_GET['ID_cue'];
-
+     $cuentas_movimientosE = new cuentas_movimientosE;
      $get_cuentas_movimientosByIdCue=$cuentas_movimientosE->get_cuentas_movimientosByIdCue($ID_cue);
      $num_get_cuentas_movimientosByIdCue=mysql_num_rows($get_cuentas_movimientosByIdCue);
 

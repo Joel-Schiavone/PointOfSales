@@ -182,3 +182,28 @@ include_once('inc/classesExclusivas.php');
 });
 
         </script>
+
+  <?php
+  //MUESTRA CARTEL CON MODULO Y PAGINA
+    $res = explode("/", $_SERVER["REQUEST_URI"]);
+    $resB =  $res[2];
+    $resC = explode("?", $resB);
+    $pag_url=$resC[0];
+    $paginasE = new paginasE;
+    $get_paginasAndModulosByPagUrl=$paginasE->get_paginasAndModulosByPagUrl($pag_url);
+    $assoc_get_paginasAndModulosByPagUrl=mysql_fetch_assoc($get_paginasAndModulosByPagUrl);
+      if($assoc_get_paginasAndModulosByPagUrl['ID_mod']!=0)
+      {
+        $mod_icono  = $assoc_get_paginasAndModulosByPagUrl['mod_icono'];
+        $mod_desc = $assoc_get_paginasAndModulosByPagUrl['mod_desc'];
+        $pag_icono  = $assoc_get_paginasAndModulosByPagUrl['pag_icono'];
+        $pag_desc = $assoc_get_paginasAndModulosByPagUrl['pag_desc'];
+        echo "<div class='container-fluid' style='margin-top:4%;'>";
+            echo "<div class='col-md-12'>";
+              echo "<div class='alert alert-dismissible alert-info'>";
+                echo "<h5><strong><i class='material-icons'>".$mod_icono."</i> ".$mod_desc." / <i class='material-icons'>".$pag_icono."</i> " .$pag_desc."</strong></h5>";
+              echo "</div>";
+            echo "</div>";
+        echo "</div>";
+      }
+  ?>

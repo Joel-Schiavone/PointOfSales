@@ -1,10 +1,15 @@
 <?php
 @session_start();
+$paramentros=new paramentros;
+$ID_par=1;
+$get_paramentrosById=$paramentros->get_paramentrosById($ID_par);
+$assoc_get_paramentrosById=mysql_fetch_assoc($get_paramentrosById);
+
 ?>
 <!DOCTYPE html>
 	<html lang="es">
 		<head>
-			<title>Supermercado</title>
+			<title><?php echo $assoc_get_paramentrosById['par_razonSocial'];?></title>
 
 			    <meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
 			    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -207,11 +212,11 @@
 								$alertas = new alertas;
 								$get_alertasById = $alertas->get_alertasById($ID_ale);
 								$assoc_get_alertasById = mysql_fetch_assoc($get_alertasById);
-								echo '<div id="mensaje" style="display:none; position:absolute; bottom:0px; width:100%;">'.$ale_desc=$assoc_get_alertasById['ale_desc'].'</div>';
+								echo '<div id="mensaje" style="display:none; position:fixed; bottom:0px; width:100%; z-index:3000;">'.$ale_desc=$assoc_get_alertasById['ale_desc'].'</div>';
 								echo '<script>$(document).ready(function() {  
 						        $("#mensaje").toggle("slow"); });  
 						  		</script>';
-								 }
+							}
 								
 								?>
 								<script>$(document).ready(function(){				   
@@ -273,3 +278,6 @@
 					<!--<script src="https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"></script>-->
 		</head>
 	<body>
+
+
+  <img src='media/loading/cargando4.gif' id='cargandoBoton' style="display: none;" >

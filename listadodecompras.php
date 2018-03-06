@@ -40,15 +40,6 @@
   }
 </style>
 
-                       
-<div class="container-fluid">
-  		<div class='col-md-12' style="text-align: center;">
-  			<div class="alert alert-dismissible alert-info">
-  				<h3><i class="material-icons">move_to_inbox</i> Compras<img src='media/loading/cargando4.gif' id='cargandoBoton' style="display: none;" > </h3>
-  			</div> 
-  		</div> 
-</div>
-
 
 
 		  <!--////////////////////////////////////// F I L T R A R  C O M P R O B A N T E S ///////////////////////////////////-->

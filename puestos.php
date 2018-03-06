@@ -81,7 +81,7 @@
                                                           <label for="exampleInputEmail1">Cuenta</label>
                                                              <select name="ID_cue" class="form-control"> 
                                                                 <?php
-                                                                  $get_cuentas=$cuentas->get_cuentas();
+                                                                  $get_cuentas=$cuentasE->get_cuentas();
                                                                   $num_get_cuentas=mysql_num_rows($get_cuentas);
                                                                     for ($countget_cuentas=0; $countget_cuentas < $num_get_cuentas; $countget_cuentas++) 
                                                                     { 
@@ -108,12 +108,6 @@
                                 <!--Fin Modal nueva cuenta-->
 	<div class="container-fluid">
 
-
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">local_gas_station</i> Puestos de Trabajo<img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none;" > </h3>
-			</div> 
-		</div> 
         <div class='col-md-12' style="text-align: right; margin-bottom:  1%; margin-top:  1%;">
             <button class='btn btn-success' data-placement='top' data-toggle='modal' data-target='#nuevoPuntoVenta'><i class='material-icons'>add</i> NUEVO PUESTO DE TRABAJO</button>
         </div> 

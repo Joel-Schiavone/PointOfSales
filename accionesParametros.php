@@ -30,7 +30,7 @@ $paramentros         = new paramentros;
 <?php
   if($action=="modificarParametros")
   {
-    $ID_par               =$_POST['ID_par'];
+    $ID_par               =1;
     $par_razonSocial      =$_POST['par_razonSocial'];
     $par_cuil             =$_POST['par_cuil'];
     $par_telefono         =$_POST['par_telefono'];
