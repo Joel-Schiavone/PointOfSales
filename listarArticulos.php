@@ -23,11 +23,7 @@
 </style>
 
 	<div class="container-fluid">
-		<div class='col-md-12' style="text-align: center;">
-			<div class="alert alert-dismissible alert-info">
-				<h3><i class="material-icons">list</i> Listado de Artículos</h3>
-			</div> 
-		</div> 
+	
 		<div class='col-md-12' style="text-align: center;">
 			
 		<table id="listadoArticulos" class="table table-striped table-bordered" cellspacing="0" width="100%">

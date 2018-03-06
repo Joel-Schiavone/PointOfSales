@@ -62,6 +62,7 @@ $puestos            = new puestos;
 $puestosE           = new puestosE;
 $cuentas_impuestosE = new cuentas_impuestosE;
 $cuentas_impuestos  = new cuentas_impuestos;
+$cabecera_comprobantes= new cabecera_comprobantes;
 @$action            = $_POST['action'];
 @$atras             = $_SESSION['actionsBack'];
 ?>
@@ -112,7 +113,7 @@ if ($action=='nuevoPlanTarjeta')
   $pla_desc           =   $_POST['pla_desc'];
   $pla_cant           =   $_POST['pla_cant'];
   $ID_tar             =   $_POST['ID_tar'];
-  $plan_tiempoAcre     =   $_POST['plan_tiempoAcre'];
+  $plan_tiempoAcre    =   $_POST['plan_tiempoAcre'];
   $pla_recargo        =   $_POST['pla_recargo'];
   $ID_fpo             =   3;
 
@@ -765,6 +766,9 @@ if (@$_GET['action']=='CerrarVenta')
          //////////////////////////////////////////////////////////////////////////////////////////////
        
 
+       
+
+
       for ($countDetalleDeVenta=0; $countDetalleDeVenta < $num_get_venta_detalleById; $countDetalleDeVenta++) 
       { 
 
@@ -935,6 +939,8 @@ if (@$_GET['action']=='CerrarVenta')
 
    
 
+
+
          
       ///////MODIFICA EN VENTAS EL TOTAL CON LA SUMATORIA Y SI TIENE DESCUENTO SE LO APLICA ANTES DE MODIFICARLO, EN FORMA DE PAGO CONCATENA LAS FORMAS DE PAGO
       //// 
@@ -986,8 +992,36 @@ if (@$_GET['action']=='CerrarVenta')
       /**/
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////
           
+     /* //LLENA LA CABECERA DEL COMPROBANTE REGISTRO DE VENTA QUE SE GENERA AUTOMATICAMENTE LUEGO DE CADA VENTA
+         $ID_tce                  =1;
+         $cte_asociado            =0;
+         $cte_monto               =$ven_total;
+         $cte_asociacion          =0;  // SI SE QUIERE ASOCIAR EL REGISTRO DE VENTA A UN CLIENTE SE DEBE PONER SU ID ACA
+         $ID_caj                  =0;
 
+         //trae numeracion suma uno y modifica el numero en la tabla puntos de ventas
+                   
+                   //PRIMERO BUSCA ID DEL PUNTO DE VENTA ATRAVEZ DEL PUESTO
+                     $ID_pueXX=$_SESSION['PUESTO']; 
+                     $get_puestosByIdBXX=$puestos->get_puestosById($ID_pueXX);
+                     $assoc_get_puestosByIdBXX=mysql_fetch_assoc($get_puestosByIdBXX);
+                     $ID_pdvXX=$assoc_get_puestosByIdBXX['ID_pdv'];
+                    //SEGUNDO TRAE LOS DATOS DE LA TABLA PUNTO DE VENTA PARA AUTOINCREMENTARLE UNO AL AL NUMERO Y MODIFICAR LA TABLA
+                     $get_puntos_de_ventasByIdID_tce=$puntos_de_ventas->get_puntos_de_ventasById($ID_pdvXX);
+                     $assoc_get_puntos_de_ventasByIdID_tce=mysql_fetch_assoc($get_puntos_de_ventasByIdID_tce);
+                     $ID_pdv                  = $assoc_get_puntos_de_ventasByIdID_tce['ID_pdv'];
+                     $pdv_puntoVenta          = $assoc_get_puntos_de_ventasByIdID_tce['pdv_puntoVenta'];
+                     $cte_numeroA             = $assoc_get_puntos_de_ventasByIdID_tce['pdv_numeracion']+1;
+                     $cte_numero              = $pdv_puntoVenta."".$cte_numeroA;
+                     $update_puntos_de_ventasById=$puntos_de_ventasE->update_puntos_de_ventasById($ID_pdv, $cte_numeroA);
 
+         $cte_neto                =$caj_vneA;
+         $cte_retencion           =0;
+         $cte_fec                 =$FechayHora;
+         $cte_metrica_descuento   =1;
+         $insert_cabecera_comprobantes=$cabecera_comprobantes->insert_cabecera_comprobantes($ID_tce, $cte_asociado, $cte_monto, $cte_asociacion, $ID_caj, $cte_numero, $cte_neto, $cte_retencion, $cte_fec, $cte_metrica_descuento);
+
+*/
 
 
       //INSERTA NUEVA VENTA 
@@ -995,6 +1029,8 @@ if (@$_GET['action']=='CerrarVenta')
       $ven_fpo=1;
       $ven_descuento=0;
       $insert_venta=$venta->insert_venta($ven_total, $ven_fpo, $ID_caj, $ven_descuento);
+
+
     
       //REDIRECCIONA
        echo '<script type="text/javascript">

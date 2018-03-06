@@ -199,6 +199,36 @@
             $get_mov_caja=$mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
              @$num_get_mov_caja=mysql_num_rows($get_mov_caja);
 
+             echo '<div class="col-md-12" style="font-size:10px;">';
+                   echo '<div class="col-md-1">';
+                    echo 'CANTIDAD';
+                   echo '</div>';
+                    echo '<div class="col-md-4">';
+                    echo 'DESCRIPCIÓN';
+                   echo '</div>';
+                    echo '<div class="col-md-1">';
+                    echo 'NETO';
+                   echo '</div>';
+                    echo '<div class="col-md-1">';
+                   echo 'SUB-TOTAL';
+                   echo '</div>';
+                    echo '<div class="col-md-1">';
+                    echo 'ALICUOTA';
+                   echo '</div>';
+                    echo '<div class="col-md-1">';
+                    echo 'DESCUENTO';
+                   echo '</div>';
+                     echo '<div class="col-md-1">';
+                        echo 'TOTAL';
+                   echo '</div>';
+                   echo '<div class="col-md-1">';
+                      echo 'ELIMINAR';
+                    echo '</div>';       
+                   echo '<div class="col-md-1">';       
+                      echo 'DESCUENTO';
+                   echo '</div>';
+                echo '</div>';    
+
              for ($CountMov=0; $CountMov < $num_get_mov_caja; $CountMov++) 
              { 
                $assoc_get_mov_caja=mysql_fetch_assoc($get_mov_caja);
@@ -296,6 +326,7 @@
                           </div>';
                       /* Fin Modal Descuento por movimiento */
 
+
                echo '<div class="col-md-12" id="recuadrosB">';
                    echo '<div class="col-md-1">';
                     echo  $assoc_get_mov_caja['mov_cantidad'] . $assoc_get_mov_caja['art_unidad'];
@@ -303,11 +334,14 @@
                     echo '<div class="col-md-4">';
                     echo $assoc_get_mov_caja['art_desc'];
                    echo '</div>';
-                    echo '<div class="col-md-2">';
+                    echo '<div class="col-md-1">';
                     echo  "$".$assoc_get_mov_caja['pre_cant'];
                    echo '</div>';
                     echo '<div class="col-md-1">';
-                    echo  "$".$assoc_get_mov_caja['multiplicacion'];
+                     echo  "$".$assoc_get_mov_caja['multiplicacion'];
+                   echo '</div>';
+                    echo '<div class="col-md-1">';
+                      echo  "%".$assoc_get_mov_caja['pre_iva'];
                    echo '</div>';
                     echo '<div class="col-md-1">';
                    echo  "%".$assoc_get_mov_caja['mov_descuento'];
@@ -1227,4 +1261,5 @@
 
 
 
+      <!--////////////////////////////////////// F I N  N U E V O   C O M P R O B A N T E ///////////////////////////////////-->
 <!--Fin: script -->

@@ -980,7 +980,7 @@
 
 		function get_mov_caja($ID_caj, $ID_ven)
 		{
-			$get_mov_caja = 'SELECT articulos.ID_art, articulos.art_unidad, sum(mov_cantidad) AS mov_cantidad, articulos.art_desc, sum(pre_cant) AS pre_cant, sum(mov_cantidad*pre_cant) AS multiplicacion, ID_mov, mov_sal, mov_descuento FROM caja, venta, mov_caja, articulos, precios where precios.ID_pre=articulos.ID_pre AND articulos.ID_art=mov_caja.ID_art AND mov_caja.ID_ven=venta.ID_ven AND venta.ID_caj=caja.ID_caj AND caja.ID_caj='.$ID_caj.' AND venta.ID_ven='.$ID_ven.' group by articulos.ID_art'; 
+			$get_mov_caja = 'SELECT articulos.ID_art, articulos.art_unidad, sum(mov_cantidad) AS mov_cantidad, articulos.art_desc, sum(pre_cant) AS pre_cant, sum(mov_cantidad*pre_cant) AS multiplicacion, ID_mov, mov_sal, mov_descuento, pre_iva FROM caja, venta, mov_caja, articulos, precios where precios.ID_pre=articulos.ID_pre AND articulos.ID_art=mov_caja.ID_art AND mov_caja.ID_ven=venta.ID_ven AND venta.ID_caj=caja.ID_caj AND caja.ID_caj='.$ID_caj.' AND venta.ID_ven='.$ID_ven.' group by articulos.ID_art'; 
 		      $result_venta =mysql_query($get_mov_caja);
 		       return $result_venta;
 		}
