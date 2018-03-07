@@ -1379,7 +1379,7 @@ class tarjetasE
                         //Inicio: Llama a todas las columnas de la tabla
                         function get_comprobantes_ultimo()
                         {
-                              $sql_cabecera_comprobantes = 'SELECT * FROM cabecera_comprobantes  order by cabecera_comprobantes.ID_cte DESC limit 1 ';
+                              $sql_cabecera_comprobantes = 'SELECT * FROM cabecera_comprobantes order by cabecera_comprobantes.ID_cte DESC limit 1';
                               $result_cabecera_comprobantes =mysql_query($sql_cabecera_comprobantes);
                               return $result_cabecera_comprobantes;
                         }

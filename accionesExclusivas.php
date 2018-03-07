@@ -63,6 +63,9 @@ $puestosE           = new puestosE;
 $cuentas_impuestosE = new cuentas_impuestosE;
 $cuentas_impuestos  = new cuentas_impuestos;
 $cabecera_comprobantes= new cabecera_comprobantes;
+$comprobantes_datos = new comprobantes_datos;
+$comprobantesE      = new comprobantesE;
+$detalle_comprobantes= new detalle_comprobantes;
 @$action            = $_POST['action'];
 @$atras             = $_SESSION['actionsBack'];
 ?>
@@ -1015,11 +1018,67 @@ if (@$_GET['action']=='CerrarVenta')
                      $cte_numero              = $pdv_puntoVenta."".$cte_numeroA;
                      $update_puntos_de_ventasById=$puntos_de_ventasE->update_puntos_de_ventasById($ID_pdv, $cte_numeroA);
 
-         $cte_neto                =$caj_vneA;
-         $cte_retencion           =0;
-         $cte_fec                 =$FechayHora;
-         $cte_metrica_descuento   =1;
-         $insert_cabecera_comprobantes=$cabecera_comprobantes->insert_cabecera_comprobantes($ID_tce, $cte_asociado, $cte_monto, $cte_asociacion, $ID_cajXX, $cte_numero, $cte_neto, $cte_retencion, $cte_fec, $cte_metrica_descuento);
+
+
+                     $get_mov_cajaXX=$mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
+                     $num_get_mov_cajaXX=mysql_num_rows($get_mov_cajaXX);
+                     $cte_netoA=0;
+                     $precioSinIva=0;
+
+
+                     for ($countnetocaja=0; $countnetocaja < $num_get_mov_cajaXX; $countnetocaja++) 
+                     { 
+                       $assoc_get_mov_cajaXX=mysql_fetch_assoc($get_mov_cajaXX);
+                       $cte_netoA = $cte_netoA+$assoc_get_mov_cajaXX['multiplicacion'];
+                       $precioSinIva = $precioSinIva+$assoc_get_mov_cajaXX['precioSinIva'];
+               
+                     }
+
+                     
+
+                     $cte_neto                =$cte_netoA;
+                     $cte_retencion           =$ven_descuento;
+                     $cte_fec                 =$FechayHora;
+                     $cte_metrica_descuento   =1;
+                     $insert_cabecera_comprobantes=$cabecera_comprobantes->insert_cabecera_comprobantes($ID_tce, $cte_asociado, $cte_monto, $cte_asociacion, $ID_cajXX, $cte_numero, $cte_neto, $cte_retencion, $cte_fec, $cte_metrica_descuento);
+
+
+
+                     //INSERTA EN LA TABLA DATOS DE COMPROBANTES ORIGINAL
+                    $get_comprobantes_ultimo=$comprobantesE->get_comprobantes_ultimo();
+                    $assoc_get_comprobantes_ultimo=mysql_fetch_assoc($get_comprobantes_ultimo);
+                    $ID_cte=$assoc_get_comprobantes_ultimo['ID_cte'];
+
+                     $get_mov_cajaXXX=$mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
+                     $num_get_mov_cajaXXX=mysql_num_rows($get_mov_cajaXXX);
+                     for ($countnetocajaX=0; $countnetocajaX < $num_get_mov_cajaXXX; $countnetocajaX++) 
+                     { 
+                       $assoc_get_mov_cajaXXX=mysql_fetch_assoc($get_mov_cajaXXX);
+
+                        //INSERT A DETALLES DE COMPROBANTES detalle_comprobantes
+
+                                      $metricaDescuento=1;
+                                      $descuentoPorUnidad=$assoc_get_mov_cajaXXX['mov_descuento'];
+                                      $pre_cant       = $assoc_get_mov_cajaXXX['pre_cant'];
+                                      $pre_iva        = $assoc_get_mov_cajaXXX['pre_iva'];
+
+                                      $dte_cantidad   = $assoc_get_mov_cajaXXX['mov_cantidad'];
+                                      $dte_monto      = $assoc_get_mov_cajaXXX['mov_sal']; 
+                                      $dte_iva        = $assoc_get_mov_cajaXX['pre_iva'];
+                                      $dte_metrica    = 1;
+                                      $dte_descuento  = $assoc_get_mov_cajaXXX['mov_descuento'];
+                                      $ID_art         = $assoc_get_mov_cajaXXX['ID_art'];
+                                      $insert_detalle_comprobantes=$detalle_comprobantes->insert_detalle_comprobantes($ID_cte, $ID_art, $dte_cantidad, $dte_monto, $dte_iva, $dte_metrica, $dte_descuento, $ID_suc);
+                     }
+
+                        //$ID_cte       = $ID_cte;
+                        //$ID_usu       = $ID_usu;
+                        $cpd_fecha      = $FechayHora;
+                        //$ID_pdv         = $ID_pdv;
+                        $cpd_original   = 0;
+                        $cpd_copia      = 0;
+                        $insert_comprobantes_datos=$comprobantes_datos->insert_comprobantes_datos($ID_cte, $ID_usu, $cpd_fecha, $ID_pdv, $cpd_original, $cpd_copia);
+                        $CREADOMODIFICADO="CREADO";
 
 
       //INSERTA NUEVA VENTA 

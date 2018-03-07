@@ -1,6 +1,6 @@
 <?php
 
-    //07 03 2018 13:03:34 El Archivo classes.php se ha modificado correctamente
+    //07 03 2018 16:03:07 El Archivo classes.php se ha modificado correctamente
 
     class adjuntos
     {
@@ -3251,9 +3251,9 @@
           //Inicio Funciones para Insertar datos
 
 
-                        function insert_venta($ven_total, $ven_fpo, $ID_caj, $ven_descuento, $ven_totalSinIva)
+                        function insert_venta($ven_total, $ven_fpo, $ID_caj, $ven_descuento)
                         {
-                              $sql_venta = 'INSERT INTO venta (ven_total, ven_fpo, ID_caj, ven_descuento, ven_totalSinIva) VALUES ("'.$ven_total.'", "'.$ven_fpo.'", "'.$ID_caj.'", "'.$ven_descuento.'", "'.$ven_totalSinIva.'")'; 
+                              $sql_venta = 'INSERT INTO venta (ven_total, ven_fpo, ID_caj, ven_descuento) VALUES ("'.$ven_total.'", "'.$ven_fpo.'", "'.$ID_caj.'", "'.$ven_descuento.'")'; 
                               $result_venta =mysql_query($sql_venta );
                               return $result_venta;
                         }
@@ -3262,10 +3262,10 @@
           //Inicio Funciones para Modificar datos
 
           //Inicio Funcion Modifica todos los datos por ID
-                        function update_ventaById($ID_ven, $ven_total, $ven_fpo, $ID_caj, $ven_descuento, $ven_totalSinIva)
+                        function update_ventaById($ID_ven, $ven_total, $ven_fpo, $ID_caj, $ven_descuento)
 
                         {
-                              $sql_venta = 'UPDATE venta  SET ven_total = "'.$ven_total.'" , ven_fpo = "'.$ven_fpo.'" , ID_caj = "'.$ID_caj.'" , ven_descuento = "'.$ven_descuento.'" , ven_totalSinIva = "'.$ven_totalSinIva.'"  WHERE ID_ven='.$ID_ven.' ';
+                              $sql_venta = 'UPDATE venta  SET ven_total = "'.$ven_total.'" , ven_fpo = "'.$ven_fpo.'" , ID_caj = "'.$ID_caj.'" , ven_descuento = "'.$ven_descuento.'"  WHERE ID_ven='.$ID_ven.' ';
                               $result_venta =mysql_query($sql_venta );
                               return $result_venta;
                         }
