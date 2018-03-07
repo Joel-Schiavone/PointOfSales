@@ -355,7 +355,7 @@
                           </button></a>'; 
                     echo '</div>';       
                    echo '<div class="col-md-1">';       
-                    echo '<button class="btn btn-info" id="botonDescuento'.$assoc_get_mov_caja['ID_mov'].'" data-toggle="modal" title="Cerrar Caja" data-placement="top" data-target="#botonDescuento'.$assoc_get_mov_caja['ID_mov'].'">
+                    echo '<button class="btn btn-info" id="botonDescuento'.$assoc_get_mov_caja['ID_mov'].'" data-toggle="modal" title="APLICAR DESCUENTO" data-placement="top" data-target="#botonDescuento'.$assoc_get_mov_caja['ID_mov'].'">
                             <i class="material-icons">local_offer</i>
                           </button>';    
 
@@ -461,35 +461,48 @@
   			<!--Inicio: Articulos vendidos totales--> 
   			<div class="col-md-12" id="recuadrosC">
   				<!--Inicio: Articulos vendidos total--> 
-  				<div class="col-md-4" style="text-align: left; border-right: 1px solid #000">
+  				<div class="col-md-2" style="text-align: left; border-right: 1px solid #000">
           TOTAL: 
   				</div>
   				<!--Fin: Articulos vendidos total-->
+          
+          <!--COLOCA EN EL TOTAL EL PRECIO NETO QUE ES EL PRECIO SIN IVA-->
+          <div class="col-md-2" style="text-align: center;">
+            <?php 
+              $get_mov_cajaByIdVenXX                =   $mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
+              $num_get_mov_cajaByIdXX               =   mysql_num_rows($get_mov_cajaByIdVenXX);
+              $ven_totalSinIva=0;
+              $totalSinDescuentoAZ=0;
+              for ($CountPrecioNeto=0; $CountPrecioNeto < $num_get_mov_cajaByIdXX; $CountPrecioNeto++) 
+              { 
+                $assoc_get_mov_cajaByIdXX           =   mysql_fetch_assoc($get_mov_cajaByIdVenXX);
+                $totalSinDescuentoAZ                = $totalSinDescuentoAZ+$assoc_get_mov_cajaByIdXX['mov_sal'];
+                $ven_totalSinIva                    = $ven_totalSinIva+$assoc_get_mov_cajaByIdXX['precioSinIva'];
+              }
+              echo "$ ". $ven_totalSinIva;
+              echo "<p style='font-size:9px;'>GRABADO</p>";
+            ?>
+          </div>
+
   				<!--Inicio: Articulos vendidos monto total-->
   				<div class="col-md-2" style="text-align: center;">
             <?php 
               //sin descuento
-              $get_mov_cajaByIdVenZ = $mov_cajaE->get_mov_cajaByIdVen($ID_ven);
-              $num_get_mov_cajaByIdVenZ = mysql_num_rows($get_mov_cajaByIdVenZ);
-              $totalSinDescuentoAZ=0;
-              for ($countZ=0; $countZ < $num_get_mov_cajaByIdVenZ; $countZ++) 
-              { 
-                $assoc_get_mov_cajaByIdVenZ = mysql_fetch_assoc($get_mov_cajaByIdVenZ);
-                $totalSinDescuentoAZ=$assoc_get_mov_cajaByIdVenZ['mov_sal']+$totalSinDescuentoAZ;
-              }
                   echo "$ ".$totalSinDescuentoAZ; 
-               
+                  echo "<p style='font-size:9px;'>SUBTOTAL</p>";
             ?>
   				</div>
           <div class="col-md-2" style="text-align: center;">
             <?php 
               echo "% ".$assoc_get_venta_UltimaByIdCaja['ven_descuento']; 
                 $descuento=$assoc_get_venta_UltimaByIdCaja['ven_descuento'];
+                echo "<p style='font-size:9px;'>DESCUENTO</p>";
             ?>
           </div>
             <div class="col-md-2" style="text-align: center;">
             <?php 
-              echo "$ ".$assoc_get_venta_UltimaByIdCaja['ven_total']; 
+              echo "$ ".$assoc_get_venta_UltimaByIdCaja['ven_total'];
+              echo "<p style='font-size:9px;'>FINAL</p>"; 
             ?>
           </div>
           <div class="col-md-2" style="text-align: center;">

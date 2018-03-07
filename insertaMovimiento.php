@@ -12,20 +12,19 @@ $FechayHora         = date("Y-m-d H:i:s");
 		$ID_art_ACTUAL 			= $_GET['ID_art'];
 
 	//Recibe ID de cantidad	
-  		$mov_cantidad_ACTUAL 	= $_GET['mov_cantidad'];
-
+  		$mov_cantidad_ACTUAL 	= $_GET['mov_cantidad'];  // CANTIDAD ACTUAL
+  		$precio_del_articulo=0;
   	//Trae precio de articulo
 		$sql_articulos    		= 'SELECT pre_iva, pre_cant, articulos.ID_pre FROM articulos, precios WHERE  precios.ID_pre=articulos.ID_pre AND ID_art='.$ID_art_ACTUAL.'' ; 
 	    $result_articulos 		= mysql_query($sql_articulos);
 	    $assoc_result_articulos = mysql_fetch_assoc($result_articulos);
-	    $precio_del_articulo 	= $assoc_result_articulos['pre_cant'];
-	    $ID_pre 			 	= $assoc_result_articulos['ID_pre'];
-	    $pre_iva 				= $assoc_result_articulos['pre_iva'];
+	    $precio_del_articuloA 	= $assoc_result_articulos['pre_cant'];  // PRECIO DEL ARTICULO ACTUAL
+	    $ID_pre 			 	= $assoc_result_articulos['ID_pre']; 
+	    $pre_iva 				= $assoc_result_articulos['pre_iva']; // IVA DEL ARTICULO ACTUAL
+	    $precio_del_articuloB   = ($precio_del_articuloA*$pre_iva)/100;
+	    $precio_del_articulo    = $precio_del_articuloA+$precio_del_articuloB;  // PRECIO DEL ARTICULO ACTUAL + IVA DEL ARTICULO ACTUAL
 	//Genera Multiplicacion
-		$Multiplicacion_ACTUAL 	=   $precio_del_articulo*$mov_cantidad_ACTUAL;
-			//aplico iva
-	    			$total_multiplicacionMasIva=($Multiplicacion_ACTUAL*$pre_iva)/100;
-	    			$Multiplicacion_ACTUAL=$Multiplicacion_ACTUAL+$total_multiplicacionMasIva;
+		
 //ETAPA 2: TRAE VENTA A LA QUE PERTENECE EL MOVIMIENTO
 		$sql_ventas 			= 'SELECT ID_ven, caja.ID_caj, ven_total, ID_suc, ven_descuento FROM venta, caja where venta.ID_caj=caja.ID_caj AND ID_usu='.$ID_usu.' ORDER BY caja.ID_caj DESC, venta.ID_ven DESC LIMIT 1';
 		$result_ventas  		= mysql_query($sql_ventas);
@@ -35,6 +34,7 @@ $FechayHora         = date("Y-m-d H:i:s");
 	    $ven_total_ANTERIOR 	= $assoc_result_ventas['ven_total'];
 	    $ID_suc 		 	 	= $assoc_result_ventas['ID_suc'];
 	    $ven_descuento		 	= $assoc_result_ventas['ven_descuento'];
+
 
 //ETAPA 3: BUSCA COINCIDENCIA DE ARTICULO EN LOS MOVIMIENTOS
 
@@ -50,22 +50,19 @@ $FechayHora         = date("Y-m-d H:i:s");
 	    $mov_sal_ANTERIOR		= $assoc_result_movimiento['mov_sal'];
 	    $cantidad 				=$mov_cantidad_ANTERIOR+$mov_cantidad_ACTUAL;
 
+	    $Multiplicacion_ACTUAL 	= $precio_del_articulo*$cantidad;
 	    // si exite al menos una coincidencia de articulo en los movimientos
 	    if ($num_result_movimiento==1) 
 	    {
+	    	
 	    	
 	    	//Si tiene descuento 
 	    	if($mov_descuento!=0)
 	    	{
 	    		//preparo precio para modificar saldo de movimiento
 
-	    			//Genero nuevamente la multiplicacion de precio por cantidad del movimiento anterior para quitar descuento
-	    			$Multiplicacion_ANTERIOR=$precio_del_articulo*$mov_cantidad_ANTERIOR;
-	    			//Sumo el resultado de articulo por cantidad anterior con el resultado de articulo por cantidad actual
-	    			$total_multiplicacion=$Multiplicacion_ANTERIOR+$Multiplicacion_ACTUAL;
-	    			
 	    			//aplico descuento al total 
-	    			$NUEVO_mov_sal=($total_multiplicacion*$mov_descuento)/100;
+	    			$NUEVO_mov_sal=($Multiplicacion_ACTUAL*$mov_descuento)/100;
 	    			//$NUEVO_mov_sal=$NUEVO_mov_salB+$total_multiplicacion;
 	    			//guarda varibale ConDescuento para etapa de Venta, Indicara si el ultimo importe se agrego con descuento o no
 	    			$ConDescuento="si";
@@ -77,7 +74,7 @@ $FechayHora         = date("Y-m-d H:i:s");
 
 	    		//Genero nuevamente la multiplicacion de precio por cantidad del movimiento anterior para quitar descuento
 	    		
-	    			$NUEVO_mov_sal=$total_multiplicacion;
+	    			$NUEVO_mov_sal=$Multiplicacion_ACTUAL;
 	    			//guarda varibale ConDescuento para etapa de Venta, Indicara si el ultimo importe se agrego con descuento o no
 	    			$ConDescuento="no";
 	    	}	
@@ -91,8 +88,9 @@ $FechayHora         = date("Y-m-d H:i:s");
 	 	else
 	 	{	
 	 			$ConDescuento="nada";
+	 			$NUEVO_mov_sal=$Multiplicacion_ACTUAL;
 
-	 			$sql_mov_caja_insert = 'INSERT INTO mov_caja (ID_ven, mov_hora, ID_art, ID_pre, mov_cantidad, mov_sal, mov_descuento) VALUES ("'.$ID_ven.'", "'.$HoraDeHoy.'", "'.$ID_art_ACTUAL.'", "'.$ID_pre.'", "'.$mov_cantidad_ACTUAL.'", "'.$Multiplicacion_ACTUAL.'", "0")'; 
+	 			$sql_mov_caja_insert = 'INSERT INTO mov_caja (ID_ven, mov_hora, ID_art, ID_pre, mov_cantidad, mov_sal, mov_descuento) VALUES ("'.$ID_ven.'", "'.$HoraDeHoy.'", "'.$ID_art_ACTUAL.'", "'.$ID_pre.'", "'.$mov_cantidad_ACTUAL.'", "'.$NUEVO_mov_sal.'", "0")'; 
                 $result_sql_mov_caja_insert =mysql_query($sql_mov_caja_insert);
 	 	}	
 

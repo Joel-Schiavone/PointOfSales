@@ -777,7 +777,7 @@ if (@$_GET['action']=='CerrarVenta')
         $ID_fpo=$assoc_get_venta_detalleById['ID_fpo'];
         $vde_IDasociado=$assoc_get_venta_detalleById['vde_IDasociado'];
 
-      
+        
           //SI LA FORMA DE PAGO ES EFECTIVO
 
            //MODIFICA LA CAJA EN EFECTIVO Y EN VENTA NETA Y EN TOTAL 
@@ -992,12 +992,12 @@ if (@$_GET['action']=='CerrarVenta')
       /**/
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////
           
-     /* //LLENA LA CABECERA DEL COMPROBANTE REGISTRO DE VENTA QUE SE GENERA AUTOMATICAMENTE LUEGO DE CADA VENTA
+      //LLENA LA CABECERA DEL COMPROBANTE REGISTRO DE VENTA QUE SE GENERA AUTOMATICAMENTE LUEGO DE CADA VENTA
          $ID_tce                  =1;
          $cte_asociado            =0;
          $cte_monto               =$ven_total;
          $cte_asociacion          =0;  // SI SE QUIERE ASOCIAR EL REGISTRO DE VENTA A UN CLIENTE SE DEBE PONER SU ID ACA
-         $ID_caj                  =0;
+         $ID_cajXX                =0;
 
          //trae numeracion suma uno y modifica el numero en la tabla puntos de ventas
                    
@@ -1019,9 +1019,7 @@ if (@$_GET['action']=='CerrarVenta')
          $cte_retencion           =0;
          $cte_fec                 =$FechayHora;
          $cte_metrica_descuento   =1;
-         $insert_cabecera_comprobantes=$cabecera_comprobantes->insert_cabecera_comprobantes($ID_tce, $cte_asociado, $cte_monto, $cte_asociacion, $ID_caj, $cte_numero, $cte_neto, $cte_retencion, $cte_fec, $cte_metrica_descuento);
-
-*/
+         $insert_cabecera_comprobantes=$cabecera_comprobantes->insert_cabecera_comprobantes($ID_tce, $cte_asociado, $cte_monto, $cte_asociacion, $ID_cajXX, $cte_numero, $cte_neto, $cte_retencion, $cte_fec, $cte_metrica_descuento);
 
 
       //INSERTA NUEVA VENTA 
@@ -1145,11 +1143,17 @@ if ($action=='aplicarDescuentoVenta')
       { 
         $assoc_get_mov_cajaByIdVen = mysql_fetch_assoc($get_mov_cajaByIdVen);
         $ven_totalA=$assoc_get_mov_cajaByIdVen['mov_sal']+$ven_totalA;
+
+
       }
 
     $ven_totalB=($ven_totalA*$ven_descuento)/100;
     $ven_total=$ven_totalA-$ven_totalB;
     $update_ventaByIdDescuento=$ventaE->update_ventaByIdDescuento($ID_ven, $ven_total, $ven_descuento);
+
+
+
+
     echo '<script type="text/javascript">
     window.location.assign("cajaSuc.php?");
     </script>';
@@ -1163,7 +1167,9 @@ if ($action=='aplicarDescuentoMovimiento')
 
     $get_mov_cajaById = $mov_cajaE->get_mov_cajaByIdpre_cant($ID_mov);
     $assoc_get_mov_cajaById=mysql_fetch_assoc($get_mov_cajaById);
-    $precioVentaAnterior=$assoc_get_mov_cajaById['pre_cant'];
+    $precioVentaAnteriorA=$assoc_get_mov_cajaById['pre_cant'];
+    $precioVentaAnteriorB=($precioVentaAnteriorA*$assoc_get_mov_cajaById['pre_iva'])/100;
+    $precioVentaAnterior=$precioVentaAnteriorA+$precioVentaAnteriorB;
     $mov_salAnterior=$assoc_get_mov_cajaById['mov_sal'];
     $multiplicador=$mov_cantidad*$precioVentaAnterior;
 
@@ -1174,14 +1180,18 @@ if ($action=='aplicarDescuentoMovimiento')
 
       $get_mov_cajaByIdVen = $mov_cajaE->get_mov_cajaByIdVen($ID_ven);
       $num_get_mov_cajaByIdVen = mysql_num_rows($get_mov_cajaByIdVen);
-      $ven_total=0;
+      $ven_totalC=0;
       for ($count=0; $count < $num_get_mov_cajaByIdVen; $count++) 
       { 
         $assoc_get_mov_cajaByIdVen = mysql_fetch_assoc($get_mov_cajaByIdVen);
-        $ven_total=$assoc_get_mov_cajaByIdVen['mov_sal']+$ven_total;
+        $ven_totalC=$assoc_get_mov_cajaByIdVen['mov_sal']+$ven_totalC;
       }
 
-
+      $get_ventaById=$venta->get_ventaById($ID_ven);
+      $assoc_get_ventaById=mysql_fetch_assoc($get_ventaById);
+      $ven_descuento = $assoc_get_ventaById['ven_descuento'];
+      $ven_totalA=($ven_totalC*$ven_descuento)/100;
+      $ven_total=$ven_totalC-$ven_totalA;
       $update_ventaByIdSoloTotal=$ventaE->update_ventaByIdSoloTotal($ID_ven, $ven_total);
 
        echo '<script type="text/javascript">
