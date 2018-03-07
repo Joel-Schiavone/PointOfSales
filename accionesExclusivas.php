@@ -1494,38 +1494,34 @@ if ($action=='editarUsuario')
           }
 
           //INSERTO NUEVOS PERMISOS SEGUN EL TIPO DE USUARIO QUE SE HAYA SELECCIONADO
-          if ($usu_tipo=='1') 
+          if ($usu_tipo=='1')  // TIPO DE USUARIO CAJERO
           {
-           $ID_mod='1';
+           $ID_mod_Tipo_Cajero_A='3';
+           $ID_mod_Tipo_Cajero_B='7'; 
+           $insert_permisos_Tipo_Cajero_A     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Cajero_A);
+           $insert_permisos_Tipo_Cajero_B     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Cajero_B);
           }
-          if ($usu_tipo=='3') 
+          if ($usu_tipo=='3') // TIPO DE USUARIO MASTER ADMIN
           {
-           $ID_modE='1';
-           $ID_mod='3';
-           $ID_modC='4';
-           $ID_modD='6';
+           $ID_mod_Tipo_Admin_A='3';
+           $ID_mod_Tipo_Admin_B='4';
+           $ID_mod_Tipo_Admin_C='6';
+           $ID_mod_Tipo_Admin_D='7';
+           $ID_mod_Tipo_Admin_E='10';
+           $ID_mod_Tipo_Admin_F='11';
+           $ID_mod_Tipo_Admin_G='12';
 
-           $ID_modJ='7';
-           $ID_modF='8';
-           $ID_modG='9';
-           $ID_modH='10';
-           $ID_modI='11';
-           $ID_modK='12';
-
-           $insert_permisosC  = $permisos->insert_permisos($ID_usu, $ID_modC);
-           $insert_permisosD  = $permisos->insert_permisos($ID_usu, $ID_modD);
-           $insert_permisosE  = $permisos->insert_permisos($ID_usu, $ID_modE);
-
-           $insert_permisosJ  = $permisos->insert_permisos($ID_usu, $ID_modJ);
-           $insert_permisosF  = $permisos->insert_permisos($ID_usu, $ID_modF);
-           $insert_permisosG  = $permisos->insert_permisos($ID_usu, $ID_modG);
-           $insert_permisosH  = $permisos->insert_permisos($ID_usu, $ID_modH);
-           $insert_permisosI  = $permisos->insert_permisos($ID_usu, $ID_modI);
-           $insert_permisosK  = $permisos->insert_permisos($ID_usu, $ID_modK);
+           $insert_permisos_Tipo_Admin_A     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_A);
+           $insert_permisos_Tipo_Admin_B     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_B);
+           $insert_permisos_Tipo_Admin_C     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_C);
+           $insert_permisos_Tipo_Admin_D     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_D);
+           $insert_permisos_Tipo_Admin_E     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_E);
+           $insert_permisos_Tipo_Admin_F     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_F);
+           $insert_permisos_Tipo_Admin_G     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_G);
           }
-            $insert_permisos  = $permisos->insert_permisos($ID_usu, $ID_mod);
-            $ID_modB='5';
-            $insert_permisosB = $permisos->insert_permisos($ID_usu, $ID_modB);
+
+            $ID_mod_UNIVERSAL_A             = '1'; // MODULO HOME
+            $insert_permisos                = $permisos->insert_permisos($ID_usu, $ID_mod_UNIVERSAL_A);
        
       } 
 
@@ -1606,8 +1602,28 @@ if ($action=='nuevoUsuario')
     $usu_usuario              = $_POST['usu_usuario'];
     $usu_clave                = $_POST['usu_clave'];
     $usu_tipo                 = $_POST['usu_tipo'];
-   
-    $insert_usuarios = $usuarios->insert_usuarios($usu_nombre, $usu_apellido, $usu_usuario, $usu_clave, $usu_tipo);
+        
+
+    if ($_POST['sobrantes']==1) 
+    {
+      $usu_sobrantes               = 1;
+    }
+    else
+   {
+    $usu_sobrantes                 = 0;
+   }   
+
+    if (@$_POST['descuentos']==1) 
+    {
+      $usu_descuento                = 1;
+    }
+    else
+   {
+      $usu_descuento                 = 0;
+   }   
+
+
+    $insert_usuarios = $usuarios->insert_usuarios($usu_nombre, $usu_apellido, $usu_usuario, $usu_clave, $usu_tipo, $usu_descuento, $usu_sobrantes);
 
     //TRAIGO EL TIPO DE USUARIO POR ID USU Y GUARDO EL TIPO EN UNA VARIABLE
      $get_usuariosUsuariosUltimo         = $usuariosE->get_usuariosUsuariosUltimo();
@@ -1615,44 +1631,38 @@ if ($action=='nuevoUsuario')
      $ID_usu                             = $assoc_get_usuariosUsuariosUltimo['ID_usu'];
      $usu_tipo                           = $assoc_get_usuariosUsuariosUltimo['usu_tipo'];
 
-           //INSERTO NUEVOS PERMISOS SEGUN EL TIPO DE USUARIO QUE SE HAYA SELECCIONADO
-          if ($usu_tipo=='1') 
+         //INSERTO NUEVOS PERMISOS SEGUN EL TIPO DE USUARIO QUE SE HAYA SELECCIONADO
+          if ($usu_tipo=='1')  // TIPO DE USUARIO CAJERO
           {
-           $ID_mod='1';
+           $ID_mod_Tipo_Cajero_B='7'; 
+           $insert_permisos_Tipo_Cajero_B     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Cajero_B);
           }
-          if ($usu_tipo=='3') 
+          if ($usu_tipo=='3') // TIPO DE USUARIO MASTER ADMIN
           {
-           
-           $ID_modE='1';
-           $ID_mod='3';
-           $ID_modC='4';
-           $ID_modD='6';
+           $ID_mod_Tipo_Admin_A='3';
+           $ID_mod_Tipo_Admin_B='4';
+           $ID_mod_Tipo_Admin_C='6';
+           $ID_mod_Tipo_Admin_D='7';
+           $ID_mod_Tipo_Admin_E='10';
+           $ID_mod_Tipo_Admin_F='11';
+           $ID_mod_Tipo_Admin_G='12';
 
-           $ID_modJ='7';
-           $ID_modF='8';
-           $ID_modG='9';
-           $ID_modH='10';
-           $ID_modI='11';
-           $ID_modK='12';
-           $insert_permisosC  = $permisos->insert_permisos($ID_usu, $ID_modC);
-           $insert_permisosD  = $permisos->insert_permisos($ID_usu, $ID_modD);
-           $insert_permisosE  = $permisos->insert_permisos($ID_usu, $ID_modE);
-
-           $insert_permisosJ  = $permisos->insert_permisos($ID_usu, $ID_modJ);
-           $insert_permisosF  = $permisos->insert_permisos($ID_usu, $ID_modF);
-           $insert_permisosG  = $permisos->insert_permisos($ID_usu, $ID_modG);
-           $insert_permisosH  = $permisos->insert_permisos($ID_usu, $ID_modH);
-           $insert_permisosI  = $permisos->insert_permisos($ID_usu, $ID_modI);
-           $insert_permisosK  = $permisos->insert_permisos($ID_usu, $ID_modK);
+           $insert_permisos_Tipo_Admin_A     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_A);
+           $insert_permisos_Tipo_Admin_B     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_B);
+           $insert_permisos_Tipo_Admin_C     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_C);
+           $insert_permisos_Tipo_Admin_D     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_D);
+           $insert_permisos_Tipo_Admin_E     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_E);
+           $insert_permisos_Tipo_Admin_F     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_F);
+           $insert_permisos_Tipo_Admin_G     = $permisos->insert_permisos($ID_usu, $ID_mod_Tipo_Admin_G);
           }
-            $insert_permisos  = $permisos->insert_permisos($ID_usu, $ID_mod);
-            $ID_modB='5';
-            $insert_permisosB = $permisos->insert_permisos($ID_usu, $ID_modB);
+
+            $ID_mod_UNIVERSAL_A             = '1'; // MODULO HOME
+            $insert_permisos                = $permisos->insert_permisos($ID_usu, $ID_mod_UNIVERSAL_A);
      
 
-       echo '<script type="text/javascript">
+      echo '<script type="text/javascript">
              window.location.assign("usuarios.php?&M=6");
-             </script>';
+           </script>';
     
   } 
 

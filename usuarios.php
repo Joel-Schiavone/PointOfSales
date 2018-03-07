@@ -49,14 +49,33 @@
                                             <div class="form-group">
                                             <label for="Clave" class="col-lg-2 control-label">Tipo</label>
                                               <select name="usu_tipo" class="form-control">
-                                                <option value="1">Cajero</option>
-                                                <option value="3">Admin</option>
+                                                <option value="1">CAJERO</option>
+                                                <option value="3">MASTER ADMIN</option>
                                               </select>
                                             </div>
+
+                                             <div class="form-group">
+                                               <label class="control-label" for="focusedInput"> Habilitado a realizar Descuentos?</label><br>
+                                                  <i class="material-icons" style="vertical-align: top">money_off</i> <label class="switch">
+                                                  <input type="checkbox" id="descuentos" name="descuentos" value="1">
+                                                  <span class="slider round"></span>
+                                                </label> <i class="material-icons" style="vertical-align: top">attach_money  </i>
+                                              </div> 
+
+                                                 <div class="form-group">
+                                               <label class="control-label" for="focusedInput"> Habilitado a visualizar al cierre de caja: efectivo, sobrantes y faltantes?</label><br>
+                                                  <i class="material-icons"  style="vertical-align: top">visibility_off</i> <label class="switch">
+                                                  <input type="checkbox" id="sobrantes" name="sobrantes" value="1">
+                                                  <span class="slider round"></span>
+                                                </label> <i class="material-icons" style="vertical-align: top">visibility</i>
+                                              </div>    
+                                        
                                         
                                             <div class="form-group">
                                                <button type="submit" class="btn btn-success" style="width:100%;"><i class="material-icons" style="vertical-align: middle">assignment_ind</i> Confirmar</button>
                                             </div> 
+
+
                                           </fieldset> '; 
                                       echo '</form>
                                     </div>

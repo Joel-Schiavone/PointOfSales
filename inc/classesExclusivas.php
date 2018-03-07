@@ -604,6 +604,8 @@
 		       return $result_permisos;
 		}
 
+    
+
 
 	}
 	//fin Trae todos los usuarios por usuario y clave
