@@ -2,6 +2,7 @@
 <?php
 	include_once("inc/requeridoSinCarga.php"); 
   include_once("inc/validacion.php"); 
+
   $mov_cajaE          = new mov_cajaE;
   $cajaE              = new cajaE;
   $ventaE             = new ventaE;
@@ -66,7 +67,7 @@
       <!--Fin: Input Cantidad-->
       
   		<!--Inicio: Barra buscadora--> 
-	  	<div class="col-md-8" >
+	  	<div class="col-md-5" >
 	  		<input type="text" name="get_articulos" id="get_articulos" class="form-control" placeholder="Buscar Articulo" autofocus="autofocus">
         <div id='suggestions' class='suggestions'></div>
 	  	</div>
@@ -78,9 +79,173 @@
 	  	</div>
 	  	<!--Fin: Input Cantidad-->
       <!--Inicio: Boton cerrar caja-->
-      <div class="col-md-1" >
-        <button class="btn btn-primary" title='Imprimir Venta Anterior' data-toggle='modal'  data-placement='top' data-target='#ImprimirAnterior'><i class="material-icons">print</i></button>
+      <div class="col-md-4" >
+        <button class="btn btn-primary" title='Imprimir Venta Anterior' id="habilitarImpresion"><i class="material-icons">print</i></button>
+        <button class="btn btn-danger" title='Cerrar Impresion' id="CerrarImpresion" style="display:none"><i class="material-icons">cancel</i></button>
             </script>
+
+  <?php 
+
+       echo '<div class="col-md-12" style="display:none" id="selectorDeImpresionDeTicket">';
+                      //Inicio: Contenedor Invisible para imprimir 
+                       echo '<div class="container-fluid" id="VentaPenultima" >
+                             <div class="col-md-12">';
+                                $get_venta_penultimaByIdCaja        =   $ventaE->get_venta_penultimaByIdCaja($ID_caj);
+                                $assoc_get_venta_penultimaByIdCaja  =   mysql_fetch_assoc($get_venta_penultimaByIdCaja);
+                                $ID_venPenultima                    =   $assoc_get_venta_penultimaByIdCaja['ID_ven'];
+                                $get_mov_cajaByIdVen                =   $mov_cajaE->get_mov_caja($ID_caj, $ID_venPenultima);
+                                $num_get_mov_cajaById               =   mysql_num_rows($get_mov_cajaByIdVen);
+                                $totalSuma                          =   0;
+                                $precioFinalParaImpresion           =   0;
+                                echo "<table class='table table-striped table-hover' border='0' style='text-align:center; width=100%;'>";
+                                  echo "<tr>";
+                                    echo "<td>";
+                                      echo "<strong>Cant.</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Articulo</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Precio</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Subtotal</strong>";
+                                    echo "</td>";
+                                  echo "</tr>";
+                                for ($countMovi=0; $countMovi < $num_get_mov_cajaById; $countMovi++) 
+                                { 
+                                  $assoc_get_mov_cajaById           =   mysql_fetch_assoc($get_mov_cajaByIdVen);
+                                  $precioFinalParaImpresionA = ($assoc_get_mov_cajaById['pre_cant']*$assoc_get_mov_cajaById['pre_iva'])/100;
+                                  $precioFinalParaImpresion  = $assoc_get_mov_cajaById['pre_cant']+$precioFinalParaImpresionA;
+                                  echo "<tr>";
+                                      echo "<td>";
+                                       echo $assoc_get_mov_cajaById['mov_cantidad'];
+                                      echo "</td>";
+                                      echo "<td>";
+                                        echo $assoc_get_mov_cajaById['art_desc'];
+                                      echo "</td>";
+                                       echo "<td>";
+                                        echo "$".$precioFinalParaImpresion;
+                                      echo "</td>";
+                                      echo "<td>";
+                                        echo "$".$assoc_get_mov_cajaById['mov_sal'];
+                                      echo "</td>";
+                                  echo "</tr>";
+                                  $totalSuma = $assoc_get_mov_cajaById['mov_sal']+$totalSuma;
+                                  echo "<br>";
+                                }
+                                echo "</table>";
+
+                                echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venPenultima.'&ID_caj='.$ID_caj.'"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
+
+                                 echo "<hr>";
+                                echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSuma."</H4>";
+
+                            echo "</div>
+                            </div>";
+
+                              echo '<div class="container-fluid" id="VentaAntePenultima" style="display:none">
+                             <div class="col-md-12">';
+                                @$get_venta_AntepenultimaByIdCaja        =   $ventaE->get_venta_AntepenultimaByIdCaja($ID_caj);
+                                @$assoc_get_venta_AntepenultimaByIdCaja  =   mysql_fetch_assoc($get_venta_AntepenultimaByIdCaja);
+                                @$ID_venAntePenultima                    =   $assoc_get_venta_AntepenultimaByIdCaja['ID_ven'];
+                                @$get_mov_cajaByIdVenB                   =   $mov_cajaE->get_mov_caja($ID_caj, $ID_venAntePenultima);
+                                @$num_get_mov_cajaByIdB                  =   mysql_num_rows($get_mov_cajaByIdVenB);
+                                @$totalSumaB                             =   0;
+                                $precioFinalParaImpresionA               =   0;
+                                echo "<table class='table table-striped table-hover' border='0' style='text-align:center; width=100%;'>";
+                                  echo "<tr>";
+                                    echo "<td>";
+                                      echo "<strong>Cant.</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Articulo</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Precio</strong>";
+                                    echo "</td>";
+                                    echo "<td>";
+                                      echo "<strong>Subtotal</strong>";
+                                    echo "</td>";
+                                  echo "</tr>";
+                                for ($countMoviB=0; $countMoviB < $num_get_mov_cajaByIdB; $countMoviB++) 
+                                { 
+                                  $assoc_get_mov_cajaByIdB           =   mysql_fetch_assoc($get_mov_cajaByIdVenB);
+                                   $precioFinalParaImpresionAA = ($assoc_get_mov_cajaById['pre_cant']*$assoc_get_mov_cajaById['pre_iva'])/100;
+                                  $precioFinalParaImpresionA  = $assoc_get_mov_cajaById['pre_cant']+$precioFinalParaImpresionAA;
+                                  echo "<tr>";
+                                      echo "<td>";
+                                       echo $assoc_get_mov_cajaByIdB['mov_cantidad'];
+                                      echo "</td>";
+                                      echo "<td>";
+                                        echo $assoc_get_mov_cajaByIdB['art_desc'];
+                                      echo "</td>";
+                                       echo "<td>";
+                                        echo "$".$precioFinalParaImpresionA;
+                                      echo "</td>";
+                                      echo "<td>";
+                                        echo "$".$assoc_get_mov_cajaByIdB['mov_sal'];
+                                      echo "</td>";
+                                  echo "</tr>";
+                                  $totalSumaB = $assoc_get_mov_cajaByIdB['mov_sal']+$totalSumaB;
+
+                                  echo "<br>";
+                                }
+                                echo "</table>";
+
+                                 echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venAntePenultima.'&ID_caj='.$ID_caj.'"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
+
+                                 echo "<hr>";
+                                echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSumaB."</H4>";
+
+                            echo "</div>
+                            </div>";
+                  
+                                if ($num_get_mov_cajaByIdB!=0)
+                      {
+                        echo '<button class="btn btn-primary" title="Una venta mas Atras" id="otraVenta" style="float:left"><i class="material-icons">arrow_back</i> Venta anterior</button>';
+
+                         echo '<button class="btn btn-primary" title="Una venta mas Atras" id="VuelveVenta" style="float:left; display:none"><i class="material-icons">arrow_forward</i> Venta Siguiente</button>';
+                     }
+                             //Fin: Contenedor Invisible para imprimir  
+
+                      
+              echo '</div>';
+                     
+                 
+
+                  
+                            echo "<script>
+                            $('#habilitarImpresion').click(function(){
+                              $('#selectorDeImpresionDeTicket').toggle('fast');
+                              $('#CerrarImpresion').toggle('fast');
+                              $('#habilitarImpresion').toggle('fast');
+                            });
+
+                            $('#CerrarImpresion').click(function(){
+                              $('#selectorDeImpresionDeTicket').toggle('fast');
+                              $('#CerrarImpresion').toggle('fast');
+                              $('#habilitarImpresion').toggle('fast');
+                            });
+
+                            $('#otraVenta').click(function(){
+                              $('#VentaPenultima').toggle('slow');
+                              $('#VentaAntePenultima').toggle('slow');
+                              $('#VuelveVenta').toggle('slow');
+                              $('#otraVenta').toggle('slow');
+                            });
+                             $('#VuelveVenta').click(function(){
+                              $('#VentaPenultima').toggle('slow');
+                              $('#VentaAntePenultima').toggle('slow');
+                              $('#VuelveVenta').toggle('slow');
+                              $('#otraVenta').toggle('slow');
+                            });
+                            </script>";
+
+
+  ?>
+  
+
       </div>
       <!--Inicio: Boton cerrar caja-->
       
@@ -350,7 +515,7 @@
                     echo  "$".$assoc_get_mov_caja['mov_sal'];
                    echo '</div>';
                    echo '<div class="col-md-1">';
-                    echo '<a href="accionesExclusivas.php?ID_caj='.$ID_caj.'&ID_ven='.$ID_ven.'&ID_art='.$assoc_get_mov_caja['ID_art'].'&action=drop_movimiento&ven_total='.$assoc_get_venta_UltimaByIdCaja['ven_total'].'&multiplicacion='.$assoc_get_mov_caja['multiplicacion'].'&mov_cantidad='.$assoc_get_mov_caja['mov_cantidad'].'"><button class="btn btn-danger" id="botonEliminar">
+                    echo '<a href="accionesExclusivas.php?ID_caj='.$ID_caj.'&ID_ven='.$ID_ven.'&ID_art='.$assoc_get_mov_caja['ID_art'].'&action=drop_movimiento&ven_total='.$assoc_get_venta_UltimaByIdCaja['ven_total'].'&multiplicacion='.$assoc_get_mov_caja['mov_sal'].'&mov_cantidad='.$assoc_get_mov_caja['mov_cantidad'].'"><button class="btn btn-danger" id="botonEliminar">
                             <i class="material-icons">delete_forever</i>
                           </button></a>'; 
                     echo '</div>';       
@@ -950,151 +1115,6 @@
    <!--Fin: contenedor medio-->
   </div>
 <!--Fin: Contenedor principal -->
-<?php
-/* Inicio Modal Imprimir */                          
-    echo '<div class="modal fade" id="ImprimirAnterior" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                 
-                  <div class="modal-body">';
-                      //Inicio: Contenedor Invisible para imprimir 
-                       echo '<div class="container-fluid" id="VentaPenultima">
-                             <div class="col-md-12">';
-                                $get_venta_penultimaByIdCaja        =   $ventaE->get_venta_penultimaByIdCaja($ID_caj);
-                                $assoc_get_venta_penultimaByIdCaja  =   mysql_fetch_assoc($get_venta_penultimaByIdCaja);
-                                $ID_venPenultima                    =   $assoc_get_venta_penultimaByIdCaja['ID_ven'];
-                                $get_mov_cajaByIdVen                =   $mov_cajaE->get_mov_caja($ID_caj, $ID_venPenultima);
-                                $num_get_mov_cajaById               =   mysql_num_rows($get_mov_cajaByIdVen);
-                                $totalSuma                          =   0;
-                                echo "<table class='table table-striped table-hover' border='0' style='text-align:center; width=100%;'>";
-                                  echo "<tr>";
-                                    echo "<td>";
-                                      echo "<strong>Cant.</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Articulo</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Precio</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Subtotal</strong>";
-                                    echo "</td>";
-                                  echo "</tr>";
-                                for ($countMovi=0; $countMovi < $num_get_mov_cajaById; $countMovi++) 
-                                { 
-                                  $assoc_get_mov_cajaById           =   mysql_fetch_assoc($get_mov_cajaByIdVen);
-
-                                  echo "<tr>";
-                                      echo "<td>";
-                                       echo $assoc_get_mov_cajaById['mov_cantidad'];
-                                      echo "</td>";
-                                      echo "<td>";
-                                        echo $assoc_get_mov_cajaById['art_desc'];
-                                      echo "</td>";
-                                       echo "<td>";
-                                        echo "$".$assoc_get_mov_cajaById['pre_cant'];
-                                      echo "</td>";
-                                      echo "<td>";
-                                        echo "$".$assoc_get_mov_cajaById['multiplicacion'];
-                                      echo "</td>";
-                                  echo "</tr>";
-                                  $totalSuma = $assoc_get_mov_cajaById['multiplicacion']+$totalSuma;
-                                  echo "<br>";
-                                }
-                                echo "</table>";
-
-                                 echo "<hr>";
-                                echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSuma."</H4>";
-
-                            echo "</div>
-                            </div>";
-
-                              echo '<div class="container-fluid" id="VentaAntePenultima" style="display:none">
-                             <div class="col-md-12">';
-                                @$get_venta_AntepenultimaByIdCaja        =   $ventaE->get_venta_AntepenultimaByIdCaja($ID_caj);
-                                @$assoc_get_venta_AntepenultimaByIdCaja  =   mysql_fetch_assoc($get_venta_AntepenultimaByIdCaja);
-                                @$ID_venAntePenultima                    =   $assoc_get_venta_AntepenultimaByIdCaja['ID_ven'];
-                                @$get_mov_cajaByIdVenB                   =   $mov_cajaE->get_mov_caja($ID_caj, $ID_venAntePenultima);
-                                @$num_get_mov_cajaByIdB                  =   mysql_num_rows($get_mov_cajaByIdVenB);
-                                @$totalSumaB                             =   0;
-                                echo "<table class='table table-striped table-hover' border='0' style='text-align:center; width=100%;'>";
-                                  echo "<tr>";
-                                    echo "<td>";
-                                      echo "<strong>Cant.</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Articulo</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Precio</strong>";
-                                    echo "</td>";
-                                    echo "<td>";
-                                      echo "<strong>Subtotal</strong>";
-                                    echo "</td>";
-                                  echo "</tr>";
-                                for ($countMoviB=0; $countMoviB < $num_get_mov_cajaByIdB; $countMoviB++) 
-                                { 
-                                  $assoc_get_mov_cajaByIdB           =   mysql_fetch_assoc($get_mov_cajaByIdVenB);
-
-                                  echo "<tr>";
-                                      echo "<td>";
-                                       echo $assoc_get_mov_cajaByIdB['mov_cantidad'];
-                                      echo "</td>";
-                                      echo "<td>";
-                                        echo $assoc_get_mov_cajaByIdB['art_desc'];
-                                      echo "</td>";
-                                       echo "<td>";
-                                        echo "$".$assoc_get_mov_cajaByIdB['pre_cant'];
-                                      echo "</td>";
-                                      echo "<td>";
-                                        echo "$".$assoc_get_mov_cajaByIdB['multiplicacion'];
-                                      echo "</td>";
-                                  echo "</tr>";
-                                  $totalSumaB = $assoc_get_mov_cajaByIdB['multiplicacion']+$totalSumaB;
-                                  echo "<br>";
-                                }
-                                echo "</table>";
-
-                                 echo "<hr>";
-                                echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSumaB."</H4>";
-
-                            echo "</div>
-                            </div>";
-
-
-                             //Fin: Contenedor Invisible para imprimir  
-              echo '</div>
-                  <div class="modal-footer">';
-                     
-                     if ($num_get_mov_cajaByIdB!=0)
-                      {
-                        echo '<button class="btn btn-primary" title="Una venta mas Atras" id="otraVenta" style="float:left"><i class="material-icons">arrow_back</i> Venta anterior</button>';
-
-                         echo '<button class="btn btn-primary" title="Una venta mas Atras" id="VuelveVenta" style="float:left; display:none"><i class="material-icons">arrow_forward</i> Venta Siguiente</button>';
-                     }
-
-                    echo '<button class="btn btn-success" title="Imprimir Venta Anterior" id="NoImprimir" value="Imprimir" onclick="javascript:window.print()"><i class="material-icons">print</i></button>';
-                            echo "<script>
-                            $('#otraVenta').click(function(){
-                              $('#VentaPenultima').toggle('slow');
-                              $('#VentaAntePenultima').toggle('slow');
-                              $('#VuelveVenta').toggle('slow');
-                              $('#otraVenta').toggle('slow');
-                            });
-                             $('#VuelveVenta').click(function(){
-                              $('#VentaPenultima').toggle('slow');
-                              $('#VentaAntePenultima').toggle('slow');
-                              $('#VuelveVenta').toggle('slow');
-                              $('#otraVenta').toggle('slow');
-                            });
-                            </script>";
-            echo '</div>
-                </div>
-              </div>
-            </div>';
-        /* Fin Modal Imprimir */
-?>
 
 <!--Inicio: Footer -->
 <?php
