@@ -31,6 +31,8 @@ $comprobantes_datos    = new comprobantes_datos;
 $comprobantes_datosE   = new comprobantes_datosE;
 $detalle_comprobantesE = new detalle_comprobantesE;
 $bancos                = new bancos;
+$articulosE            = new articulosE;
+$mensajes              = new mensajes;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,6 +41,58 @@ $bancos                = new bancos;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+  if ($action=="cambiaPreciosInstantaneamente") 
+  {
+    $ID_pre     = $_POST['ID_pre'];
+    $pre_neto   = $_POST['pre_neto'];
+    $pre_porcan = $_POST['pre_porcan'];
+    $pre_cant   = $_POST['pre_cant'];
+    $pre_fec    = $fechaDeHoy;
+    $pre_iva    = $_POST['pre_iva'];
+    $ID_art     = $_POST['ID_art'];
+    $costo      = $pre_neto;
+            //ENVIA NOTIFICACION CON CARTEL PARA IMPRIMIR
+
+             $get_articulosByartCod=$articulosE->get_articulosById($ID_art);
+             $assoc_get_articulosByartCod=mysql_fetch_assoc($get_articulosByartCod);
+
+            //INICIO: REVISA PRECIOS 
+
+            if ($pre_cant==0 or $pre_cant=="")
+            {
+            }
+            else
+            {
+              if ($assoc_get_articulosByartCod['pre_cant']!=$pre_cant) 
+              { 
+                //se inserta un mensaje nuevo para la impresion de un cartel de precio
+
+                $men_asunto     ="Nuevo cartel de precio generado por el sistema pendiente de impresión";
+                $men_desc       =$assoc_get_articulosByartCod['art_desc'];
+                $men_categoria  =1;
+                $men_visto      =0;
+                $men_fec        =$FechayHora;
+                $men_id_rel     =$assoc_get_articulosByartCod['ID_art'];
+                $men_tabla_rel  ="articulos";
+
+                $insert_mensajes = $mensajes->insert_mensajes($men_asunto, $men_desc, $men_categoria, $men_visto, $men_fec, $men_id_rel, $men_tabla_rel);
+
+                //se modifica el precio cant de la tabla precios
+              
+                $update_preciosById=$preciosE->update_preciosById($ID_pre, $pre_cant, $pre_iva, $pre_neto, $pre_fec, $pre_porcan);
+
+                            echo '<div class="alert alert-success alert-dismissable" style="margin-bottom:-2px;">
+                                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                      <i class="material-icons">thumb_up</i> Se modifico el precio de un articulo
+                                    </div>';
+              }
+
+            }
+
+            
+  }  
 
   if($action=="nuevoComprobante")
   { 

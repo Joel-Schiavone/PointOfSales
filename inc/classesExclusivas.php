@@ -796,7 +796,7 @@
 
 	    function get_articulosTodosConProveedores()
 		 {
-	      $sql_articulos = 'SELECT articulos.ID_art, articulos.art_cod, articulos.art_desc, categorias.cat_desc, sub_categorias.sub_desc, precios.pre_cant, proveedores.pro_desc, precios.pre_iva, articulos.art_unidad FROM articulos, categorias, sub_categorias, precios, proveedores WHERE articulos.ID_sub=sub_categorias.ID_sub AND sub_categorias.ID_cat=categorias.ID_cat AND precios.ID_pre=articulos.ID_pre AND articulos.ID_pro=proveedores.ID_pro ORDER BY articulos.ID_art DESC' ; 
+	      $sql_articulos = 'SELECT articulos.ID_art, precios.ID_pre, precios.pre_neto, precios.pre_porcan, articulos.art_cod, articulos.art_desc, categorias.cat_desc, sub_categorias.sub_desc, precios.pre_cant, proveedores.pro_desc, precios.pre_iva, articulos.art_unidad FROM articulos, categorias, sub_categorias, precios, proveedores WHERE articulos.ID_sub=sub_categorias.ID_sub AND sub_categorias.ID_cat=categorias.ID_cat AND precios.ID_pre=articulos.ID_pre AND articulos.ID_pro=proveedores.ID_pro ORDER BY articulos.ID_art DESC' ; 
 	       $result_articulos =mysql_query($sql_articulos);
 	      return $result_articulos;
 	    }

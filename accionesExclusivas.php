@@ -3031,7 +3031,17 @@ window.location.assign("cajaSuc.php?M=4");
     $costo                = $_POST['costo'];
     $codigo               = $_POST['codigoArticulo'];
     $ID_suc               = $_POST['ID_suc'];
-    $fac_num              = $_POST['fac_num'];
+
+    
+    if ($_POST['fac_num']) 
+    {
+      $fac_num              = $_POST['fac_num'];
+    }
+    else
+    {
+      
+    }  
+    
 
     $get_articulosByartCod=$articulosE->get_articulosByartCod($codigo);
     $assoc_get_articulosByartCod=mysql_fetch_assoc($get_articulosByartCod);
@@ -3296,7 +3306,6 @@ window.location.assign("cajaSuc.php?M=4");
           echo "<input type='text' class='form-control' name='sub_desc' id='sub_desc".$ID_cat."' placeholder='Nueva Sub Categoria'>";
           echo "</th>";
                 echo "<th style='text-align:center'>";
-                    echo '<input hidden type="text" name="action" value="insert_sub_categorias">';
                      echo '<input hidden type="text" name="ID_cat" value="'.$ID_cat.'">';
                        echo "<button type='button' class='btn btn-success' id='NuevaSubCategoria".$ID_cat."'><i class='material-icons'>add</i> Agregar</button>";
                    echo "</th>";
@@ -3309,7 +3318,7 @@ window.location.assign("cajaSuc.php?M=4");
 
                             var ID_cat   = '".$ID_cat."';   
                             var action   = 'insert_sub_categorias'; 
-                            var sub_desc = ($('#sub_desc".$ID_cat."').val());
+                            var sub_desc = $('#sub_desc".$ID_cat."').val();
                               var dataString = 'ID_cat='+ID_cat + '&action='+action + '&sub_desc='+sub_desc;
                               $.ajax(
                               {
@@ -3503,15 +3512,7 @@ if ($action=='update_categorias')
   </script>';
   }
 
-if ($action=='insert_sub_categorias')
-{
-  $ID_cat                    = $_POST['ID_cat'];
-  $sub_desc                  = $_POST['sub_desc'];
-$insert_sub_categorias       = $sub_categorias->insert_sub_categorias($ID_cat, $sub_desc);
-echo '<script type="text/javascript">
-window.location.assign("'.$atras.'");
-</script>';
-}
+
 
   if ($action=='insert_categorias')
   {
