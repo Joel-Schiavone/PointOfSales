@@ -275,7 +275,15 @@
                         }
            //Fin: Llama a todas las columnas de la tabla
 
-                  
+                                            //Inicio: Llama a todas las columnas de la tabla
+                        function get_cuentasConChequesSinMorosos()
+                        {
+                              $sql_cuentas = 'SELECT * FROM cuentas, cuentas_tipo WHERE cuentas.ID_ctp=cuentas_tipo.ID_ctp AND ID_cue!=2';
+                              $result_cuentas =mysql_query($sql_cuentas);
+                              return $result_cuentas;
+                        }
+           //Fin: Llama a todas las columnas de la tabla
+
                        
 
                               //Inicio: Llama a todas las columnas de la tabla
@@ -1170,6 +1178,14 @@ class tarjetasE
 			return $result_sql_cuenta_cte;
 	    }
 	  //Fin Funcion Modifica todos los datos por ID
+
+        function get_cuenta_cteById($ID_cli)
+        {
+              $sql_cuenta_cte = 'SELECT * FROM cuenta_cte  WHERE ID_cli='.$ID_cli.' ' ; 
+              $result_cuenta_cte =mysql_query($sql_cuenta_cte);
+              return $result_cuenta_cte;
+        }
+
     }
 	//fin cuenta corriente
 

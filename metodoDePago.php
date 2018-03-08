@@ -57,7 +57,7 @@
 										  echo '<div class="input-group">';
 										    echo '<span class="input-group-addon"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> CUENTA</span>';
 										    echo '<select class="form-control" id="cuentaSeleccionada">';
-										    		$get_cuentas=$cuentasE->get_cuentas();
+										    		$get_cuentas=$cuentasE->get_cuentasConChequesSinMorosos();
 										    		$num_get_cuentas=mysql_num_rows($get_cuentas);
 										    		for ($cuentCuentas=0; $cuentCuentas < $num_get_cuentas; $cuentCuentas++) 
 										    		{ 
@@ -586,6 +586,8 @@
 																  	echo '</div>';
 
 																  			echo '<div class="col-md-12"  id="suggestionsClientes">';
+																  			echo '</div>';
+																  			echo '<div class="col-md-12"  id="suggestionsClientesCtaCte">';
 																  			echo '</div>';
 
 																  			
@@ -1239,6 +1241,7 @@ $('#buscarCliente').keyup(function(){
 
 																			 	$( "#MontoNuevoH").append( "<div class='alert alert-dismissible alert-success' id='ctacte"+ID_cli+"'><strong> CUENTA MOROSOS: "+nombreDeCliente+" </strong> $ "+totalctacte+" <button type='button' id='eliminarctacte"+ID_cli+"'>&times;</button></div>");
 
+
 																			 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
 																				var mcs_movimiento 	="COBRO DE COMPROBANTE EN CTA CTE DE " + nombreDeCliente;
 																			    var mcs_desc 		="";
@@ -1265,9 +1268,35 @@ $('#buscarCliente').keyup(function(){
 																			                                                           $('#suggestionsClientes').fadeIn(100).html(dataPP); 
 																			                                                           var ID_mcsPP = $('#RespuestaIdMovCuenta').val();
 																			                                                           $( "#MontoNuevoH" ).append( "<input hidden type='text' name='RespuestaIdMovCuentaCtaCte"+ID_cli+"' id='RespuestaIdMovCuentaCtaCte"+ID_cli+"' value='"+ID_mcsPP+"'>");
+
+																			                                                             var ID_cliCtaCte                 = ID_cli;
+																																	     var cte_montoCtaCte              = monto;
+																																	     var actionCtaCte                 = "modificarCtaCte";
+
+																																	     var dataStringCtaCte = 'action='+actionCtaCte 
+																																	      + '&cte_monto='+cte_montoCtaCte 
+																																	      + '&ID_cli='+ID_cliCtaCte;
+
+																																	      $.ajax(
+																						                                                  {
+																						                                                      type: 'POST',
+																						                                                      url: 'accionesCtaCte.php',
+																						                                                      data: dataStringCtaCte,
+																						                                                      success: function(dataPPCtaCte)
+																						                                                       {
+																						                                                           $('#suggestionsClientesCtaCte').fadeIn(100).html(dataPPCtaCte); 
+																						                                                           var ID_cteCtaCte = $('#RespuestaIdMovCuentaCtaCte').val();
+																						                                                           $( "#MontoNuevoH" ).append( "<input type='text' name='RespuestaMueveCtaCte"+ID_cli+"' id='RespuestaMueveCtaCte"+ID_cli+"' value='"+ID_cteCtaCte+"'>");
+																						                                                       }
+
+																						                                                   });
 																			                                                       }
 
 																			                                                   });
+
+																														   
+																					    
+
 																			      //dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
 																			       $('#eliminarctacte'+ID_cli).click(function(){
 																		      	 	//prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
@@ -1296,14 +1325,35 @@ $('#buscarCliente').keyup(function(){
 																				                                                      data: dataStringPPP,
 																				                                                      success: function(dataPPP)
 																				                                                       {
+
 																				                                                       	
 																				                                                       }
 
 																				                                                   });
-																				 });
+
+
+																				      	var ID_cteCtaCteElimina          	=  $('#RespuestaMueveCtaCte'+ID_cli).val();
+    																					var cte_montoCtaCteElimina        	=  monto;
+    																					var actionCtaCteElimina        		=  "EliminarMovimientoEnCtaCte";
+    																					var dataStringCtaCteElimina 		= 'action='+actionCtaCteElimina 
+																																	   + '&cte_monto='+cte_montoCtaCteElimina 
+																																	   + '&ID_cte='+ID_cteCtaCteElimina;
+
+																																	      $.ajax(
+																						                                                  {
+																						                                                      type: 'POST',
+																						                                                      url: 'accionesCtaCte.php',
+																						                                                      data: dataStringCtaCteElimina,
+																						                                                      success: function(dataPPCtaCteElimina)
+																						                                                       {
+																						                                                           
+																						                                                       }
+
+
+																				 															});
 																			});	
 
-																			
+																				});	
 																		      	
 				                                                       }
 

@@ -2,7 +2,7 @@
 
 
     <a href="listarArticulos.php" target="_blank" style="position: fixed; text-align: left; bottom: 1%; left: 1%;"><button class="btn btn-info"><i class="material-icons">content_paste</i></button></a>
-    <strong style="position: fixed; text-align: right; bottom: 1%; right: 1%;">V. 0.2</strong>
+    <strong style="position: fixed; text-align: right; bottom: 1%; right: 1%;">V. 1.0.0</strong>
 
 </body>
 </html>
