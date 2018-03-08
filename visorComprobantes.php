@@ -8,6 +8,8 @@
   $_SESSION['actionsBack']= $_SERVER['REQUEST_URI'];
   $comprobantesE          = new comprobantesE;
   $comprobantes_datosE    = new comprobantes_datosE;
+  $proveedores            = new proveedores;
+  $clientes               = new clientes;
   $ID_tceB=$_POST['ID_tceB'];
 
   $reciveFecha=$_POST['fecha'];
@@ -70,6 +72,25 @@
                           { 
                               $assoc_get_comprobantes=mysql_fetch_assoc($get_comprobantes);
                               $ID_cte=$assoc_get_comprobantes['ID_cte'];
+                              $ID_asociado=$assoc_get_comprobantes['cte_asociacion'];
+                              $ID_fce = $assoc_get_comprobantes['ID_fce'];
+                              if ($ID_fce==1) //flujo compras
+                              {
+                                $ID_pro=$ID_asociado;
+                                $get_proveedoresById=$proveedores->get_proveedoresById($ID_pro);
+                                $assoc_get_proveedoresById=mysql_fetch_assoc($get_proveedoresById);
+                                $cliente_proveedor=$assoc_get_proveedoresById['pro_desc'];
+                              }
+
+                              if ($ID_fce==2) //flujo ventas
+                              {
+                                $ID_cli=$ID_asociado;
+                                $get_clientesById=$clientes->get_clientesById($ID_cli);
+                                $assoc_get_clientesById=mysql_fetch_assoc($get_clientesById);
+                                $cliente_proveedor=$assoc_get_clientesById['cli_apellido']." ".$assoc_get_clientesById['cli_apellido'];
+                              }
+
+                              
 
                               //BUSCA EL ID DE DATOS DE COMPROBANTES (ID_cpd) DE LA FILA QUE CONTENGA EL ID_CTE RECIBIDO
                                $sql_traeID_cte                = 'SELECT ID_cpd, cpd_original FROM comprobantes_datos WHERE ID_cte='.$ID_cte.'';
@@ -96,7 +117,7 @@
                                         echo '<th>'.$assoc_get_comprobantes['cte_fec'].'</th>';
                                         echo '<th>'.$assoc_get_comprobantes['cte_numero'].'</th>';
                                         echo '<th>'.$assoc_get_comprobantes['tce_desc'].'</th>';
-                                        echo '<th>'.$assoc_get_comprobantes['cte_asociacion'].'</th>';
+                                        echo '<th>'.$cliente_proveedor.'</th>';
                                         echo '<th>$ '.$assoc_get_comprobantes['cte_monto'].'</th>';
                                         echo '<th>ORIGINAL</th>';
                                         echo '<th><a href="verComprobantes.php?ID_cte='.$ID_cte.'" target="_blank"><button class="btn btn-info"><i class="material-icons">visibility</i></button></a></th>';
