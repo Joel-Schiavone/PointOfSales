@@ -25,6 +25,60 @@
 
 	<div class="container-fluid">
 
+		<div class="col-md-6">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title"><i class="material-icons">list</i> LISTADO DE STOCK DE ARTICULOS</h3>
+			  </div>
+			  <div class="panel-body">
+			  		<div class="col-md-12" style="margin-bottom: 2%;">
+			  			<!--<div class="col-md-3">	
+						  	<button class="btn btn-success" id="TraerTodosLosArticulos" disabled>
+						  		<p><i class="material-icons">list</i> LISTAR TODO </p>
+								<p> <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none; width: 50%; height: auto;" > </p>
+							</button>
+						</div>	-->
+						<div class="col-md-12">	
+
+							<div class="form-group"  id="Cuadro">
+										  
+										  <div class="input-group">
+										 
+										 	<select name="filtroCategorias" id="filtroCategorias"class="selectpicker" data-live-search="true">
+										 		<option selected disabled>FILTRAR POR SUBCATEGORIA</option>
+														<?php
+																$get_categoriasYsub=$categoriasE->get_categoriasYsub();
+																$num_get_categoriasYsub=mysql_num_rows($get_categoriasYsub);
+																for ($countCatYsub=0; $countCatYsub < $num_get_categoriasYsub; $countCatYsub++) 
+																{ 
+																	$assoc_get_categoriasYsub=mysql_fetch_assoc($get_categoriasYsub);
+																	echo "<option value='".$assoc_get_categoriasYsub['ID_sub']."'>".$assoc_get_categoriasYsub['cat_desc']." - ".$assoc_get_categoriasYsub['sub_desc']."</option>";
+																}
+														?>
+										 	</select>
+										 </div>
+									</div>	
+
+							
+							
+						</div>	
+								
+						<div class="col-md-3">	
+						</div>
+						<div class="col-md-3">	
+						</div>
+					</div>
+					<div class="col-md-12">	
+						 <div id='listarStockArticulos' class='col-md-12' style='display:none'>
+						</div>		
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--////////////////////////////////////////////////////////////////A R T I C U L O S  P O R  S U C U R S A L-->
+
+		<div class="col-md-6">
 		<div class="panel panel-primary">
 		  <div class="panel-heading">
 		    <h3 class="panel-title"><i class="material-icons">assessment</i> STOCK DE ARTICULO POR SUCURSAL</h3>
@@ -46,7 +100,7 @@
 
 								echo "<div class='col-md-12'>";
 									echo "<div class='alert alert-info alert-dismissable' style='margin-top: 1%;'>";
-									echo "<h3> <i class='material-icons'>shopping_cart</i> Estas viendo el Stock por sucursal del Articulo: ".$assoc_get_articulosById['art_desc']."</h3>";
+									echo "<i class='material-icons'>shopping_cart</i> Estas viendo el Stock por sucursal del Articulo: ".$assoc_get_articulosById['art_desc'];
 									echo "</div>";
 								echo "</div>";
 									
@@ -71,7 +125,7 @@
 						 			
 						 			echo "<div class='col-md-1'>"; 
 						 			echo "</div>";
-						 			echo "<div class='col-md-4' style='text_align:center; margin-top:1%; border-top:5px solid #099; border-bottom:5px solid #099; border-radius: 20px 20px 20px 20px; padding:2%;'>";
+						 			echo "<div class='col-md-5' style='text_align:center; margin-top:4%; border-top:5px solid #099; border-bottom:5px solid #099; border-radius: 20px 20px 20px 20px; padding:2%;'>";
 						 				echo "<div class='alert alert-info alert-dismissable' style='text-align:center; font-size:120%; display:none;' id='sucursalStock".$ID_suc."'>";
 							 				echo "<strong><i class='material-icons'>store</i> ".$assoc_get_sucursales['suc_desc']."<strong>";	
 							 			echo "</div>";
@@ -195,47 +249,6 @@
 		</div>			 
 </div>
 
-<div class="container-fluid">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title"><i class="material-icons">list</i> LISTADO DE STOCK DE ARTICULOS</h3>
-	  </div>
-	  <div class="panel-body">
-		  	<div class="col-md-12" style="margin-bottom: 2%;">
-		  			<div class="col-md-3">	
-					  	<button class="btn btn-success" id="TraerTodosLosArticulos">
-					  		<p><i class="material-icons">list</i> LISTAR TODO </p>
-							<p> <img src=media/loading/cargando4.gif id='cargandoBoton' style="display: none; width: 50%; height: auto;" > </p>
-						</button>
-					</div>	
-						
-					<div class="col-md-3">	
-						<label for="Subcategoria" class="control-label">Filtrar por Categorias</label>
-				<select name="filtroCategorias" id="filtroCategorias" class="form-control">
-					<option selected disabled>FILTRAR POR SUBCATEGORIA</option>
-					<?php
-						$get_categoriasYsub=$categoriasE->get_categoriasYsub();
-						$num_get_categoriasYsub=mysql_num_rows($get_categoriasYsub);
-						for ($countCatYsub=0; $countCatYsub < $num_get_categoriasYsub; $countCatYsub++) 
-						{ 
-							$assoc_get_categoriasYsub=mysql_fetch_assoc($get_categoriasYsub);
-							echo "<option value='".$assoc_get_categoriasYsub['ID_sub']."'>".$assoc_get_categoriasYsub['cat_desc']." - ".$assoc_get_categoriasYsub['sub_desc']."</option>";
-						}
-					?>
-				</select>
-			</div>	
-			
-					<div class="col-md-3">	
-					</div>
-					<div class="col-md-3">	
-					</div>
-			</div>
-			<div class="col-md-12">	
-	    		<div id='listarStockArticulos' class='col-md-12' style='display:none'>
-	    	</div>		
-	    </div>
-	  </div>
-	</div>
 </div>
 <!--Fin: Contenedor principal -->
 
