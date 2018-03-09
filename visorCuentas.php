@@ -1,6 +1,11 @@
 	<!--Inicio: Documentos requeridos -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+ <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+<!--<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
+
+<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+<script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>    
+
 <?php
 include_once('inc/conectar.php');
 include_once('inc/classes.php');
@@ -28,9 +33,11 @@ include_once('inc/classesExclusivas.php');
   $fechaFinFormateda=date("Y-m-d",strtotime($fechafinCambioDeSignos));
   $fecHasta=$fechaFinFormateda . " 23:59:59";
   $FechayHora             = date("Y-m-d H:i:s");
+ ?>
 
-?>
       <table id="listadoCuentas" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+     
                 <thead>
                     <tr>
                         <th>CUENTA</th>
@@ -232,7 +239,8 @@ include_once('inc/classesExclusivas.php');
 
                 </tbody>
             </table>
-              <script type='text/javascript'>
+
+          <script type='text/javascript'>
 
                 $(document).ready( function () {
                 $('#listadoCuentas').DataTable({
@@ -254,4 +262,7 @@ include_once('inc/classesExclusivas.php');
                 });
                 });
 
+
+
                  </script>
+                 
