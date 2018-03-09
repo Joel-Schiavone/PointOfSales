@@ -79,7 +79,22 @@ $detalle_comprobantes= new detalle_comprobantes;
 
 if ($action=='insert_caja')
 {
-$insert_caja = $caja->insert_caja($ID_control, $ID_usu, $caj_fec, $caj_horaa, $caj_horac, $cja_vta, $cja_vct, $cja_vef, $caj_inicio, $caj_cierre, $caj_vne, $ID_suc);
+   $ID_control      = 0;
+   //$ID_usu        
+   $caj_fec         = $fechaDeHoy;
+   $caj_horaa       = $HoraDeHoy;
+   $caj_horac       = "00:00:00";
+   $cja_vta         = 0;
+   $cja_vtad        = 0;
+   $cja_vct         = 0;
+   $cja_vef         = 0;
+   $caj_inicio      = $_POST['caj_inicio'];
+   $caj_cierre      = 0;
+   $caj_vne         = 0;
+   $ID_suc          = $_POST['ID_suc'];
+   $caj_efectivoReal= 0;
+
+$insert_caja = $caja->insert_caja($ID_control, $ID_usu, $caj_fec, $caj_horaa, $caj_horac, $cja_vta, $cja_vtad, $cja_vct, $cja_vef, $caj_inicio, $caj_cierre, $caj_vne, $ID_suc, $caj_efectivoReal);
 
  //REDIRECCIONA
        echo '<script type="text/javascript">
