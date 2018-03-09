@@ -44,11 +44,14 @@ $cte_numero                             =   $assoc_get_cabecera_comprobantesById
 
                             //BOTONERA
                             echo "<div class='col-md-12' style='text-align: center; margin-bottom:1%; margin-top: 1%;'>";?>
-                                      <button class='btn btn-primary' onclick="printDiv('areaImprimir')" id='imprimir'><i class='material-icons'>print</i> IMPRIMIR </button>
+                                      <!--<a  href="impresion_comprobante.php?ID_cte=<?php echo $ID_cte_Original;?>" target="_blank">-->
+                                        <button id='imprimir' class='btn btn-primary'><i class='material-icons'>print</i> IMPRIMIR </button>
+                                      <!--</a>-->
                                      <?php echo "<button class='btn btn-primary' id='eliminarComprobante' disabled><i class='material-icons'>mail</i> ENVIAR POR EMAIL </button>
                                          <a href='modifComprobantes.php?ID_cte=".$ID_cte_Original."'><button class='btn btn-info' id='eliminarComprobante'><i class='material-icons'>edit</i> MODIFICAR </button></a>
-                                         <a href='eliminaComprobantes.php?ID_cte=".$ID_cte_Original."'><button class='btn btn-danger' id='eliminarComprobante'><i class='material-icons'>delete_forever</i> ELIMINAR</button></a>
                                   </div>";
+
+
 
                             //MOSTRADOR DE COMPROBANTE PRINCIPAL
                             echo "<div id='muestraComprobantePrincipal' style='display:none;'></div>";
@@ -354,25 +357,14 @@ $cte_numero                             =   $assoc_get_cabecera_comprobantesById
   {
     text-align: center;
   }
-
-
 </style>
+
+
 <script type="text/javascript">
-function printDiv(areaImprimir) {
-     var contenido= document.getElementById(areaImprimir).innerHTML;
-     var contenidoOriginal= document.body.innerHTML;
-
-     document.body.innerHTML = contenido;
-
-     window.print();
-
-     document.body.innerHTML = contenidoOriginal;
-}
+  $('#imprimir').click(function(){
+    alert('Funcion Disponible proximamente');
+  });
 </script>
-
-
-
-
 <!--Inicio: Footer -->
 <?php
   include("modulos/footer.php"); 

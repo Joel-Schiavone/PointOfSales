@@ -36,10 +36,11 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
     #areaImprimir
     {
       width:595px;
-      height:980px;
+      height:auto;
       border:2px solid #000;
       padding:2%;
       margin-top: 13%;
+      overflow:auto;
     }
     #cabeceraA
     {
@@ -86,7 +87,7 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
     #cuerpo
     {
       border:1px solid #000;
-      height:550px;
+      height:auto;
       margin-top:1%;
     }
     #listadoComprobantes

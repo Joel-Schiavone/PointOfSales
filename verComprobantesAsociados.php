@@ -35,10 +35,11 @@ $ID_cte_OriginalB            = $_POST['ID_cteB'];
     #areaImprimirB
     {
       width:297px;
-      height:490px;
+      height:auto;
       border:2px solid #000;
       padding:2%;
       margin-top: 13%;
+      overflow: auto;
     }
     #cabeceraAB
     {
@@ -86,7 +87,7 @@ $ID_cte_OriginalB            = $_POST['ID_cteB'];
     #cuerpoB
     {
       border:1px solid #000;
-      height:280px;
+      height:auto;
       margin-top:1%;
       overflow: visible;
     }
