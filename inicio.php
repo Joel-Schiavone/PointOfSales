@@ -1,5 +1,4 @@
 <?php
-session_start();
 	include_once("inc/requerido.php"); 
   include_once("inc/validacion.php"); 
 ?>

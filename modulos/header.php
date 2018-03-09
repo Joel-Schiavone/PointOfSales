@@ -1,5 +1,5 @@
 <?php
-@session_start();
+session_start();
 $paramentros=new paramentros;
 $ID_par=1;
 $get_paramentrosById=$paramentros->get_paramentrosById($ID_par);
