@@ -1,5 +1,5 @@
 	<!--Inicio: Documentos requeridos -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <?php
 include_once('inc/conectar.php');
@@ -27,7 +27,7 @@ include_once('inc/classesExclusivas.php');
   $fechafinCambioDeSignos=str_replace( "/" , "-" ,$fechafin);
   $fechaFinFormateda=date("Y-m-d",strtotime($fechafinCambioDeSignos));
   $fecHasta=$fechaFinFormateda . " 23:59:59";
-
+  $FechayHora             = date("Y-m-d H:i:s");
 
 ?>
       <table id="listadoCuentas" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -82,7 +82,7 @@ include_once('inc/classesExclusivas.php');
                               $ID_cue=$assoc_get_cuentas['ID_cue'];
                               $ID_mcs=$assoc_get_cuentas['ID_mcs'];
 
-                              if ($assoc_get_cuentas['mdc_fecDisponibilidad']=="") 
+                              if ($assoc_get_cuentas['mdc_fecDisponibilidad']<=$FechayHora) 
                               {
                                 $mdc_fecDisponibilidad="";
                               }
@@ -116,16 +116,16 @@ include_once('inc/classesExclusivas.php');
                                             <h4 class="modal-title" id="myModalLabel"><i class="material-icons">mode_edit</i> Modificar Movimiento de la cuenta</h4>
                                           </div>
                                           <div class="modal-body">
-                                              <form id="CreateForm" name="CreateForm" action="accionesCuentasMovimientos.php" method="post">
+                                              <form id="CreateForm'.$ID_mcs.'" name="CreateForm'.$ID_mcs.'" action="accionesCuentasMovimientos.php" method="post">
                                               
                                                     <legend>Datos del movimiento</legend>
-                                                        <input hidden type="text" name="action" value="editarMovimiento" form="CreateForm">
-                                                        <input hidden type="text" name="ID_mcs" value="'.$ID_mcs.'" form="CreateForm"> 
+                                                        <input hidden type="text" name="action" value="editarMovimiento" form="CreateForm'.$ID_mcs.'">
+                                                        <input hidden type="text" name="ID_mcs" value="'.$ID_mcs.'" form="CreateForm'.$ID_mcs.'"> 
 
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Cuenta</label>
 
-                                                            <select name="ID_cue" class="form-control"  form="CreateForm">
+                                                            <select name="ID_cue" class="form-control"  form="CreateForm'.$ID_mcs.'">
                                                                   <option value="'.$assoc_get_cuentas['ID_cue'].'">'.$assoc_get_cuentas['cue_desc'].'</option>';
                                                                   $get_cuentasB=$cuentasE->get_cuentas();
                                                                   $num_get_cuentasB=mysql_num_rows($get_cuentasB);
@@ -142,18 +142,18 @@ include_once('inc/classesExclusivas.php');
                                                         
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Fecha</label>
-                                                          <input type="datetime-local" class="form-control" name="mcd_fec" id="mcd_fec" value="'.$fechaNuevaEditable.'" form="CreateForm">
+                                                          <input type="datetime-local" class="form-control" name="mcd_fec" id="mcd_fec'.$ID_mcs.'" value="'.$fechaNuevaEditable.'" form="CreateForm'.$ID_mcs.'">
                                                         </div>
 
 
                                                         <div class="form-group">
                                                           <label for="exampleInputEmail1">Descripción</label>
-                                                          <input type="text" class="form-control" name="mcs_movimiento" id="mcs_movimiento" placeholder="Descripción del Movimiento" value="'.$assoc_get_cuentas['mcs_movimiento'].'" form="CreateForm">
+                                                          <input type="text" class="form-control" name="mcs_movimiento" id="mcs_movimiento'.$ID_mcs.'" placeholder="Descripción del Movimiento" value="'.$assoc_get_cuentas['mcs_movimiento'].'" form="CreateForm'.$ID_mcs.'">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Tipo de Movimiento</label>
-                                                            <select name="tipoMovimeinto" class="form-control" form="CreateForm"> 
+                                                            <select name="tipoMovimeinto" class="form-control" form="CreateForm'.$ID_mcs.'"> 
                                                                 <option value="'.$optionSelected.'">'.$optionDesc.'</option>';
                                                                 if ($optionSelected==1) 
                                                                 {
@@ -168,15 +168,15 @@ include_once('inc/classesExclusivas.php');
                                                         </div>
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Monto</label>
-                                                          <input type="text" class="form-control" id="monto" name="monto" placeholder="00.00" value="'.$monto.'" form="CreateForm">
+                                                          <input type="text" class="form-control" id="monto'.$ID_mcs.'" name="monto" placeholder="00.00" value="'.$monto.'" form="CreateForm'.$ID_mcs.'">
                                                         </div>
 
                                                          <div class="form-group">
                                                           <label for="exampleInputEmail1">Observación</label>
-                                                          <textarea class="form-control" name="mcs_desc" id="mcs_desc" form="CreateForm">'. $assoc_get_cuentas['mcs_desc'].' '.$mdc_fecDisponibilidad.'</textarea>
+                                                          <textarea class="form-control" name="mcs_desc" id="mcs_desc'.$ID_mcs.'" form="CreateForm'.$ID_mcs.'">'. $assoc_get_cuentas['mcs_desc'].' '.$mdc_fecDisponibilidad.'</textarea>
                                                         </div>
 
-                                                         <button type="submit" class="btn btn-success" form="CreateForm"><i class="material-icons">save</i> GUARDAR</button>
+                                                         <button type="submit" class="btn btn-success" form="CreateForm'.$ID_mcs.'"><i class="material-icons">save</i> GUARDAR</button>
 
                                                        
 

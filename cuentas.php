@@ -129,7 +129,7 @@
                        <option selected disabled>Seleccionar una cuenta</option>
                       <option value='0'>TODAS LAS CUENTAS</option>
                       <?php 
-                        $get_cuentas=$cuentasE->get_cuentas();
+                        $get_cuentas=$cuentasE->get_cuentasConCheques();
                         $num_get_cuentas=mysql_num_rows($get_cuentas);
                         for ($CountCuentas=0; $CountCuentas < $num_get_cuentas; $CountCuentas++) 
                         { 

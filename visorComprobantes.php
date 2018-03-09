@@ -49,7 +49,6 @@
                                     echo '<th>ESTADO</th>';
                                     echo '<th>VER</th>';
                                     echo '<th>EDITAR</th>';
-                                    echo '<th>ELIMINAR</th>';
                                 echo '</tr>';
                             echo '</thead>';
                             echo '<tfoot>';
@@ -62,7 +61,6 @@
                                     echo '<th>ESTADO</th>';
                                     echo '<th>VER</th>';
                                     echo '<th>EDITAR</th>';
-                                    echo '<th>ELIMINAR</th>';
                                 echo '</tr>';
                             echo '</tfoot>';
                             echo '<tbody>';
@@ -122,7 +120,6 @@
                                         echo '<th>ORIGINAL</th>';
                                         echo '<th><a href="verComprobantes.php?ID_cte='.$ID_cte.'" target="_blank"><button class="btn btn-info"><i class="material-icons">visibility</i></button></a></th>';
                                         echo '<th><a href="modifComprobantes.php?ID_cte='.$ID_cte.'"><button class="btn btn-primary"><i class="material-icons">edit</i></button></a></th>';
-                                        echo '<th><a href="eliminaComprobantes.php?ID_cte='.$ID_cte.'"><button class="btn btn-danger"><i class="material-icons">delete_forever</i></button></a></th>';
                                      echo '</tr>';
                                     }  
                                   }
@@ -142,7 +139,6 @@
                                         echo '<th> MODIFICADO '.$assoc_result_comprobantes_datos['cpd_copia'].' VECES</th>';
                                         echo '<th><a href="verComprobantes.php?ID_cte='.$ID_cte.'" target="_blank"><button class="btn btn-info"><i class="material-icons">visibility</i></button></a></th>';
                                         echo '<th><a href="modifComprobantes.php?ID_cte='.$ID_cte.'"><button class="btn btn-primary"><i class="material-icons">edit</i></button></a></th>';
-                                        echo '<th><a href="eliminaComprobantes.php?ID_cte='.$ID_cte.'"><button class="btn btn-danger"><i class="material-icons">delete_forever</i></button></th>';
                                         echo '</tr>';
                                     }
                                     else
