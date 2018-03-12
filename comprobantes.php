@@ -125,7 +125,7 @@
                                                 <div class='form-group'>
                                                     <div class='input-group'>
                                                       <span class='input-group-addon'>$</span>
-                                                      <input type='text' id='id_Precio_neto".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_Precio_neto".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_neto"]."'>
+                                                      <input type='number' step='0.1' id='id_Precio_neto".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_Precio_neto".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_neto"]."'>
                                                     </div>
                                                   </div>
 
@@ -154,7 +154,7 @@
                                                  <div class='form-group'>
                                                     <div class='input-group'>
                                                       <span class='input-group-addon'>%</span>
-                                                      <input type='text' id='id_porcentaje_venta".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_porcentaje_venta".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_porcan"]."'>
+                                                      <input type='number' step='0.1' id='id_porcentaje_venta".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_porcentaje_venta".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_porcan"]."'>
                                                     </div>
                                                   </div>
                                                     <script>
@@ -181,7 +181,7 @@
                                                 <div class='form-group'>
                                                     <div class='input-group'>
                                                       <span class='input-group-addon'>$</span>
-                                                      <input  type='text' id='id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_cant"]."' readonly>
+                                                      <input type='number' step='0.1' id='id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_cant"]."' >
                                                     </div>
                                                   </div>
                                             </th>";
@@ -192,7 +192,7 @@
                                          <div class='form-group'>
                                                     <div class='input-group'>
                                                       <span class='input-group-addon'>%</span>
-                                                      <input type='text' id='id_iva".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_iva".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_iva"]."'>
+                                                      <input type='number' step='0.1' id='id_iva".$assoc_get_articulosTodosConProveedores["ID_art"]."' name='id_iva".$assoc_get_articulosTodosConProveedores["ID_art"]."' value='".$assoc_get_articulosTodosConProveedores["pre_iva"]."'>
                                                     </div>
                                                   </div>
                                                   <script>
@@ -237,16 +237,13 @@
                                                       
                                                       var pre_iva = $('#id_iva".$assoc_get_articulosTodosConProveedores["ID_art"]."').val();
                                                       
-                                                      var resultadoCambioPrecio_A_masIva =  parseInt(resultadoCambioPrecio_AA)*parseInt(pre_iva)/100;
-                                                      var resultadoCambioPrecio_AA_masIva = parseInt(resultadoCambioPrecio_AA)+parseInt(resultadoCambioPrecio_A_masIva);
-
-                                                      $('#id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."').val(resultadoCambioPrecio_AA_masIva);
+                                                      var pre_cant = $('#id_pre_cant".$assoc_get_articulosTodosConProveedores["ID_art"]."').val();
 
                                                         var ID_pre='".$assoc_get_articulosTodosConProveedores["ID_pre"]."';
                                                         var action='cambiaPreciosInstantaneamente';
                                                         var ID_art='".$assoc_get_articulosTodosConProveedores["ID_art"]."';
                   
-                                                        var dataString = 'ID_pre='+ID_pre + '&pre_neto='+id_Precio_neto + '&pre_porcan='+id_porcentaje_venta + '&pre_cant='+resultadoCambioPrecio_AA + '&action='+action + '&pre_iva='+pre_iva + '&ID_art='+ID_art;
+                                                        var dataString = 'ID_pre='+ID_pre + '&pre_neto='+id_Precio_neto + '&pre_porcan='+id_porcentaje_venta + '&pre_cant='+pre_cant + '&action='+action + '&pre_iva='+pre_iva + '&ID_art='+ID_art;
                                                         $.ajax(
                                                           {
                                                               type: 'POST',
@@ -261,7 +258,7 @@
                                                            });
 
                                           
-                                            $('#articulosDelComprobante').append('<tr id=\'fila".$ID_art."\'><td><input hidden type=\'text\' id=\'".$ID_art."\' name=\'ID_art\' class=\'CodigoID_art\' value=\'".$ID_art."\'> <input style=\'width:70px; float:left; border: 0px; background-color:none; font-size: 17px;\' type=\'text\' readonly id=\'Cantidad".$ID_art."\' name=\'cantidad\' class=\'cantidad\' value=\'1\' placeholder=\'Cantidad\' required>".$assoc_get_articulosTodosConProveedores["art_unidad"]."  </td><td style=\'text-align:center\'>".$assoc_get_articulosTodosConProveedores["art_cod"]."  </td><td style=\'text-align:center\'>  ".$assoc_get_articulosTodosConProveedores["art_desc"]." </td><td style=\'text-align:center\'>  $ <input type=\'text\' id=\'precio".$ID_art."\' name=\'precio\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\' value='+resultadoCambioPrecio_AA+' readonly></td><td style=\'text-align:center\'><input type=\'text\' id=\'descuento".$ID_art."\' name=\'descuento".$ID_art."\' class=\'descuentoPorUnidad\' value=\'0\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\'><select id=\'metricaDescuento".$ID_art."\' class=\'metricaDescuento\'><option value=\'1\'>%</option><option value=\'2\'>$</option></select></td><td style=\'text-align:center\'> <input type=\'text\' id=\'pre_iva".$ID_art."\' name=\'pre_iva".$ID_art."\' value='+pre_iva+' style=\'width:70px; float:left; border: 0px; background-color:none; font-size: 17px;\' readonly> % </td><td style=\'text-align:center\' id=\'precioTotal".$ID_art."\'> </td><td style=\'text-align:center\'> <input type=\'text\' id=\'ID_sucIngresado".$ID_art."\' name=\'ID_sucIngresado".$ID_art."\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\' class=\'ID_sucIngresado\' value=\'\' readonly></td><td style=\'text-align:center\'><button class=\'btn btn-danger\' id=\'eliminarFilaB".$ID_art."\'><i class=\'material-icons\'>delete_forever</i></button></td></tr>');
+                                            $('#articulosDelComprobante').append('<tr id=\'fila".$ID_art."\'><td><input hidden type=\'text\' id=\'".$ID_art."\' name=\'ID_art\' class=\'CodigoID_art\' value=\'".$ID_art."\'> <input style=\'width:70px; float:left; border: 0px; background-color:none; font-size: 17px;\' type=\'text\' readonly id=\'Cantidad".$ID_art."\' name=\'cantidad\' class=\'cantidad\' value=\'1\' placeholder=\'Cantidad\' required>".$assoc_get_articulosTodosConProveedores["art_unidad"]."  </td><td style=\'text-align:center\'>".$assoc_get_articulosTodosConProveedores["art_cod"]."  </td><td style=\'text-align:center\'>  ".$assoc_get_articulosTodosConProveedores["art_desc"]." </td><td style=\'text-align:center\'>  $ <input type=\'text\' id=\'precio".$ID_art."\' name=\'precio\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\' value='+pre_cant+' readonly></td><td style=\'text-align:center\'><input type=\'text\' id=\'descuento".$ID_art."\' name=\'descuento".$ID_art."\' class=\'descuentoPorUnidad\' value=\'0\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\'><select id=\'metricaDescuento".$ID_art."\' class=\'metricaDescuento\'><option value=\'1\'>%</option><option value=\'2\'>$</option></select></td><td style=\'text-align:center\'> <input type=\'text\' id=\'pre_iva".$ID_art."\' name=\'pre_iva".$ID_art."\' value='+pre_iva+' style=\'width:70px; float:left; border: 0px; background-color:none; font-size: 17px;\' readonly> % </td><td style=\'text-align:center\' id=\'precioTotal".$ID_art."\'> </td><td style=\'text-align:center\'> <input type=\'text\' id=\'ID_sucIngresado".$ID_art."\' name=\'ID_sucIngresado".$ID_art."\' style=\'width:70px; float:right; border: 0px; background-color:none; font-size: 17px;\' class=\'ID_sucIngresado\' value=\'\' readonly></td><td style=\'text-align:center\'><button class=\'btn btn-danger\' id=\'eliminarFilaB".$ID_art."\'><i class=\'material-icons\'>delete_forever</i></button></td></tr>');
                                               var ID_suc".$ID_art." = $('#ID_suc').val();
                                               $('#ID_sucIngresado".$ID_art."').val(ID_suc".$ID_art.");
 
@@ -280,7 +277,7 @@
             
 
                                               var cantidad = $('#IngresaCantidad".$ID_art."').val();
-                                              var pre_cant = resultadoCambioPrecio_AA;
+                                              var pre_cant = pre_cant;
                                               var pre_cantNuevaB = pre_cant*cantidad;
                                               var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
                                               var pre_cantNueva  = pre_cantNuevaC+pre_cantNuevaB;
@@ -312,7 +309,7 @@
                                                     else
                                                      {
                                                         var cantidad = $('#IngresaCantidad".$ID_art."').val();
-                                                        var pre_cant = resultadoCambioPrecio_AA;
+                                                        var pre_cant = pre_cant;
                                                         var pre_cantNuevaB = pre_cant*cantidad;
                                                          var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
                                                         var pre_cantNueva  = pre_cantNuevaC+pre_cantNuevaB;
@@ -335,7 +332,7 @@
                                                  $('#descuento".$ID_art."').keyup(function()
                                                 { 
                                                    var descuento= $('#descuento".$ID_art."').val();
-                                                   var pre_cant = resultadoCambioPrecio_AA;
+                                                   var pre_cant = pre_cant;
                                                    var cantidad = $('#IngresaCantidad".$ID_art."').val();
                                                    var pre_cantNuevaB = pre_cant*cantidad;
                                                    var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
@@ -362,7 +359,7 @@
                                                $('#metricaDescuento".$ID_art."').change(function(){
                                                 
                                                      var descuento= $('#descuento".$ID_art."').val();
-                                                   var pre_cant = resultadoCambioPrecio_AA;
+                                                   var pre_cant = pre_cant;
                                                    var cantidad = $('#IngresaCantidad".$ID_art."').val();
                                                    var pre_cantNuevaB = pre_cant*cantidad;
                                                     var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
@@ -396,7 +393,7 @@
                                                 $('#IngresaCantidad".$ID_art."').removeAttr('readonly');
 
                                                 var cantidad = $('#IngresaCantidad".$ID_art."').val();
-                                                var pre_cant = resultadoCambioPrecio_AA;
+                                                var pre_cant = pre_cant;
                                                 var pre_cantNuevaB = pre_cant*cantidad;
                                                 var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
                                                 var pre_cantNueva  = pre_cantNuevaC+pre_cantNuevaB;
@@ -445,7 +442,7 @@
                                                 $('#IngresaCantidad".$ID_art."').removeAttr('readonly');
 
                                                 var cantidad = $('#IngresaCantidad".$ID_art."').val();
-                                                var pre_cant = resultadoCambioPrecio_AA;
+                                                var pre_cant = pre_cant;
                                                 var pre_cantNuevaB = pre_cant*cantidad;
                                                 var pre_cantNuevaC = (pre_cantNuevaB*pre_iva)/100;
                                                 var pre_cantNueva  = pre_cantNuevaC+pre_cantNuevaB;

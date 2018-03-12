@@ -78,7 +78,7 @@
 										  			echo '<div class="form-group">';
 													  echo '<div class="input-group">';
 													    echo '<span class="input-group-addon">$</span>';
-													    echo '<input type="text" class="form-control" id="totalEfectivo" placeholder="00.00" value="00.00">';
+													    echo '<input type="text" class="form-control" id="totalEfectivo"  placeholder="00.00" value="00.00">';
 													  echo '</div>';
 													echo '</div>';
 													 echo '<button class="btn btn-primary" id="botonEfectivo"><i class="material-icons">unarchive</i> AGREGAR AL TOTAL</button>';
@@ -442,7 +442,7 @@
 										  		echo '<div class="form-group">';
 													  echo '<div class="input-group">';
 													    echo '<span class="input-group-addon">$</span>';
-													     echo '<input class="form-control" type="text" id="montoTotal" value="" placeholder="00.00">';
+													     echo '<input class="form-control" type="text" id="montoTotal" value="00,00" placeholder="00.00">';
 													  echo '</div>';
 													echo '</div>';
 										    echo "<div id='MontoNuevo'></div>";
@@ -1165,10 +1165,14 @@
 		      	 		      //dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
 							 $('#eliminarEfectivoH'+cuentaSeleccionadaC).click(function(){
 							  //prepara las variables para ejecutar atravez de ajax la accion nuevoMovimiento de la pagina accionesCuentasMovimientos.php donde agregara un detalle con debe o con haber dependiendo del tipo de movimiento
-																		      	 	
+
+								$('#cuentaSeleccionadaHH').append($('<option>', {
+												    value: cuentaSeleccionada,
+												    text: cuentaSeleccionada
+												}));	
 							//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
 								var montoTotalB = $('#montoTotalH').val();
-								var sumatoriaB = parseInt(montoTotalB)-parseInt(monto);
+								var sumatoriaB = parseFloat(montoTotalB)-parseFloat(monto);
 								$('#montoTotalH').val(sumatoriaB);
 
 								var ID_mcsPX = $('#RespuestaIdMovCuentaEfectivo'+cuentaSeleccionadaC).val();
@@ -1183,6 +1187,8 @@
 																		
 								$('#efectivoH'+cuentaSeleccionadaC).remove();
 
+
+
 								$.ajax(
 									{
 										type: 'POST',
@@ -1190,7 +1196,7 @@
 										data: dataStringPX,
 										success: function(dataPX)
 										{
-																				                                                       	
+																			                                                       	
 										}
 
 									});
@@ -1481,7 +1487,7 @@ $('#buscarCliente').keyup(function(){
 	 	//trae monto total de sumatoria
 	 	var montoTotal = $('#montoTotal').val();
 	 	//suma ambos monstos
-	 	var sumatoria = parseInt(montoTotal) + parseInt(totalEfectivo);
+	 	var sumatoria = parseFloat(montoTotal) + parseFloat(totalEfectivo);
 	 	//coloca el resultado en el monto total de la sumatoria
 	 	$('#montoTotal').val(sumatoria);
 	 	//trae la cuenta seleccionada
@@ -1534,10 +1540,14 @@ $('#buscarCliente').keyup(function(){
 		      	//dentro de la misma funcion se encuentra la posibilidad de volver atras el proceso presionando el boton con la x
 		      	 $('#eliminarEfectivo'+cuentaSeleccionadaC).click(function(){
 		      	 
+		      	 		$('#cuentaSeleccionada').append($('<option>', {
+												    value: cuentaSeleccionada,
+												    text: cuentaSeleccionada
+												}));	
 
 		    			//descuenta del total que se muestra con la sumatorio el monto que anteriormente habia agregado
 		    			var montoTotalB = $('#montoTotal').val();
-					 	var sumatoriaB = parseInt(montoTotalB) - parseInt(montoB);
+					 	var sumatoriaB = parseInt(montoTotalB) - parseInt(totalEfectivo);
 					 	$('#montoTotal').val(sumatoriaB);
 
 					 		    var ID_mcsC = $('#RespuestaIdMovCuentaEfectivoCompra'+cuentaSeleccionadaC).val();
