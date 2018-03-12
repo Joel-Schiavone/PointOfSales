@@ -290,7 +290,7 @@
                                                                          
                                                                        echo '</select>
                                                                        </th>';
-                                                            echo '<th><input type="number" class="form-control" name="cti_monto" id="cti_monto" placeholder="Valor" value="'.$valor.'"></th>';
+                                                            echo '<th><input type="number" step=".01" class="form-control" name="cti_monto" id="cti_monto" placeholder="Valor" value="'.$valor.'"></th>';
                                                             echo '<th><button type="submit" class="btn btn-primary"><i class="material-icons">mode_edit</i></button></th>';
                                                             echo '</form>';
                                                             echo '<th><a href="accionesExclusivas.php?action=dropImpuesto&ID_cti='.$assoc_get_cuentas_impuestosById['ID_cti'].'"><button type="button" class="btn btn-danger"><i class="material-icons">delete_forever</i></button></a></th>';
