@@ -24,6 +24,7 @@ $detalle_comprobantesE      = new detalle_comprobantesE;
 $proveedores                = new proveedores;
 $paramentros                = new paramentros;
 $precios                    = new precios;
+$clientes                   = new clientes;
 $FechayHora                 = date("Y-m-d H:i:s");
 $ID_cte_OriginalB            = $_POST['ID_cteB'];
 
@@ -195,27 +196,32 @@ $ID_cte_OriginalB            = $_POST['ID_cteB'];
 
     if ($fce_asociacion_anteriorB=="proveedores") 
     {
-      $nombre=$assoc_get_proveedoresByIdB['pro_desc'];
-      $direccion=$assoc_get_proveedoresByIdB['pro_dir']." - ".$assoc_get_proveedoresByIdB['pro_provincia']." - ".$assoc_get_proveedoresByIdB['pro_localidad'];
-      $telefono=$assoc_get_proveedoresByIdB['pro_tel'];
-      $cuitB="";
+          //trae proveedores 
+      $get_proveedoresById=$proveedores->get_proveedoresById($cte_asociacion_anteriorB);
+      $assoc_get_proveedoresById=mysql_fetch_assoc($get_proveedoresById);
+      $nombreBX=$assoc_get_proveedoresById['pro_desc'];
+      $direccionBX=$assoc_get_proveedoresById['pro_dir']." - ".$assoc_get_proveedoresById['pro_provincia']." - ".$assoc_get_proveedoresById['pro_localidad'];
+      $telefonoBX=$assoc_get_proveedoresById['pro_tel'];
+      $cuit="";
       $nombreBB=$assoc_get_paramentrosByIdB['par_razonSocial'];
-      $direccionBB=$assoc_get_paramentrosByIdB['par_direccion'];
-      $telefonoBB=$assoc_get_paramentrosByIdB['par_telefono'];
+      $direccionB=$assoc_get_paramentrosByIdB['par_direccion'];
+      $telefonoB=$assoc_get_paramentrosByIdB['par_telefono'];
       $cuitBB=$assoc_get_paramentrosByIdB['par_cuil'];
     }
     else
     {
-      $nombreB       = $assoc_get_paramentrosByIdB['par_razonSocial'];
-      $direccionB    = $assoc_get_paramentrosByIdB['par_direccion'];
-      $telefonoB     = $assoc_get_paramentrosByIdB['par_telefono'];
-      $cuitB         = $assoc_get_paramentrosByIdB['par_cuil'];
-      $nombreBB      = $assoc_get_proveedoresByIdB['pro_desc'];
-      $direccionBB   = $assoc_get_proveedoresByIdB['pro_dir']." - ".$assoc_get_proveedoresByIdB['pro_provincia']." - ".$assoc_get_proveedoresByIdB['pro_localidad'];
-      $telefonoBB    = $assoc_get_proveedoresByIdB['pro_tel'];
+          //trae proveedores 
+      $get_clientesById=$clientes->get_clientesById($cte_asociacion_anteriorB);
+      $assoc_get_clientesById=mysql_fetch_assoc($get_clientesById);
+      $nombreBX       = $assoc_get_paramentrosByIdB['par_razonSocial'];
+      $direccionBX    = $assoc_get_paramentrosByIdB['par_direccion'];
+      $telefonoBX     = $assoc_get_paramentrosByIdB['par_telefono'];
+      $cuit         = $assoc_get_paramentrosByIdB['par_cuil'];
+      $nombreBB      = $assoc_get_clientesById['cli_apellido']." ".$assoc_get_clientesById['cli_nombre'];
+      $direccionB   = $assoc_get_clientesById['cli_direccion'];
+      $telefonoB    = $assoc_get_clientesById['cli_telefono'];
        $cuitBB       = "";
     }  
-
 
                      
 
@@ -226,9 +232,9 @@ $ID_cte_OriginalB            = $_POST['ID_cteB'];
                                 echo "<div class='col-md-12'  id='cabeceraAB'>";
                                    
                                     echo "<div  id='cabeceraA1B'>";
-                                            echo "<p id='p10B'>".$nombreB."</p>";    
-                                            echo "<p id='p6B'>".$direccionB."</p>";  
-                                            echo "<p id='p6B'>".$telefonoB."</p>";  
+                                            echo "<p id='p10B'>".$nombreBX."</p>";    
+                                            echo "<p id='p6B'>".$direccionBX."</p>";  
+                                            echo "<p id='p6B'>".$telefonoBX."</p>";  
                                     echo "</div>";
 
 

@@ -24,6 +24,7 @@ $detalle_comprobantesE      = new detalle_comprobantesE;
 $proveedores                = new proveedores;
 $paramentros                = new paramentros;
 $precios                    = new precios;
+$clientes                   = new clientes;
 $FechayHora                 = date("Y-m-d H:i:s");
 $ID_cte_Original            = $_POST['ID_cte'];
 
@@ -162,9 +163,7 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
       $get_paramentrosById=$paramentros->get_paramentrosById($ID_par);
       $assoc_get_paramentrosById=mysql_fetch_assoc($get_paramentrosById);
 
-    //trae proveedores 
-      $get_proveedoresById=$proveedores->get_proveedoresById($cte_asociacion_anterior);
-      $assoc_get_proveedoresById=mysql_fetch_assoc($get_proveedoresById);
+
 
 
 
@@ -182,6 +181,9 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
 
     if ($fce_asociacion_anterior=="proveedores") 
     {
+          //trae proveedores 
+      $get_proveedoresById=$proveedores->get_proveedoresById($cte_asociacion_anterior);
+      $assoc_get_proveedoresById=mysql_fetch_assoc($get_proveedoresById);
       $nombre=$assoc_get_proveedoresById['pro_desc'];
       $direccion=$assoc_get_proveedoresById['pro_dir']." - ".$assoc_get_proveedoresById['pro_provincia']." - ".$assoc_get_proveedoresById['pro_localidad'];
       $telefono=$assoc_get_proveedoresById['pro_tel'];
@@ -193,13 +195,16 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
     }
     else
     {
+          //trae proveedores 
+      $get_clientesById=$clientes->get_clientesById($cte_asociacion_anterior);
+      $assoc_get_clientesById=mysql_fetch_assoc($get_clientesById);
       $nombre       = $assoc_get_paramentrosById['par_razonSocial'];
       $direccion    = $assoc_get_paramentrosById['par_direccion'];
       $telefono     = $assoc_get_paramentrosById['par_telefono'];
       $cuit         = $assoc_get_paramentrosById['par_cuil'];
-      $nombreB      = $assoc_get_proveedoresById['pro_desc'];
-      $direccionB   = $assoc_get_proveedoresById['pro_dir']." - ".$assoc_get_proveedoresById['pro_provincia']." - ".$assoc_get_proveedoresById['pro_localidad'];
-      $telefonoB    = $assoc_get_proveedoresById['pro_tel'];
+      $nombreB      = $assoc_get_clientesById['cli_apellido']." ".$assoc_get_clientesById['cli_nombre'];
+      $direccionB   = $assoc_get_clientesById['cli_direccion'];
+      $telefonoB    = $assoc_get_clientesById['cli_telefono'];
        $cuitB       = "";
     }  
 
@@ -240,7 +245,7 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
 
                                    echo "<div class='col-md-6' id='cabeceraB1'>";
                                       echo "<p id='p10'>Sr/es: ".$nombreB."</p>";
-                                      echo "<p id='p10'>direccionB</p>";
+                                      echo "<p id='p10'>".$direccionB."</p>";
                                    echo "</div>";
 
                                    echo "<div class='col-md-6' id='cabeceraB2'>";
@@ -335,8 +340,8 @@ $medidaDeComprobante        = $_POST['medidaDeComprobante']; // 1 = grande / 2 =
 
                                 //FOOTER 2
                                 echo "<div class='col-md-12' id='finalB'>";
-                                     echo '<p id="p10">CAI Nº: '.$pdv_cai_anterior ;
-                                     echo ' - FECHA DE VTO: '.$pdv_fecVencimiento_anterior.'</p>';
+                                     echo '<p id="p10">CAI Nº: '.@$pdv_cai_anterior ;
+                                     echo ' - FECHA DE VTO: '.@$pdv_fecVencimiento_anterior.'</p>';
                                 echo "</div>"; 
 
 
