@@ -2550,12 +2550,12 @@ window.location.assign("cajaSuc.php?M=4");
      $ID_sub           = $_POST['ID_sub'];
      $ID_pre           = $_POST['ID_pre'];
      $pre_porcan       = $_POST['pre_porcan'];
-     $pre_cant         = $_POST['pre_cantA'].".".$_POST['pre_cantB'];
-     $pre_neto         = $_POST['pre_netoA'].".".$_POST['pre_netoB'];
+     $pre_iva          = $_POST['pre_iva'];
+     $pre_cant         = $_POST['pre_cant'];
+     $pre_neto         = $_POST['pre_neto'];
      $ID_pro           = $_POST['ID_pro'];
      $art_desc         = mysql_escape_string($_POST['art_desc']);
      $art_unidad       = $_POST['art_unidad'];
-     $pre_iva          = $pre_cant;
      $pre_fec          = $fechaDeHoy;
     
     
@@ -3265,11 +3265,11 @@ window.location.assign("cajaSuc.php?M=4");
   {
     //CARGA VARIABLES PARA INSERTAR NUEVO PRECIO
     @$pre_cant=$_POST['pre_cant'];
-    @$pre_iva=$_POST['pre_cant'];
+    @$pre_iva=$_POST['pre_iva'];
     @$pre_neto=$_POST['pre_neto'];
     @$pre_fec=$fechaDeHoy;
     @$pre_poresp=$_POST['pre_porcan'];
-    @$pre_porcan=$_POST['pre_porcan'];
+    @$pre_porcan=$pre_poresp;
 
     //INSERTA EL PRECIO 
     $insert_precios = $precios->insert_precios($pre_cant, $pre_iva, $pre_neto, $pre_fec, $pre_poresp, $pre_porcan);

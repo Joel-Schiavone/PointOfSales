@@ -137,61 +137,75 @@ if ($num_search>=3 or $search=="VerTodo")
 		                     echo '<th id="contenidoTabla">';
 				                      		$ID_pre=$assoc_get_articulos['ID_pre'];
 				                     		$pre_cant=$assoc_get_articulos['pre_cant'];
-				                      		$pre_cantAB = explode(".",$pre_cant);
-				                      		$pre_cantA=$pre_cantAB['0'];
-				                      		$pre_cantB=$pre_cantAB['1'];
 				                     		echo '<input hidden type="text" name="ID_pre'.$ID_art.'" id="ID_pre'.$ID_art.'" value="'.$ID_pre.'">';
-				                     		echo '<input style="width:100px; float:left" type="text" name="pre_cantA'.$ID_art.'" id="pre_cantA'.$ID_art.'" class="form-control" value="'.$pre_cantAB['0'].'">
+				                     		echo '<input style="width:100px; float:left" type="text" name="pre_cant'.$ID_art.'" id="pre_cant'.$ID_art.'" class="form-control" value="'.$pre_cant.'">
 		                     		 </th>';
-		                     		 echo '<th id="contenidoTabla">
-		                     					<input style="width:100px; float:right" type="text" name="pre_cantB'.$ID_art.'" id="pre_cantB'.$ID_art.'" class="form-control" value="'.$pre_cantAB['1'].'">';
-		                      			echo '</th>';
+		                     		 
 		                      echo '<th id="contenidoTabla">';
 		                      		$pre_poresp=$assoc_get_articulos['pre_porcan'];
 		                     		echo '<input style="width:100px;" type="text" name="pre_porcan'.$ID_art.'" id="pre_porcan'.$ID_art.'" class="form-control" value="'.$pre_poresp.'">';
 		                     echo '</th>';
+		                        echo '<th id="contenidoTabla">';
+		                      		$pre_iva=$assoc_get_articulos['pre_iva'];
+		                     		echo '<input style="width:100px;" type="text" name="pre_iva'.$ID_art.'" id="pre_iva'.$ID_art.'" class="form-control" value="'.$pre_iva.'">';
+		                     echo '</th>';
 		                     echo '<th id="contenidoTabla">';
 		                      		$pre_neto=$assoc_get_articulos['pre_neto'];
-		                      		$pre_netoAB = explode(".",$pre_neto);
-		                      		$pre_netoA=$pre_netoAB['0'];
-		                      		$pre_netoB=$pre_netoAB['1'];
-		                     		echo '<input type="text" name="pre_netoA'.$ID_art.'" id="pre_netoA'.$ID_art.'"class="form-control" value="'.$pre_netoAB['0'].'" style="width:100px; float:left">
+		                     		echo '<input type="text" name="pre_neto'.$ID_art.'" id="pre_neto'.$ID_art.'"class="form-control" value="'.$pre_neto.'" style="width:100px; float:left">
 		                     		  </th>';
-		                     		echo '<th id="contenidoTabla">';
-		                     		echo '<input type="text" name="pre_netoB'.$ID_art.'" id="pre_netoB'.$ID_art.'" class="form-control" value="'.$pre_netoAB['1'].'" style="width:100px; float:right">';
-		                     echo '</th>';
+		                     		
 
 		                     	echo "<script>
 										$(document).ready(function(){
 								          $('#pre_porcan".$ID_art."').keyup(function(){
-								          	var pre_netoA   = $('#pre_netoA".$ID_art."').val();
-								          	var pre_netoB  = $('#pre_netoB".$ID_art."').val();
-								          	var pre_neto   = pre_netoA+'.'+pre_netoB;
+								         var pre_netoA  = $('#pre_neto".$ID_art."').val();
+								          	var pre_iva  = $('#pre_iva".$ID_art."').val();
+								          	var pre_netoMasIvaA = (pre_netoA*pre_iva)/100;
+								          	var pre_netoMasIva  = parseFloat(pre_netoA)+parseFloat(pre_netoMasIvaA);
 								          	var pre_porcant = $('#pre_porcan".$ID_art."').val();
-								          	var totalA     = (pre_neto*pre_porcant)/100;
-								          	var totalB      = parseInt(totalA)+parseInt(pre_neto);
+								          	var totalA     = (pre_netoMasIva*pre_porcant)/100;
+								          	var totalB      = parseFloat(totalA)+parseFloat(pre_netoMasIva);
 
-								          	$('#pre_cantA".$ID_art."').slideUp( 300 );
-  											$('#pre_cantA".$ID_art."').fadeIn( 400 );
+								          	$('#pre_cant".$ID_art."').slideUp( 300 );
+  											$('#pre_cant".$ID_art."').fadeIn( 400 );
 
-								          	$('#pre_cantA".$ID_art."').val(totalB);
+								          	$('#pre_cant".$ID_art."').val(totalB);
 							          		});
 
-							          		$('#pre_netoA".$ID_art."').keyup(function(){
-									          	var pre_neto = $('#pre_netoA".$ID_art."').val();
-									          	var pre_porcant = $('#pre_porcan".$ID_art."').val();
-									          	var totalA = (pre_neto*pre_porcant)/100;
-									          	var totalB = parseInt(totalA)+parseInt(pre_neto);
+							          		    $('#pre_iva".$ID_art."').keyup(function(){
+								          var pre_netoA  = $('#pre_neto".$ID_art."').val();
+								          	var pre_iva  = $('#pre_iva".$ID_art."').val();
+								          	var pre_netoMasIvaA = (pre_netoA*pre_iva)/100;
+								          	var pre_netoMasIva  = parseFloat(pre_netoA)+parseFloat(pre_netoMasIvaA);
+								          	var pre_porcant = $('#pre_porcan".$ID_art."').val();
+								          	var totalA     = (pre_netoMasIva*pre_porcant)/100;
+								          	var totalB      = parseFloat(totalA)+parseFloat(pre_netoMasIva);
 
-									          		$('#pre_cantA".$ID_art."').slideUp( 300 );
-  													$('#pre_cantA".$ID_art."').fadeIn( 400 );
+								          	$('#pre_cant".$ID_art."').slideUp( 300 );
+  											$('#pre_cant".$ID_art."').fadeIn( 400 );
 
+								          	$('#pre_cant".$ID_art."').val(totalB);
+							          		});
 
-									          	$('#pre_cantA".$ID_art."').val(totalB);
+							          		$('#pre_neto".$ID_art."').keyup(function(){
+									        var pre_netoA  = $('#pre_neto".$ID_art."').val();
+								          	var pre_iva  = $('#pre_iva".$ID_art."').val();
+								          	var pre_netoMasIvaA = (pre_netoA*pre_iva)/100;
+								          	var pre_netoMasIva  = parseFloat(pre_netoA)+parseFloat(pre_netoMasIvaA);
+								          	var pre_porcant = $('#pre_porcan".$ID_art."').val();
+								          	var totalA     = (pre_netoMasIva*pre_porcant)/100;
+								          	var totalB      = parseFloat(totalA)+parseFloat(pre_netoMasIva);
+
+								          	$('#pre_cant".$ID_art."').slideUp( 300 );
+  											$('#pre_cant".$ID_art."').fadeIn( 400 );
+
+								          	$('#pre_cant".$ID_art."').val(totalB);
 
 									          });
 										});
 							          </script>";
+
+
 
 
 
@@ -241,14 +255,13 @@ if ($num_search>=3 or $search=="VerTodo")
 								                        ID_sub'.$ID_art.'  	 =	$("#ID_sub'.$ID_art.' option:selected").val();
 								                        ID_pre'.$ID_art.'	 =	$("input:text[name=ID_pre'.$ID_art.']").val();
 								                        pre_porcan'.$ID_art.'	 =	$("input:text[name=pre_porcan'.$ID_art.']").val();
-								                        pre_cantA'.$ID_art.' =	$("input:text[name=pre_cantA'.$ID_art.']").val();
-								                        pre_cantB'.$ID_art.' =	$("input:text[name=pre_cantB'.$ID_art.']").val();
-								                        pre_netoA'.$ID_art.' =	$("input:text[name=pre_netoA'.$ID_art.']").val();
-								                        pre_netoB'.$ID_art.' =	$("input:text[name=pre_netoB'.$ID_art.']").val();
+								                        pre_iva'.$ID_art.'	 =	$("input:text[name=pre_iva'.$ID_art.']").val();
+								                        pre_cant'.$ID_art.' =	$("input:text[name=pre_cant'.$ID_art.']").val();
+								                        pre_neto'.$ID_art.' =	$("input:text[name=pre_neto'.$ID_art.']").val();
 								                        ID_pro'.$ID_art.'	 = $("#ID_pro'.$ID_art.' option:selected").val();
 								                        art_desc'.$ID_art.'	 =	$("input:text[name=art_desc'.$ID_art.']").val();
 								                        art_unidad'.$ID_art.'=	$("#art_unidad'.$ID_art.' option:selected").val();
-								                            $.post("accionesExclusivas.php", { ID_art: ID_art'.$ID_art.', action: updateArticulo, art_cod: art_cod'.$ID_art.', ID_cat: ID_cat'.$ID_art.', ID_sub: ID_sub'.$ID_art.', ID_pre: ID_pre'.$ID_art.' , pre_porcan: pre_porcan'.$ID_art.', pre_cantA: pre_cantA'.$ID_art.', pre_cantB: pre_cantB'.$ID_art.', pre_netoA: pre_netoA'.$ID_art.', pre_netoB: pre_netoB'.$ID_art.', ID_pro: ID_pro'.$ID_art.', art_desc: art_desc'.$ID_art.', art_unidad: art_unidad'.$ID_art.'}, function(data){
+								                            $.post("accionesExclusivas.php", { ID_art: ID_art'.$ID_art.', action: updateArticulo, art_cod: art_cod'.$ID_art.', ID_cat: ID_cat'.$ID_art.', ID_sub: ID_sub'.$ID_art.', ID_pre: ID_pre'.$ID_art.' , pre_porcan: pre_porcan'.$ID_art.', pre_iva: pre_iva'.$ID_art.', pre_cant: pre_cant'.$ID_art.',  pre_neto: pre_neto'.$ID_art.', ID_pro: ID_pro'.$ID_art.', art_desc: art_desc'.$ID_art.', art_unidad: art_unidad'.$ID_art.'}, function(data){
 								                            $("#respuesta'.$ID_art.'").html(data);     
 								                        });
 								                   })

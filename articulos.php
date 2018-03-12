@@ -235,10 +235,17 @@
 								  </div>
 					      </div> 
 					        <div class="form-group">
-					        	 <label for="pre_porcant" class="control-label">Porcentaje de venta</label>
+					        	 <label for="pre_porcan" class="control-label">Porcentaje de venta</label>
 					        	 <div class="input-group">
 								    <span class="input-group-addon">%</span>
-								    <input type="text" name="pre_porcant" placeholder="0" class="form-control" id="pre_porcant">
+								    <input type="text" name="pre_porcan" placeholder="0" class="form-control" id="pre_porcan">
+								 </div>
+							</div>
+						 <div class="form-group">
+					        	 <label for="pre_iva" class="control-label">Iva</label>
+					        	 <div class="input-group">
+								    <span class="input-group-addon">%</span>
+								    <input type="text" name="pre_iva"  placeholder="0" class="form-control" id="pre_iva">
 								  </div>
 					      </div> 
 					       <div class="form-group">
@@ -393,13 +400,16 @@
 			                    echo '<button class="btn btn-success" data-placement="top" title="Presione para ingresar una nueva Subcategoria"   data-toggle="modal" data-target="#subcategorias" id="botonesTituloTabla"><i class="material-icons" 
 			                     >add</i> Subcategoria</button>';
 			            echo '</th>';
-		            echo '<th id="bloqueTabla" colspan="2">';
+		            echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" colspan="2" id="botonesTituloTabla"><i class="material-icons">attach_money</i> P. Venta</p>';
 		            echo '</th>';
 		             echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">trending_up</i> % Venta</p>';
 		            echo '</th>';
-		            echo '<th id="bloqueTabla" colspan="2">';
+		              echo '<th id="bloqueTabla">';
+		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">trending_up</i> % IVA</p>';
+		            echo '</th>';
+		            echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">attach_money</i> P. Costo</p>';
 		            echo '</th>';
 		            echo '<th id="bloqueTabla">';
@@ -435,13 +445,16 @@
 		            echo '<th id="bloqueTabla">';
 		                    echo '<a class="btn btn-success" id="botonesTituloTabla"><i class="material-icons">add</i> Subcategoria</a>';
 		            echo '</th>';
-		            echo '<th id="bloqueTabla" colspan="2">';
+		            echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">attach_money</i> P. Venta</p>';
 		            echo '</th>';
 		             echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">trending_up</i> % Venta</p>';
 		            echo '</th>';
-		            echo '<th id="bloqueTabla" colspan="2">';
+		               echo '<th id="bloqueTabla">';
+		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">trending_up</i> % IVA</p>';
+		            echo '</th>';
+		            echo '<th id="bloqueTabla">';
 		                    echo '<p class="btn btn-info disabled" id="botonesTituloTabla"><i class="material-icons">attach_money</i> P. Costo</p>';
 		            echo '</th>';
 		            echo '<th id="bloqueTabla">';
@@ -548,22 +561,38 @@
 	        
 	         
 
-	          $('#pre_porcant').keyup(function(){
-	          	var pre_neto = $('#pre_neto').val();
-	          	var pre_porcant = $('#pre_porcant').val();
-	          	var totalA = (pre_neto*pre_porcant)/100;
-	          	var totalB = parseInt(totalA)+parseInt(pre_neto);
+	          $('#pre_porcan').keyup(function(){
+	  			var pre_neto  		= $('#pre_neto').val();
+	          	var pre_porcan 		= $('#pre_porcan').val();
+	          	var pre_iva  		= $('#pre_iva').val();
+	          	var pre_porcanBB	= (pre_iva*pre_neto)/100;
+	          	var netoMasIva  	= parseInt(pre_neto)+parseInt(pre_porcanBB);
+	          	var totalA  		= (netoMasIva*pre_porcan)/100;
+	          	var totalB  		= parseInt(totalA)+parseInt(netoMasIva);
 	          	$('#pre_cant').val(totalB);
 
 	          });
 
 	          $('#pre_neto').keyup(function(){
-	          	var pre_neto = $('#pre_neto').val();
-	          	var pre_porcant = $('#pre_porcant').val();
-	          	var totalA = (pre_neto*pre_porcant)/100;
-	          	var totalB = parseInt(totalA)+parseInt(pre_neto);
+	            var pre_neto  		= $('#pre_neto').val();
+	          	var pre_porcan 	= $('#pre_porcan').val();
+	          	var pre_iva  		= $('#pre_iva').val();
+	          	var pre_porcanBB	= (pre_iva*pre_neto)/100;
+	          	var netoMasIva  	= parseInt(pre_neto)+parseInt(pre_porcanBB);
+	          	var totalA  		= (netoMasIva*pre_porcan)/100;
+	          	var totalB  		= parseInt(totalA)+parseInt(netoMasIva);
 	          	$('#pre_cant').val(totalB);
+	          });
 
+	          	$('#pre_iva').keyup(function(){
+	           	var pre_neto  		= $('#pre_neto').val();
+	          	var pre_porcan 	= $('#pre_porcan').val();
+	          	var pre_iva  		= $('#pre_iva').val();
+	          	var pre_porcanBB	= (pre_iva*pre_neto)/100;
+	          	var netoMasIva  	= parseInt(pre_neto)+parseInt(pre_porcanBB);
+	          	var totalA  		= (netoMasIva*pre_porcan)/100;
+	          	var totalB  		= parseInt(totalA)+parseInt(netoMasIva);
+	          	$('#pre_cant').val(totalB);
 	          });
 
 	        
