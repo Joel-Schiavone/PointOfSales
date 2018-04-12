@@ -196,7 +196,7 @@
                                 }
                                 echo "</table>";
 
-                                 echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venAntePenultima.'&ID_caj='.$ID_caj.'"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
+                                 echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venAntePenultima.'&ID_caj='.$ID_caj.'" target="_blank"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
 
                                  echo "<hr>";
                                 echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSumaB."</H4>";
