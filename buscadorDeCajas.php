@@ -76,7 +76,7 @@ else
 }
 
 
-  //echo "SELECT * FROM caja WHERE caj_horaa!='00:00:00' ".@$fechaDesde." ".@$fechaHasta." ".@$validados." ".@$ID_usu." ".@$estado."";
+ // echo "SELECT * FROM caja WHERE caj_horaa!='00:00:00' ".@$fechaDesde." ".@$fechaHasta." ".@$validados." ".@$ID_usu." ".@$estado."";
 
   $sql="SELECT * FROM caja WHERE caj_horaa!='00:00:00'  ".@$fechaDesde." ".@$fechaHasta."  ".@$validados." ".@$ID_usu." ".@$estado."";
   $result_stock=mysql_query($sql);
@@ -633,7 +633,7 @@ else
 													{ 
 														$assoc_get_adjuntosBYId_Rel=mysql_fetch_assoc($get_adjuntosBYId_Rel);
 														$ID_adj=$assoc_get_adjuntosBYId_Rel['ID_adj'];
-													    /* Inicio Modal Egresos*/                          
+													    /* Inicio Modal Egresos*/                      
 												   	 echo '<div class="modal fade bd-example-modal-lg" id="modalDetallesDeEgresos'.$ID_caj.''.$ID_adj.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 												            <div class="modal-dialog modal-lg" role="document">
 												              <div class="modal-content">
@@ -647,6 +647,7 @@ else
 													                     <h4>'.$assoc_get_adjuntosBYId_Rel['adj_desc'].'</h4>
 													                 </div>
 													                 <div class="col-md-12">
+
 																		 <img src="'.$assoc_get_adjuntosBYId_Rel['adj_ruta'].'" style="width:100%;">	
 																	 </div>	 
 												                  </div>  

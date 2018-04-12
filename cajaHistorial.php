@@ -26,28 +26,28 @@
 								<div class='col-md-3'>
 								  	<label class="control-label" for="focusedInput"><i class="material-icons">done_all</i> Validados</label><br>
 							  		<label class="switch">
-									  <input type="checkbox" id="validados" name="validados" value="si" checked>
+									  <input type="checkbox" id="validados" name="validados" value="si" >
 									  <span class="slider round"></span>
 									</label>
 								</div>
 								<div class='col-md-3'>
 								  	<label class="control-label" for="focusedInput"><i class="material-icons">done_all</i> Criticas</label><br>
 							  		<label class="switch">
-									  <input type="checkbox" id="criticas" name="criticas" value="si" checked>
+									  <input type="checkbox" id="criticas" name="criticas" value="si" >
 									  <span class="slider round"></span>
 									</label>
 								</div>
 								<div class='col-md-3'>
 								  	<label class="control-label" for="focusedInput"><i class="material-icons">done_all</i> Abiertas</label><br>
 							  		<label class="switch">
-									  <input type="checkbox" id="abiertas" name="abiertas" value="si" checked>
+									  <input type="checkbox" id="abiertas" name="abiertas" value="si" >
 									  <span class="slider round"></span>
 									</label>
 								</div>
 								<div class='col-md-3'>
 								  	<label class="control-label" for="focusedInput"><i class="material-icons">done_all</i> Cerradas</label><br>
 							  		<label class="switch">
-									  <input type="checkbox" id="cerradas" name="cerradas" value="si" checked>
+									  <input type="checkbox" id="cerradas" name="cerradas" value="si" >
 									  <span class="slider round"></span>
 									</label>
 								</div>

@@ -50,6 +50,7 @@
 <!--Inicio: Contenedor principal -->
 <div class="container-fluid" id="NoImprimir">
 
+     
   <!--Inicio: contenedor superior--> 	
    <div class="col-md-12">
         <i class="material-icons">account_circle</i> Usuario: <?php echo $_SESSION['usu_nombre']." ".$_SESSION['usu_apellido'];?> -
@@ -69,7 +70,9 @@
   		<!--Inicio: Barra buscadora--> 
 	  	<div class="col-md-5" >
 	  		<input type="text" name="get_articulos" id="get_articulos" class="form-control" placeholder="Buscar Articulo" autofocus="autofocus">
-        <div id='suggestions' class='suggestions'></div>
+        <div id='suggestions' class='suggestions' style="max-height: 300px; overflow-y: scroll;"></div>
+
+          <input hidden type="text" name="input_recibe_recibe_respuesta_inseraMovimiento" id="input_recibe_recibe_respuesta_inseraMovimiento" value="">
 	  	</div>
 	  	<!--Fin: Barra buscadora--> 
 	  
@@ -136,7 +139,7 @@
                                 }
                                 echo "</table>";
 
-                                echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venPenultima.'&ID_caj='.$ID_caj.'"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
+                                echo '<a href="impresion_TiketDeCaja.php?ID_ven='.$ID_venPenultima.'&ID_caj='.$ID_caj.'" target="_blank"><button class="btn btn-success" title="Imprimir" ><i class="material-icons">print</i></button></a>';
 
                                  echo "<hr>";
                                 echo "<H4 style='text-align:right; margin-right:2%;'>TOTAL: $".$totalSuma."</H4>";
@@ -361,773 +364,55 @@
             </div>';
         /* Fin Modal Cierre Caja */
 
-            $get_mov_caja=$mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
-             @$num_get_mov_caja=mysql_num_rows($get_mov_caja);
-
-             echo '<div class="col-md-12" style="font-size:10px;">';
-                   echo '<div class="col-md-1">';
-                    echo 'CANTIDAD';
-                   echo '</div>';
-                    echo '<div class="col-md-4">';
-                    echo 'DESCRIPCIÓN';
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                    echo 'NETO';
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                   echo 'SUB-TOTAL';
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                    echo 'ALICUOTA';
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                    echo 'DESCUENTO';
-                   echo '</div>';
-                     echo '<div class="col-md-1">';
-                        echo 'TOTAL';
-                   echo '</div>';
-                   echo '<div class="col-md-1">';
-                      echo 'ELIMINAR';
-                    echo '</div>';       
-                   echo '<div class="col-md-1">';       
-                      echo 'DESCUENTO';
-                   echo '</div>';
-                echo '</div>';    
-
-             for ($CountMov=0; $CountMov < $num_get_mov_caja; $CountMov++) 
-             { 
-               $assoc_get_mov_caja=mysql_fetch_assoc($get_mov_caja);
-                   /* Inicio Modal Descuento por movimiento*/                          
-                  echo '<div class="modal fade" id="botonDescuento'.$assoc_get_mov_caja['ID_mov'].'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                               <div class="modal-header">
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <h4 class="modal-title" id="myModalLabel">Descuento de movimiento</h4>
-                                </div>
-                                <div class="modal-body">';
-
-                                  if ($_SESSION['usu_descuento']=='1') 
-                                  {
-                                    $display='block';
-                                     $displayB='none';
-                                  }
-                                  else 
-                                  {
-                                    $display='none';
-                                    $displayB='block';
-                                  }
-
-                                  echo "<div style='display:".$displayB."'>
-                                   <div class='form-group'>
-                                      <label for='pto_asig'>Se requiere Clave de Administrador </label>
-                                       <div class='input-group'>
-                                       <span class='input-group-addon'><i class='material-icons'>vpn_key</i></span>
-                                      <input type='password' class='form-control' id='llaveAdmin".$assoc_get_mov_caja['ID_mov']."' name='llaveAdmin".$assoc_get_mov_caja['ID_mov']."' placeholder='Se requiere Clave de Administrador'></input>
-                                      </div>
-                                      </div> 
-                                   <div class='form-group'>
-                                  <button class='btn btn-success' id='confimaLlave".$assoc_get_mov_caja['ID_mov']."'><i class='material-icons'>done</i> Confirmar</button>
-                                    </div>
-                                  </div>";
-
-                               echo ' <div id="cartelClaveCorrecta'.$assoc_get_mov_caja['ID_mov'].'" class="alert alert-dismissible alert-success" style="display:none;">
-                                                                <i class="material-icons">done_all</i> Autorizado
-                                                              </div>
-                                     <div id="cartelErrorClave'.$assoc_get_mov_caja['ID_mov'].'" class="alert alert-dismissible alert-danger" style="display:none;">
-                                                                <i class="material-icons">error_outline</i> Clave incorrecta
-                                                            </div>';
-                                echo ' <div id="formularioDescuentos'.$assoc_get_mov_caja['ID_mov'].'" style="display:'.$display.';">
-                                    
-                                    <form action="accionesExclusivas.php" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                      <label for="pto_asig">Ingrese en porcentaje el descuento que desea aplicar a este movimiento </label>
-                                       <div class="input-group">
-                                       <span class="input-group-addon">%</span>
-                                      <input type="text" name="mov_descuento" placeholder="0" class="form-control">
-                                      </div>
-                                      <input hidden type="text" name="action" value="aplicarDescuentoMovimiento">
-                                      <input hidden type="text" name="ID_mov" value="'.$assoc_get_mov_caja['ID_mov'].'">
-                                      <input hidden type="text" name="mov_cantidad" value="'.$assoc_get_mov_caja['mov_cantidad'].'">
-                                         <input hidden type="text" name="ID_ven" value="'.$ID_ven.'">
-                                    </div>
-                                       <button class="btn btn-success" type="submit" style="width:100%;"><i class="material-icons">get_app</i> Aplicar</button>
-                                </div>
-                                  </form>
-                                  </div>';
-
-                                     echo "<script>
-                                          $('#confimaLlave".$assoc_get_mov_caja['ID_mov']."').click(function(){
-                                               var usu_clave =$('#llaveAdmin".$assoc_get_mov_caja['ID_mov']."').val();
-                                                  var dataString = 'usu_clave='+usu_clave;
-                                              $.ajax(
-                                              {
-                                                  type: 'POST',
-                                                  url: 'verificadorDeClaveAdmin.php',
-                                                  data: dataString,
-                                                  success: function(datas)
-                                                   {
-
-                                                      if(datas==1)
-                                                        {
-                                                             $('#cartelClaveCorrecta".$assoc_get_mov_caja['ID_mov']."').fadeIn(1000);  
-                                                            $('#formularioDescuentos".$assoc_get_mov_caja['ID_mov']."').fadeIn(1000)('display', 'block');    
-                                                             $('#cartelErrorClave".$assoc_get_mov_caja['ID_mov']."').fadeOut(1000);               
-                                                        }            
-                                                        else 
-                                                        {
-                                                          $('#cartelErrorClave".$assoc_get_mov_caja['ID_mov']."').fadeIn(1000);
-                                                            $('#cartelClaveCorrecta".$assoc_get_mov_caja['ID_mov']."').fadeOut(1000);  
-                                                        }  
-
-                                                   }
-                                               });
-                                           });
-                                        </script>";
-                               echo '</div>
-                                <div class="modal-footer">
-                              </div>
-                            </div>
-                          </div>';
-                      /* Fin Modal Descuento por movimiento */
 
 
-               echo '<div class="col-md-12" id="recuadrosB">';
-                   echo '<div class="col-md-1">';
-                    echo  $assoc_get_mov_caja['mov_cantidad'] . $assoc_get_mov_caja['art_unidad'];
-                   echo '</div>';
-                    echo '<div class="col-md-4">';
-                    echo $assoc_get_mov_caja['art_desc'];
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                    echo  "$".$assoc_get_mov_caja['pre_cant'];
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                     echo  "$".$assoc_get_mov_caja['multiplicacion'];
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                      echo  "%".$assoc_get_mov_caja['pre_iva'];
-                   echo '</div>';
-                    echo '<div class="col-md-1">';
-                   echo  "%".$assoc_get_mov_caja['mov_descuento'];
-                   echo '</div>';
-                     echo '<div class="col-md-1">';
-                    echo  "$".$assoc_get_mov_caja['mov_sal'];
-                   echo '</div>';
-                   echo '<div class="col-md-1">';
-                    echo '<a href="accionesExclusivas.php?ID_caj='.$ID_caj.'&ID_ven='.$ID_ven.'&ID_art='.$assoc_get_mov_caja['ID_art'].'&action=drop_movimiento&ven_total='.$assoc_get_venta_UltimaByIdCaja['ven_total'].'&multiplicacion='.$assoc_get_mov_caja['mov_sal'].'&mov_cantidad='.$assoc_get_mov_caja['mov_cantidad'].'"><button class="btn btn-danger" id="botonEliminar">
-                            <i class="material-icons">delete_forever</i>
-                          </button></a>'; 
-                    echo '</div>';       
-                   echo '<div class="col-md-1">';       
-                    echo '<button class="btn btn-info" id="botonDescuento'.$assoc_get_mov_caja['ID_mov'].'" data-toggle="modal" title="APLICAR DESCUENTO" data-placement="top" data-target="#botonDescuento'.$assoc_get_mov_caja['ID_mov'].'">
-                            <i class="material-icons">local_offer</i>
-                          </button>';    
 
-                   echo '</div>';
-                echo '</div>';    
+  echo '<div id="respuesta_tabla_detalles_movimientos"></div>';
 
-             }
-          ?>  
-  			</div>
-  			<!--Fin: Articulos vendidos detalle-->
-<?php
-           /* Inicio Modal Descuento por VENTA*/                          
-                  echo '<div class="modal fade" id="botonDescuentoVenta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                               <div class="modal-header">
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <h4 class="modal-title" id="myModalLabel">Descuento de Venta</h4>
-                                </div>
-                                <div class="modal-body">';
 
-                                  if ($_SESSION['usu_descuento']=='1') 
-                                  {
-                                    $displayV='block';
-                                     $displayBV='none';
-                                  }
-                                  else 
-                                  {
-                                    $displayV='none';
-                                    $displayBV='block';
-                                  }
 
-                                  echo "<div style='display:".$displayBV."'>
-                                   <div class='form-group'>
-                                      <label for='pto_asig'>Se requiere Clave de Administrador </label>
-                                       <div class='input-group'>
-                                       <span class='input-group-addon'><i class='material-icons'>vpn_key</i></span>
-                                      <input type='password' class='form-control' id='llaveAdminVenta' name='llaveAdminVenta' placeholder='Se requiere Clave de Administrador'></input>
-                                      </div>
-                                      </div> 
-                                   <div class='form-group'>
-                                  <button class='btn btn-success' id='confimaLlaveVenta'><i class='material-icons'>done</i> Confirmar</button>
-                                    </div>
-                                  </div>";
-
-                               echo ' <div id="cartelClaveCorrectaVenta" class="alert alert-dismissible alert-success" style="display:none;">
-                                                                <i class="material-icons">done_all</i> Autorizado
-                                                              </div>
-                                     <div id="cartelErrorClaveVenta" class="alert alert-dismissible alert-danger" style="display:none;">
-                                                                <i class="material-icons">error_outline</i> Clave incorrecta
-                                                            </div>';
-                                echo ' <div id="formularioDescuentosVenta" style="display:'.$displayV.';">
-                                    
-                                    <form action="accionesExclusivas.php" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                      <label for="pto_asig">Ingrese en porcentaje el descuento que desea aplicar a esta venta </label>
-                                       <div class="input-group">
-                                       <span class="input-group-addon">%</span>
-                                      <input type="text" name="ven_descuento" placeholder="0" class="form-control">
-                                      </div>
-                                      <input hidden type="text" name="action" value="aplicarDescuentoVenta">
-                                      <input hidden type="text" name="ID_ven" value="'.$ID_ven.'">
-                                    </div>
-                                       <button class="btn btn-success" type="submit" style="width:100%;"><i class="material-icons">get_app</i> Aplicar</button>
-                                </div>
-                                  </form>
-                                  </div>';
-
-                                     echo "<script>
-                                          $('#confimaLlaveVenta').click(function(){
-                                               var usu_clave =$('#llaveAdminVenta').val();
-                                                  var dataString = 'usu_clave='+usu_clave;
-                                              $.ajax(
-                                              {
-                                                  type: 'POST',
-                                                  url: 'verificadorDeClaveAdmin.php',
-                                                  data: dataString,
-                                                  success: function(datasB)
-                                                   {
-                                                      if(datasB==1)
-                                                        {
-                                                             $('#cartelClaveCorrectaVenta').fadeIn(1000);  
-                                                            $('#formularioDescuentosVenta').fadeIn(1000)('display', 'block');    
-                                                             $('#cartelErrorClaveVenta').fadeOut(1000);               
-                                                        }            
-                                                        else 
-                                                        {
-                                                          $('#cartelErrorClaveVenta').fadeIn(1000);
-                                                            $('#cartelClaveCorrectaVenta').fadeOut(1000);  
-                                                        }  
-                                                   }
-                                               });
-                                           });
-                                        </script>";
-                               echo '</div>
-                                <div class="modal-footer">
-                              </div>
-                            </div>
-                          </div>';
-                      /* Fin Modal Descuento por VENTA */
 ?>
+
+</div>
 
   			<!--Inicio: Articulos vendidos totales--> 
   			<div class="col-md-12" id="recuadrosC">
-  				<!--Inicio: Articulos vendidos total--> 
-  				<div class="col-md-2" style="text-align: left; border-right: 1px solid #000">
-          TOTAL: 
-  				</div>
-  				<!--Fin: Articulos vendidos total-->
-          
-          <!--COLOCA EN EL TOTAL EL PRECIO NETO QUE ES EL PRECIO SIN IVA-->
-          <div class="col-md-2" style="text-align: center;">
-            <?php 
-              $get_mov_cajaByIdVenXX                =   $mov_cajaE->get_mov_caja($ID_caj, $ID_ven);
-              $num_get_mov_cajaByIdXX               =   mysql_num_rows($get_mov_cajaByIdVenXX);
-              $ven_totalSinIva=0;
-              $totalSinDescuentoAZ=0;
-              for ($CountPrecioNeto=0; $CountPrecioNeto < $num_get_mov_cajaByIdXX; $CountPrecioNeto++) 
-              { 
-                $assoc_get_mov_cajaByIdXX           =   mysql_fetch_assoc($get_mov_cajaByIdVenXX);
-                $totalSinDescuentoAZ                = $totalSinDescuentoAZ+$assoc_get_mov_cajaByIdXX['mov_sal'];
-                $ven_totalSinIva                    = $ven_totalSinIva+$assoc_get_mov_cajaByIdXX['precioSinIva'];
-              }
-              echo "$ ". $ven_totalSinIva;
-              echo "<p style='font-size:9px;'>GRABADO</p>";
-            ?>
-          </div>
-
-  				<!--Inicio: Articulos vendidos monto total-->
-  				<div class="col-md-2" style="text-align: center;">
-            <?php 
-              //sin descuento
-                  echo "$ ".$totalSinDescuentoAZ; 
-                  echo "<p style='font-size:9px;'>SUBTOTAL</p>";
-            ?>
-  				</div>
-          <div class="col-md-2" style="text-align: center;">
-            <?php 
-              echo "% ".$assoc_get_venta_UltimaByIdCaja['ven_descuento']; 
-                $descuento=$assoc_get_venta_UltimaByIdCaja['ven_descuento'];
-                echo "<p style='font-size:9px;'>DESCUENTO</p>";
-            ?>
-          </div>
-            <div class="col-md-2" style="text-align: center;">
-            <?php 
-              echo "$ ".$assoc_get_venta_UltimaByIdCaja['ven_total'];
-              echo "<p style='font-size:9px;'>FINAL</p>"; 
-            ?>
-          </div>
-          <div class="col-md-2" style="text-align: center;">
-           <button class="btn btn-primary" d="botonDescuentoVenta" data-toggle="modal" title="Aplicar descuento al total de la venta" data-placement="top" data-target="#botonDescuentoVenta">
-               <i class="material-icons">local_offer</i>
-             </button>      
-  				<!--Fin: Articulos vendidos monto total-->
-  			</div>
+  			   <div id="respuesta_tabla_totales_movimientos"></div>
         </div>
   			<!--Fin: Articulos vendidos totales--> 
+
+        <buttom style='margin:1%;' class='btn btn-primary btn-sm' id='ActualizarTablaDetalles'><i class='material-icons' style='font-size:12px;'>refresh</i></buttom>
+
+      
+    <div id='referencias' style="text-align: left; width: 50%;">
+      <ul>
+        <li>Flecha abajo: Posiciona el cursor sobre el selector de formas de pago</li>
+        <li>Barra: presiona botón</li>
+        <li>Ctrl: Posiciona el cursor sobre el buscador de artículos</li>
+        <li>Shift: Posiciona el cursor sobre la cantidad de artículos</li> 
+        <li>F8: Cobro total o parcial</li> 
+        <li>F9: Guardar venta</li> 
+      </ul>
+    </div>
+
+
 	  	</div>
 	  	<!--Fin: Articulos vendidos--> 
 	  	<!--Inicio: cuadro de acciones-->
      
 	  	<div class="col-md-4" id="recuadrosC">
-         <?php 
-        if ($totalSinDescuentoAZ!=0) 
-        {
-          ?>
-            <div class="col-md-12" style="border-bottom:2px solid #333;">
-              <form action='accionesExclusivas.php' method='POST'>
-                  <!--Accion-->
-                  <input hidden type="text" name="action" value="InsertMovimientosVentas">
-                   <!--Total de la venta-->
-                  <input hidden type="text" name="VentaTotal" value="<?php echo $assoc_get_venta_UltimaByIdCaja['ven_total'];?>">
-                  <!--ID de la venta-->
-                  <input hidden type="text" name="ID_ven" value="<?php echo $ID_ven;?>">
-
-
-                <!--Remodifica el maximo permitido segun el restando que va quedando en el input-->
-                <?php 
-                      $get_venta_detalleSumatoria=$venta_detalleE->get_venta_detalleSumatoria($ID_ven);
-                      $assoc_get_venta_detalleSumatoria=mysql_fetch_assoc($get_venta_detalleSumatoria);
-                      if ($assoc_get_venta_detalleSumatoria['resto']!=NULL) 
-                      {
-                        
-                        $resto=$assoc_get_venta_UltimaByIdCaja['ven_total']-$assoc_get_venta_detalleSumatoria['resto'];
-                      }
-                      else
-                      {
-                        $resto=$assoc_get_venta_UltimaByIdCaja['ven_total'];
-                      }  
-                ?>
-  
-
-                <div id="montoApagarInput" class="col-md-6">
-                    <div class="form-group">
-                        <div class="input-group">
-                          <span class="input-group-addon">$</span>
-                            <input type="number" id='montoTotal' name='montoTotal' class='form-control' min="1" max="<?php echo $resto;?>" value="<?php echo $assoc_get_venta_UltimaByIdCaja['ven_total'];?>" step=".01" style="width:100%;">
-                        </div>
-                      </div>
-                </div>  
-
-                 <div id="montoApagarSelect" class="col-md-6">
-                          <select class='form-control' name='FormaDePago' id='FormaDePago'>
-                            <?php
-                              $get_tipos_pagos=$tipos_pagosE->get_tipos_pagos();
-                              $num_get_tipos_pagos=mysql_num_rows($get_tipos_pagos);
-                              for ($Countnum_get_tipos_pagos=0; $Countnum_get_tipos_pagos < $num_get_tipos_pagos; $Countnum_get_tipos_pagos++)
-                              { 
-                                   $assoc_get_tipos_pagos=mysql_fetch_assoc($get_tipos_pagos);
-
-                                   //Aplicar selected prederterminado en select (revisar columna fpo_selected de tabla tipos_pagos)
-                                   if ($assoc_get_tipos_pagos['fpo_selected']==1) 
-                                   {
-                                    $selected="selected";
-                                    $ID_selected=$assoc_get_tipos_pagos['ID_fpo'];
-                                   }
-                                   else
-                                   {
-                                    $selected="";
-                                   } 
-
-                                   echo "<option value='".$assoc_get_tipos_pagos['ID_fpo']."' ".$selected.">".$assoc_get_tipos_pagos['ID_desc']."</option>";
-                              }
-
-                               
-                            ?>
-                            <option value="5">PAGOS ELECTRONICOS</option>
-                          </select>
-                </div>     
-             
-                <div id="detalleDeVenta" class="col-md-12" style="font-size: 13px;">
-                  <?php
-
-                    $get_venta_detalleById=$venta_detalleE->get_venta_detalleById($ID_ven);
-                    $num_get_venta_detalleById=mysql_num_rows($get_venta_detalleById);
-                    $sumaDeDetallesDeVenta=0;
-                    for ($countDetalleDeVenta=0; $countDetalleDeVenta < $num_get_venta_detalleById; $countDetalleDeVenta++) 
-                    { 
-                      $assoc_get_venta_detalleById=mysql_fetch_assoc($get_venta_detalleById);
-                      $ID_vde=$assoc_get_venta_detalleById['ID_vde'];
-                      $montoTotalConInteresA=($assoc_get_venta_detalleById['fpo_monto']*$assoc_get_venta_detalleById['tarjeta_pla_recargo'])/100;
-                      $montoTotalConInteres=$assoc_get_venta_detalleById['fpo_monto']+$montoTotalConInteresA;
-                       echo '<div id="detalleDeVentaIcono'.$ID_vde.'" class="col-md-2">';
-                        echo "<p class='text-danger'><i class='material-icons'>". $assoc_get_venta_detalleById['fpo_icono'] ."</i></p>";
-                      echo '</div>';  
-                      echo '<div id="detalleDeVentaTipo'.$ID_vde.'" class="col-md-4">';
-                        echo "<p class='text-danger'>". $assoc_get_venta_detalleById['ID_desc'] ."</p>";
-                      echo '</div>';  
-                      echo '<div id="detalleDeVentaMonto'.$ID_vde.'" class="col-md-4">';
-                        echo "<p class='text-danger'>$ ".$montoTotalConInteres."</p>";
-                      echo '</div>';  
-                      echo '<div id="detalleDeVentaEliminar'.$ID_vde.'" class="col-md-2" style="cursor:pointer">';
-                        echo '<a href="accionesExclusivas.php?action=EliminarDetalleDeVenta&ID_vde='.$ID_vde.'&ID_fpo='.$assoc_get_venta_detalleById['ID_fpo'].'&fpo_monto='.$assoc_get_venta_detalleById['fpo_monto'].'&vde_IDasociado='.$assoc_get_venta_detalleById['vde_IDasociado'].'"><p class="text-danger"><i class="material-icons">delete_forever</i></p></a>';
-                       echo '</div>'; 
-                         $sumaDeDetallesDeVenta=$sumaDeDetallesDeVenta+$assoc_get_venta_detalleById['fpo_monto'];
-                    }
-
-                  ?>
-                </div>
-
-  
-
-          <div id="montoApagarSelect" class="col-md-12">
-
-                       
-            <?php
-                          $totaSinDecimales=round($resto);
-
-                            //EFECTIVO
-                              echo '<div id="DivFormaDePago1" class="col-md-12" style="display: none;">';
-                                  echo "<br>";
-                                    echo  "EFECTIVO";
-                                    echo  '<div class="form-group">
-                                            <label class="control-label" style="font-size:13px; text-align:left">Calculador de Cambio</label>
-                                            <div class="input-group">
-                                              <span class="input-group-addon">$</span>
-                                              <input type="number" id="CalcularVuelto" name="CalcularVuelto" class="form-control" min="1" value="" step=".01" style="width:100%;">
-                                            </div>
-                                          </div>';
-                                    echo "<div id='suggestionsA1' style='dsplay:none'></div>";
-                                    echo "<br>";
-                              echo '</div>';
-
-                            //CTA CTE
-                              echo '<div id="DivFormaDePago2" class="col-md-12" style="display: none;">';
-                                    echo "<br>";
-                                    echo  "CUENTA CORRIENTE";
-                                    echo '<div class="col-md-12" id="ContenidoB1"> 
-                                     <div class="col-md-12"> 
-                                        <input type="text" name="get_clientes" id="get_clientes" class="form-control" placeholder="Buscar Clientes" autofocus="autofocus">
-                                         <input  hidden type="text" name="ven_totalClientes" id="ven_totalClientes"  value="'.$assoc_get_venta_UltimaByIdCaja['ven_total'].'">
-                                         <input  hidden type="text" name="ID_venClientes" id="ID_venClientes" value="<?php echo $ID_ven;?>">
-                                          <input  hidden type="text" name="ID_cajClientes" id="ID_cajClientes" value="<?php echo $ID_caj;?>">
-
-                                        <div id="suggestionsClientes" class="suggestions"></div>
-                                     </div> 
-                             
-                                     </div> '; 
-                                    echo "<br>";
-                              echo '</div>';
-
-                             //CREDITO
-                              echo '<div id="DivFormaDePago3" class="col-md-12" style="display: none;">';
-                                    echo "<br>";
-                                    echo  "CRÉDITO Y DÉBITO";
-                                    echo "<br>";
-                                    echo '<div class="col-md-12" id="ContenidoC1"> 
-
-                                                      
-                                                       <div class="col-md-12">'; 
-                                                            $get_tarjetas = $tarjetas->get_tarjetas();
-                                                            $num_get_tarjetas = mysql_num_rows($get_tarjetas);
-                                                            $ven_total=$resto;
-                                                            for ($tarjetasCount=0; $tarjetasCount < $num_get_tarjetas; $tarjetasCount++) 
-                                                            { 
-                                                               $assoc_get_tarjetas = mysql_fetch_assoc($get_tarjetas); 
-                                                               $ImagenTarjeta=$assoc_get_tarjetas['tar_logo'];
-                                                              echo "<div class='col-md-6' style='padding:2%;' id='MuestraTarjetas'>";
-                                                                 echo "<img src='".$ImagenTarjeta."' style='width:80%;' id='tarjeta".$assoc_get_tarjetas['ID_tar']."'>"; 
-                                                              echo "</div>"; 
-
-                                                                  echo "<div class='col-md-12' id='MuestraPlanes".$assoc_get_tarjetas['ID_tar']."' style='display:none; padding:2%;'>"; 
-                                                                        $ID_tar=$assoc_get_tarjetas['ID_tar']; 
-                                                                          echo "<br>";
-                                                                             /*
-                                                                             echo $get_tarjetas_planesById = $tarjetas_planesE->get_tarjetas_planesById($ID_tar, $ven_total);
-                                                                              */
-
-                                                                             $getPlanesTarjetasByIdTar=$tarjetas_planesE->getPlanesTarjetasByIdTar($ID_tar);
-                                                                             $num_getPlanesTarjetasByIdTar=mysql_num_rows($getPlanesTarjetasByIdTar);
-
-                                                                             for ($countPlanes=0; $countPlanes <  $num_getPlanesTarjetasByIdTar; $countPlanes++) 
-                                                                             { 
-                                                                               $assoc_result_tarjetas_planes=mysql_fetch_assoc($getPlanesTarjetasByIdTar);
-                                                                                $ven_total=$ven_total;
-                                                                                $pla_cant=$assoc_result_tarjetas_planes['pla_cant'];
-                                                                                $recargo=$assoc_result_tarjetas_planes['pla_recargo'];
-                                                                                $ID_pla=$assoc_result_tarjetas_planes['ID_pla'];
-                                                                                $totalConInteresA=($ven_total*$recargo)/100;
-                                                                                $totalConInteres=$ven_total+$totalConInteresA;
-                                                                                $totalConInteres=number_format($totalConInteres,2);
-                                                                                $valorDeCuotas=$totalConInteres/$pla_cant;
-                                                                                $valorDeCuotas=number_format($valorDeCuotas,2);
-                                                                                 echo "<div class='col-md-12' style='text-align:left;'>";
-                                                                                echo "<p><input type='radio' name='ID_pla' value='".$assoc_result_tarjetas_planes['ID_pla']."'>
-                                                                                    ".$assoc_result_tarjetas_planes['pla_desc']." (".$assoc_result_tarjetas_planes['pla_recargo']."%) </p>
-                                                                                    <p><h6> Cuotas de $ ".$valorDeCuotas." <h6></p>
-                                                                                    <p><h6> Total: $ ".$totalConInteres." <h6></p><hr>";
-                                                                                echo "</div>"; 
-                                                                             }
-                                                                             echo '<br><br><div id="EfectivoTarjeta'.$assoc_result_tarjetas_planes['ID_tar'].'" style="display:none; margin:3%;" class="input-group">
-                                                                              <span class="input-group-addon">Monto En Efectivo $</span>
-                                                                              <input type="text" name="efectivo" placeholder="00.00" class="form-control">
-                                                                          
-                                                                            </div>';
-
-                                                                              echo '<input hidden type="text" name="ven_totalTarjeta" id="ven_totalTarjeta"  value="'.$totalConInteres.'">';
-                                                                             echo '<input hidden type="text" name="ID_tar" id="ID_tar" value="'.$assoc_get_tarjetas['ID_tar'].'">';
-                                                                              
-                                                                   echo "</div>";  
-
-                                                               echo "<script>
-                                                               $('#tarjeta".$assoc_get_tarjetas['ID_tar']."').click(function(){
-                                                                $('#MuestraPlanes".$assoc_get_tarjetas['ID_tar']."').toggle('slow');
-                                                               });
-                                                               </script>";
-
-                                                            }
-                                                  echo '</div> 
-                                               
-                                                       </div>'; 
-                              echo '</div>';  
-
-                            
-
-                              //DEBITO
-                              echo '<div id="DivFormaDePago5" class="col-md-12" style="display: none;">';
-                                    echo "<br>";
-                                    echo  "PAGOS ELECTRONICOS";
-                                    echo "<br>";
-                                    echo '<div class="alert alert-dismissible alert-info">
-                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                            <strong><H4>DISPONIBLES PROXIMAMENTE !</H4></strong>
-                                          </div>';
-                              echo '</div>';   
-
-                               echo '<script>
-                                      $("#FormaDePago").change(function(){
-                                        var valorDeFormaDePago = $("#FormaDePago").val();
-                                        if(valorDeFormaDePago==1)
-                                        {
-                                          $("#DivFormaDePago1").fadeIn(500);
-                                        }
-                                        else
-                                        {
-                                          $("#DivFormaDePago1").fadeOut(500);
-                                        }   
-
-                                        if(valorDeFormaDePago==2)
-                                        {
-                                          $("#DivFormaDePago2").fadeIn(500);
-                                        }
-                                        else
-                                        {
-                                          $("#DivFormaDePago2").fadeOut(500);
-                                        }   
-
-                                        if(valorDeFormaDePago==3)
-                                        {
-
-                                          $("#DivFormaDePago3").fadeIn(500);
-                                            $("#montoTotal").attr("readonly", "readonly");
-                                        }
-                                        else
-                                        {
-                                          $("#DivFormaDePago3").fadeOut(500);
-                                           $("#montoTotal").removeAttr("readonly", "readonly");
-                                        }   
-
-                                        if(valorDeFormaDePago==4)
-                                        {
-                                          $("#DivFormaDePago4").fadeIn(500);
-                                        }
-                                        else
-                                        {
-                                          $("#DivFormaDePago4").fadeOut(500);
-                                           
-                                        }   
-
-                                        if(valorDeFormaDePago==5)
-                                        {
-                                          $("#DivFormaDePago5").fadeIn(500);
-
-                                        }
-                                        else
-                                        {
-                                          $("#DivFormaDePago5").fadeOut(500);
-                                        }                                           
-
-                                      });
-                              </script>';
-                          
-                                 
-                          //SELECCIONADO
-                          //Aplicar selected prederterminado en el contenido (revisar columna fpo_selected de tabla tipos_pagos)
-                                    echo '<script>
-                                            $(document).ready(function(){
-                                              var valorDeFormaDePago = '.$ID_selected.';
-                                                $("#DivFormaDePago'.$ID_selected.'").fadeIn(500);
-                                            });
-                                          </script>';  
-
-                           //replicar valor de pago en calculador de vuelto
-                                    echo '<script>
-                                           $("#montoTotal").keyup(function(){
-                                              var montoTotal=$("#montoTotal").val();
-                                              $("#CalcularVuelto").val(montoTotal);
-                                            });
-                                          </script>';  
-
-
-                            //Cambia el nombre del boton COBRO TOTAL a COBRO PARCIAL SI EL MONTO ES MENOR AL TOTAL DE LA VENTA     
-                             echo '<script>
-                                            $("#montoTotal").keyup(function(){
-                                              var montoTotal = $("#montoTotal").val();
-                                             if (montoTotal>="'.$resto.'" || montoTotal>="'.$totaSinDecimales.'") 
-                                             {
-                                              var textoDeBoton = $("#textoDeBoton").val();
-                                              $("#textoDeBoton").text("COBRO TOTAL");
-                                             }
-                                             else
-                                            {
-                                              $("#textoDeBoton").text("COBRO PARCIAL");
-                                            }
-                                      });
-                               </script>';
-
-                              //Calcula y muestra el vuelto si la seleccion de pago es Efectivo
-                                  echo "<script>$('#CalcularVuelto').keyup(function(){
-                                      var MontoEfectivo =$('#CalcularVuelto').val();
-                                      var ven_total = ".$resto.";
-                                      var action = 'Efectivo';
-                                      var dataString = 'MontoEfectivo='+MontoEfectivo + '&action='+action + '&ven_total='+ven_total;
-                                      $.ajax({
-                                        url: 'accionesExclusivas.php',
-                                        type: 'POST',
-                                        data: dataString,
-                                             success: function(data)
-                                             {
-                                                $('#suggestionsA1').fadeIn(2000).html(data);
-                                             }
-                                              })
-                                              .done(function(){
-                                                 $('#finalizarVentaEfectivo').fadeIn(3000);
-                                              })
-                                              .fail(function(){
-                                                
-                                              })
-                                              .always(function(){
-                                                  
-                                              })
-                                    }); </script>";
-                                       echo "<script>$('#montoTotal').keyup(function(){
-                                      var MontoEfectivo =$('#montoTotal').val();
-                                      var ven_total = ".$resto.";
-                                      var action = 'Efectivo';
-                                      var dataString = 'MontoEfectivo='+MontoEfectivo + '&action='+action + '&ven_total='+ven_total;
-                                      $.ajax({
-                                        url: 'accionesExclusivas.php',
-                                        type: 'POST',
-                                        data: dataString,
-                                             success: function(data)
-                                             {
-                                                $('#suggestionsA1').fadeIn(2000).html(data);
-                                             }
-                                              })
-                                              .done(function(){
-                                                 $('#finalizarVentaEfectivo').fadeIn(3000);
-                                              })
-                                              .fail(function(){
-                                                
-                                              })
-                                              .always(function(){
-                                                  
-                                              })
-                                    }); </script>";
-                                    if ($sumaDeDetallesDeVenta<=$assoc_get_venta_UltimaByIdCaja['ven_total']) 
-                        {
-                          //Aparece boton guardar venta y desaparece casilla de monto
-                          if ($sumaDeDetallesDeVenta==$assoc_get_venta_UltimaByIdCaja['ven_total'])
-                          {
-                            echo "<script> $(document).ready(function(){
-                                                $('#botonGuardarVenta').fadeIn(500);
-                                                $('#montoTotal').fadeOut(500);
-                                                $('#DivFormaDePago".$ID_selected."').fadeOut(500);
-                                                $('#montoApagarSelectBoton').fadeOut(500);
-                                              });</script>";
-                          }
-                          //coloca resto para alcanzar el total de la compra 
-                          else
-                          {
-                             $restoDeDetallesDeVentas=$assoc_get_venta_UltimaByIdCaja['ven_total']-$sumaDeDetallesDeVenta;
-                                echo "<script>
-                                          $(document).ready(function(){
-                                            $('#montoTotal').val(".$restoDeDetallesDeVentas.");
-                                            $('#CalcularVuelto').val(".$restoDeDetallesDeVentas.");
-                                            this.max = ".$restoDeDetallesDeVentas.";
-                                          });
-                                </script>";
-                          } 
-                         
-                        }  
-
-                        ?>
-  
-                      </div>
-
-                   <div id="montoApagarSelectBoton" class="col-md-12" style="margin-top: 5%; ">
-                    <div class="form-group">
-                         <button type="submit" class="btn btn-success"><p id="textoDeBoton">COBRO TOTAL</p></button>
-                      </div>
-                </div>
-              </form>
-            </div>    
-           
-              <br>
-            <div class='col-md-12' style="border-top:2px solid #333;">
-              <br>
-              <?php 
-                 
-                  
-
-                echo "<a href='accionesExclusivas.php?ID_ven=".$ID_ven."&action=CerrarVenta&ID_caj=".$ID_caj."&ven_descuento=".$descuento."&ID_pla=".$ID_pla."'>
-                        <button class='btn btn-warning' id='botonGuardarVenta' style='display: none;'>
-                            <i class='material-icons'>save</i> 
-                            GUARDAR VENTA
-                        </button>
-                    </a>";
-              ?>
-            </div>
-            <?php
-      } 
-      else
-      {
-        echo '<div class="well">
-                <i class="material-icons">sentiment_neutral</i> Aguardando ventas
-              </div>';
-      }
-      ?>
+          <div id="respuesta_tabla_pagos_movimientos"></div>
       </div>
     
    <!--Fin: contenedor medio-->
   </div>
 <!--Fin: Contenedor principal -->
 
-<!--Inicio: Footer -->
-<?php
-	include("modulos/footer.php"); 
-?>
-<!--Fin: Footer -->
-<!--Inicio: script -->
-
- <script type='text/javascript'>
-
-
+<script>
+    
           $('#get_articulos').keyup(function()
             {
+              
               var get_articulos = $(this).val();   
               var get_cantidad = $('input:text[name=get_cantidad]').val();
               var ID_ven = $('input:text[name=ID_ven]').val();
@@ -1140,31 +425,121 @@
                   success: function(data)
                    {
                       $('#suggestions').fadeIn(1000).html(data);
+                      
+                     
                    }
                });
            });
 
-            $('#get_clientes').keyup(function()
+
+
+</script>
+
+
+<!--Inicio: Footer -->
+<?php
+	include("modulos/footer.php"); 
+
+ 
+
+  echo "<script>
+          $(document).ready(function()
             {
-              var get_clientes = $(this).val();   
-              
-              var action = 'Get_clientes';
-              var ven_totalClientes = $('input:text[name=ven_totalClientes]').val();
-              var ID_venClientes = $('input:text[name=ID_venClientes]').val();
-              var ID_cajClientes = $('input:text[name=ID_cajClientes]').val();
-              
-              var dataString = 'get_clientes='+get_clientes + '&action='+action + '&ven_totalClientes='+ven_totalClientes + '&ID_venClientes='+ID_venClientes + '&ID_caj='+ID_cajClientes;
+              var ID_caj = '".$ID_caj."';  
+              var dataString = 'ID_caj='+ID_caj ;
+
               $.ajax(
               {
                   type: 'POST',
-                  url: 'accionesExclusivas.php',
+                  url: 'tabla_detalles_movimientos.php',
                   data: dataString,
                   success: function(data)
                    {
-                      $('#suggestionsClientes').fadeIn(1000).html(data);
+                      $('#respuesta_tabla_detalles_movimientos').fadeIn(1000).html(data);
+                      
                    }
                });
-           }); 
+
+                 $.ajax(
+              {
+                  type: 'POST',
+                  url: 'tabla_totales_movimientos.php',
+                  data: dataString,
+                  success: function(data)
+                   {
+                      $('#respuesta_tabla_totales_movimientos').fadeIn(1000).html(data);
+                      
+                   }
+               });
+                $.ajax(
+              {
+                  type: 'POST',
+                  url: 'tabla_pagos_movimientos.php',
+                  data: dataString,
+                  success: function(data)
+                   {
+                      $('#respuesta_tabla_pagos_movimientos').fadeIn(1000).html(data);
+                      
+                   }
+               });
+           });
+
+  </script>";
+
+ echo "<script>
+          $('#ActualizarTablaDetalles').click(function()
+            {
+              var ID_caj = '".$ID_caj."';  
+              
+              var dataString = 'ID_caj='+ID_caj ;
+              $.ajax(
+              {
+                  type: 'POST',
+                  url: 'tabla_detalles_movimientos.php',
+                  data: dataString,
+                  success: function(data)
+                   {
+                      $('#respuesta_tabla_detalles_movimientos').fadeIn(1000).html(data);
+                      
+                   }
+               });
+                 $.ajax(
+              {
+                  type: 'POST',
+                  url: 'tabla_totales_movimientos.php',
+                  data: dataString,
+                  success: function(data)
+                   {
+                      $('#respuesta_tabla_totales_movimientos').fadeIn(1000).html(data);
+                      
+                   }
+               });
+                   $.ajax(
+              {
+                  type: 'POST',
+                  url: 'tabla_pagos_movimientos.php',
+                  data: dataString,
+                  success: function(data)
+                   {
+                      $('#respuesta_tabla_pagos_movimientos').fadeIn(1000).html(data);
+                      
+                   }
+               });
+           });
+
+  </script>";
+?>
+<!--Fin: Footer -->
+<!--Inicio: script -->
+
+
+
+ <script type='text/javascript'>
+
+      
+
+
+            
 
 
                 $('#tipoDePago1').click(function(){
@@ -1226,39 +601,6 @@
             })
           });
 
-        
-         $(document).keydown(function(tecla){ 
-    if (tecla.keyCode == 118) { 
-         $('#ContenidoA1').toggle('slow');
-                  $('#ContenidoA').toggle('slow');
-                  $('#ContenidoB1').css('display', 'none');
-                  $( "#CalcularVuelto" ).focus();
-    } 
-    if (tecla.keyCode == 119) { 
-         $('#ContenidoB1').toggle('slow');
-                  $('#ContenidoA').toggle('slow');
-                   $('#ContenidoA1').css('display', 'none');
-                   $( "#get_clientes" ).focus();
-    } 
-     if (tecla.keyCode == 120) { 
-         $('#ContenidoC1').toggle('slow');
-                  $('#ContenidoA').toggle('slow');
-                  $( "#radioTrjeta" ).focus();
-    } 
-     if (tecla.keyCode == 16) { 
-                  $( "#get_cantidad" ).focus();
-                  $("#get_cantidad").val("");
-    } 
-
-
-       if (tecla.keyCode == 17) { 
-                  $( "#get_articulos" ).focus();
-    } 
-
-   
-   
-});
-
 
   $( "#get_cantidad" ).blur(function() {
    
@@ -1287,7 +629,16 @@
         allowedFileExtensions: ['jpg', 'png', 'gif']
          
     });
+     $(document).keydown(function(tecla){ 
+    if (tecla.keyCode == 16) { 
+                  $( "#get_cantidad" ).focus();
+                  $("#get_cantidad").val("");
+    } 
 
+
+       if (tecla.keyCode == 17) { 
+                  $( "#get_articulos" ).focus();
+    }  });
  </script> 
 
 

@@ -21,12 +21,12 @@
   $fechaInicio=$fechaDividida[0];
   $fechaInicioCambioDeSignos=str_replace( "/" , "-" ,$fechaInicio);
   $fechaInicioFormateda=date("Y-m-d",strtotime($fechaInicioCambioDeSignos));
-  $fecDesde=$fechaInicioFormateda . " 00:00:00";
+  echo $fecDesde=$fechaInicioFormateda . " 00:00:00";
 
   $fechafin=$fechaDividida[1];
   $fechafinCambioDeSignos=str_replace( "/" , "-" ,$fechafin);
   $fechaFinFormateda=date("Y-m-d",strtotime($fechafinCambioDeSignos));
-  $fecHasta=$fechaFinFormateda . " 23:59:59";
+  echo $fecHasta=$fechaFinFormateda . " 23:59:59";
 
                         if ($ID_tceB==0) 
                         {

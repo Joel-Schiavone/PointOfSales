@@ -1,0 +1,3 @@
+1- ModifClientes.php no carga el icono de la pagina , esta en minuscula el nombre de la pagina y el selector de sector funciona mal como si tubiese configurado el select con sucursal 1 o 2  
+
+3 - modificar comprobante tiene que poder cambiar el precio y el iva

@@ -9,10 +9,10 @@ $FechayHora         = date("Y-m-d H:i:s");
 // ETAPA 1:  RECIBE DATOS Y PREPARA VARIABLES BASICAS
 
 	//Recibe ID de articulo
-		$ID_art_ACTUAL 			= $_GET['ID_art'];
+		$ID_art_ACTUAL 			= $_POST['ID_art'];
 
 	//Recibe ID de cantidad	
-  		$mov_cantidad_ACTUAL 	= $_GET['mov_cantidad'];  // CANTIDAD ACTUAL
+  		$mov_cantidad_ACTUAL 	= $_POST['cantidad'];  // CANTIDAD ACTUAL
   		$precio_del_articulo=0;
   	//Trae precio de articulo
 		$sql_articulos    		= 'SELECT pre_iva, pre_cant, articulos.ID_pre FROM articulos, precios WHERE  precios.ID_pre=articulos.ID_pre AND ID_art='.$ID_art_ACTUAL.'' ; 
@@ -54,8 +54,6 @@ $FechayHora         = date("Y-m-d H:i:s");
 	    // si exite al menos una coincidencia de articulo en los movimientos
 	    if ($num_result_movimiento==1) 
 	    {
-	    	
-	    	
 	    	//Si tiene descuento 
 	    	if($mov_descuento!=0)
 	    	{
@@ -164,8 +162,10 @@ $FechayHora         = date("Y-m-d H:i:s");
 	   $sql_stockB = 'INSERT INTO stock (sto_mov, ID_art, sto_desc, sto_fec, ID_suc, ID_usu, sto_cant, sto_total) VALUES ("'.$sto_mov.'", "'.$ID_art_ACTUAL.'", "'.$sto_desc.'", "'.$sto_fec.'", "'.$ID_suc.'", "'.$ID_usu.'", "'.$sto_cant.'", "'.$sto_total.'")'; 
         $result_stockB =mysql_query($sql_stockB);
 
-//ETAPA 6: REDIRECCION
+//ETAPA 6: RESPUESTA
 
-	 echo '<script type="text/javascript">
-	 window.location.assign("cajaSuc.php");
-	 </script>';
+       
+        	echo "<input hidden type='text' name='respuesta_inseraMovimiento' id='respuesta_inseraMovimiento' value='1'>";
+   
+        
+	
