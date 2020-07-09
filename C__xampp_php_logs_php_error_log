@@ -1,0 +1,16 @@
+[21-Dec-2017 16:08:20 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[21-Dec-2017 16:08:23 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[21-Dec-2017 16:08:26 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 19:34:13 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_4c1f5cecd0c004bf4febee1b7a7530fa, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/logout.php on line 2
+[09-Mar-2018 19:34:13 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 19:34:13 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 19:34:28 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 19:34:28 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 20:19:53 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 20:19:53 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 20:21:38 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 20:21:38 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 20:21:42 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 20:21:42 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
+[09-Mar-2018 20:38:49 Europe/Berlin] PHP Warning:  session_start(): open(C:\xampp\tmp/sess_gou6nc8p9ha63om4hgihc7jqv6, O_RDWR) failed: No such file or directory (2) in /home/joel/public_html/inc/requerido.php on line 2
+[09-Mar-2018 20:38:49 Europe/Berlin] PHP Warning:  mysql_connect(): No such file or directory in /home/joel/public_html/inc/conectar.php on line 2
